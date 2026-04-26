@@ -44,7 +44,7 @@ public class ConfigScreen extends Screen {
                 "Makes vault and trial spawner blocks mineable with the correct tool",
                 () -> cfg.mineableTrials, v -> cfg.mineableTrials = v));
         entries.add(new ToggleEntry("Mineable Bedrock",
-                "Makes bedrock breakable with a very high hardness value. Requires world restart to take effect",
+                "Makes bedrock breakable with a very high hardness value",
                 () -> cfg.mineableBedrock, v -> cfg.mineableBedrock = v));
         entries.add(new ToggleEntry("Cocktails",
                 "Blend multiple potions together in a crafting table to combine their effects",
@@ -108,7 +108,8 @@ public class ConfigScreen extends Screen {
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         super.extractRenderState(graphics, mouseX, mouseY, delta);
-        graphics.centeredText(this.font, this.title, this.width / 2, 15, 0xFFFFFF);
+        graphics.centeredText(this.font, this.title, this.width / 2, 10, 0xFFFFFF);
+        graphics.centeredText(this.font, Component.literal("Changes require a game restart to take effect"), this.width / 2, 25, 0xAAAAAA);
     }
 
     private record ToggleEntry(String label, String description, Supplier<Boolean> getter, Consumer<Boolean> setter) {
