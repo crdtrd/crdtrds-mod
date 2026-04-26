@@ -27,7 +27,7 @@ public abstract class BedrockBlocksMixin {
     private static void crdtrdsmod$makeBlocksMineable(ResourceKey<Block> key, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties, CallbackInfoReturnable<Block> cir) {
         String id = key.identifier().toString();
 
-        if (ModConfig.get().mineableBedrock && id.equals("minecraft:bedrock")) {
+        if (ModConfig.active().mineableBedrock && id.equals("minecraft:bedrock")) {
             BlockBehaviour.Properties newProps = BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
                     .instrument(NoteBlockInstrument.BASEDRUM)
@@ -39,7 +39,7 @@ public abstract class BedrockBlocksMixin {
             return;
         }
 
-        if (ModConfig.get().mineableTrials) {
+        if (ModConfig.active().mineableTrials) {
             if (id.equals("minecraft:vault")) {
                 BlockBehaviour.Properties newProps = BlockBehaviour.Properties.of()
                         .mapColor(MapColor.STONE)

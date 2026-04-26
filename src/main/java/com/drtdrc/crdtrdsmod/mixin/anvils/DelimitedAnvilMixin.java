@@ -17,7 +17,7 @@ public abstract class DelimitedAnvilMixin {
 
     @ModifyConstant(method = "createResult", constant = @Constant(intValue = 40))
     private int crdtrdsmod$removeAnvilLimit(int original) {
-        if (!ModConfig.get().delimitedAnvils) return original;
+        if (!ModConfig.active().delimitedAnvils) return original;
         return Integer.MAX_VALUE;
     }
 }

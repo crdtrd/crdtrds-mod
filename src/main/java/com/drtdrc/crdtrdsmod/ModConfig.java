@@ -13,6 +13,7 @@ public class ModConfig {
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("crdtrdsmod.json");
 
     private static ModConfig INSTANCE;
+    private static ModConfig ACTIVE;
     private static boolean loaded = false;
 
     public boolean enchantingEncore = true;
@@ -36,6 +37,13 @@ public class ModConfig {
         return INSTANCE;
     }
 
+    public static ModConfig active() {
+        if (!loaded) {
+            load();
+        }
+        return ACTIVE;
+    }
+
     public static void load() {
         loaded = true;
         if (Files.exists(CONFIG_PATH)) {
@@ -49,6 +57,7 @@ public class ModConfig {
         if (INSTANCE == null) {
             INSTANCE = new ModConfig();
         }
+        ACTIVE = GSON.fromJson(GSON.toJson(INSTANCE), ModConfig.class);
         save();
     }
 

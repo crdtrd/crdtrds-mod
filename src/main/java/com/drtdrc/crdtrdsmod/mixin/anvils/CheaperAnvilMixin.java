@@ -12,7 +12,7 @@ public abstract class CheaperAnvilMixin {
 
     @Inject(method = "calculateIncreasedRepairCost", at = @At("HEAD"), cancellable = true)
     private static void crdtrdsmod$cheaperRepairCost(int baseCost, CallbackInfoReturnable<Integer> cir) {
-        if (!ModConfig.get().cheaperAnvils) return;
+        if (!ModConfig.active().cheaperAnvils) return;
         cir.setReturnValue(baseCost + 2);
     }
 }

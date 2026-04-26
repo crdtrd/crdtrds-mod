@@ -23,25 +23,25 @@ public abstract class EnchantmentMenuMixin {
 
     @Inject(method = "slotsChanged", at = @At("HEAD"))
     private void crdtrdsmod$prepareBias(Container container, CallbackInfo ci) {
-        if (!ModConfig.get().enchantingEncore) return;
+        if (!ModConfig.active().enchantingEncore) return;
         access.execute(BiasContext::compute);
     }
 
     @Inject(method = "slotsChanged", at = @At("TAIL"))
     private void crdtrdsmod$clearBias(Container container, CallbackInfo ci) {
-        if (!ModConfig.get().enchantingEncore) return;
+        if (!ModConfig.active().enchantingEncore) return;
         BiasContext.deactivate();
     }
 
     @Inject(method = "clickMenuButton", at = @At("HEAD"))
     private void crdtrdsmod$prepareBiasOnApply(Player player, int id, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.get().enchantingEncore) return;
+        if (!ModConfig.active().enchantingEncore) return;
         access.execute(BiasContext::compute);
     }
 
     @Inject(method = "clickMenuButton", at = @At("RETURN"))
     private void crdtrdsmod$clearBiasOnApply(Player player, int id, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.get().enchantingEncore) return;
+        if (!ModConfig.active().enchantingEncore) return;
         BiasContext.deactivate();
     }
 }
