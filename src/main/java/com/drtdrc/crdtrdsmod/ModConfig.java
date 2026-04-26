@@ -12,7 +12,8 @@ public class ModConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("crdtrdsmod.json");
 
-    private static ModConfig INSTANCE = new ModConfig();
+    private static ModConfig INSTANCE;
+    private static boolean loaded = false;
 
     public boolean enchantingEncore = true;
     public boolean flexiblePortals = true;
@@ -29,21 +30,24 @@ public class ModConfig {
     public boolean curseStone = true;
 
     public static ModConfig get() {
+        if (!loaded) {
+            load();
+        }
         return INSTANCE;
     }
 
     public static void load() {
+        loaded = true;
         if (Files.exists(CONFIG_PATH)) {
             try {
                 String json = Files.readString(CONFIG_PATH);
                 INSTANCE = GSON.fromJson(json, ModConfig.class);
-                if (INSTANCE == null) {
-                    INSTANCE = new ModConfig();
-                }
             } catch (IOException e) {
                 CrdtrdsMod.LOGGER.error("Failed to load config", e);
-                INSTANCE = new ModConfig();
             }
+        }
+        if (INSTANCE == null) {
+            INSTANCE = new ModConfig();
         }
         save();
     }
