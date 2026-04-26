@@ -7,6 +7,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithEnchantedBonusCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class SpawnEggDrops {
 
     private static final float BASE_CHANCE = 0.005f;
+    private static final float LOOTING_PER_LEVEL = 0.005f;
 
     public static void register() {
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
@@ -30,9 +32,10 @@ public class SpawnEggDrops {
 
                     LootPool.Builder pool = LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(eggItem.get()))
+                            .when(LootItemKilledByPlayerCondition.killedByPlayer())
                             .when(LootItemRandomChanceWithEnchantedBonusCondition
-                                    .randomChanceAndLootingBoost(registries, BASE_CHANCE, BASE_CHANCE));
+                                    .randomChanceAndLootingBoost(registries, BASE_CHANCE, LOOTING_PER_LEVEL))
+                            .add(LootItem.lootTableItem(eggItem.get()));
 
                     tableBuilder.withPool(pool);
                 }

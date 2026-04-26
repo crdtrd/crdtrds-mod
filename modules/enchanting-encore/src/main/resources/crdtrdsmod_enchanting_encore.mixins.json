@@ -8,7 +8,8 @@
     "EnchantingTableBlockMixin",
     "EnchantmentHelperMixin",
     "EnchantmentMenuMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "AttributesMixin"
   ],
   "injectors": {
     "defaultRequire": 1
