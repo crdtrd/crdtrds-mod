@@ -20,11 +20,11 @@ import java.util.function.Function;
 public abstract class BedrockBlocksMixin {
 
     @Inject(
-            method = "register(Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)Lnet/minecraft/world/level/block/Block;",
+            method = "register(Lnet/minecraft/resources/ResourceKey;Ljava/util/function/Function;Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)Lnet/minecraft/world/level/block/Block;",
             at = @At("HEAD"),
             cancellable = true
     )
-    private static void crdtrdsmod$makeBlocksMineable(ResourceKey<Block> key, BlockBehaviour.Properties properties, CallbackInfoReturnable<Block> cir) {
+    private static void crdtrdsmod$makeBlocksMineable(ResourceKey<Block> key, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties, CallbackInfoReturnable<Block> cir) {
         String id = key.identifier().toString();
 
         if (ModConfig.get().mineableBedrock && id.equals("minecraft:bedrock")) {
@@ -32,19 +32,12 @@ public abstract class BedrockBlocksMixin {
                     .mapColor(MapColor.STONE)
                     .instrument(NoteBlockInstrument.BASEDRUM)
                     .strength(100.0f, 3600000.0f)
+                    .isValidSpawn((state, world, pos, entityType) -> false)
                     .requiresCorrectToolForDrops();
-            Block block = new Block(newProps.setId(key));
+            Block block = factory.apply(newProps.setId(key));
             cir.setReturnValue(Registry.register(BuiltInRegistries.BLOCK, key, block));
+            return;
         }
-    }
-
-    @Inject(
-            method = "register(Lnet/minecraft/resources/ResourceKey;Ljava/util/function/Function;Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)Lnet/minecraft/world/level/block/Block;",
-            at = @At("HEAD"),
-            cancellable = true
-    )
-    private static void crdtrdsmod$makeTrialBlocksMineable(ResourceKey<Block> key, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties, CallbackInfoReturnable<Block> cir) {
-        String id = key.identifier().toString();
 
         if (ModConfig.get().mineableTrials) {
             if (id.equals("minecraft:vault")) {
