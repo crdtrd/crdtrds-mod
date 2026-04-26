@@ -1,8 +1,13 @@
 {
   "replace": false,
   "values": [
-    "minecraft:vault",
-    "minecraft:trial_spawner",
-    "minecraft:bedrock"
+    {
+      "id": "#crdtrdsmod:pickaxe_bedrock",
+      "required": false
+    },
+    {
+      "id": "#crdtrdsmod:pickaxe_trials",
+      "required": false
+    }
   ]
 }
