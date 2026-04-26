@@ -17,9 +17,7 @@ public class CrdtrdsMod implements ModInitializer {
     public void onInitialize() {
         ModConfig.load();
 
-        if (ModConfig.get().cocktails) {
-            CocktailsInit.register();
-        }
+        CocktailsInit.register();
 
         if (ModConfig.get().spawnEggDrops) {
             SpawnEggDrops.register();
