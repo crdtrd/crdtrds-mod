@@ -20,6 +20,9 @@
         ],
         "client": [
             "com.drtdrc.crdtrdsmod.client.CrdtrdsModClient"
+        ],
+        "modmenu": [
+            "com.drtdrc.crdtrdsmod.client.ModMenuIntegration"
         ]
     },
     "mixins": [
@@ -34,5 +37,8 @@
         "minecraft": "~26.1.2",
         "java": ">=25",
         "fabric-api": "*"
+    },
+    "suggests": {
+        "modmenu": "*"
     }
 }
