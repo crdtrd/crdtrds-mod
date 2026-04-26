@@ -26,6 +26,7 @@ public class ModConfig {
     public boolean spawnEggDrops = true;
     public boolean delimitedAnvils = true;
     public boolean giveMeRecipes = true;
+    public boolean curseStone = true;
 
     public static ModConfig get() {
         return INSTANCE;
