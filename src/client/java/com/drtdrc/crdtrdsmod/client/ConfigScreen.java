@@ -64,6 +64,9 @@ public class ConfigScreen extends Screen {
         entries.add(new ToggleEntry("Give Me Recipes",
                 "Automatically unlocks all crafting recipes when joining a world",
                 () -> cfg.giveMeRecipes, v -> cfg.giveMeRecipes = v));
+        entries.add(new ToggleEntry("CurseStone",
+                "Allows the grindstone to remove curse enchantments from items",
+                () -> cfg.curseStone, v -> cfg.curseStone = v));
 
         int cols = 2;
         int btnW = 150;

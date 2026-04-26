@@ -16,7 +16,8 @@
         "anvils.CheaperAnvilMixin",
         "anvils.DelimitedAnvilMixin",
         "spawners.SpawnerBlockMixin",
-        "recipes.ServerRecipeBookMixin"
+        "recipes.ServerRecipeBookMixin",
+        "cursestone.CurseStoneMixin"
     ],
     "injectors": {
         "defaultRequire": 1
