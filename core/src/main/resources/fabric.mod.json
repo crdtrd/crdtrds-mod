@@ -1,0 +1,23 @@
+{
+    "schemaVersion": 1,
+    "id": "crdtrdsmod_core",
+    "version": "${version}",
+    "name": "crdtrd's mod - Core",
+    "description": "Core library for crdtrd's mod. Provides shared config and utilities.",
+    "authors": [
+        "crdtrd"
+    ],
+    "license": "MIT",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "com.drtdrc.crdtrdsmod.CrdtrdsMod"
+        ]
+    },
+    "depends": {
+        "fabricloader": ">=0.19.2",
+        "minecraft": "~26.1.2",
+        "java": ">=25",
+        "fabric-api": "*"
+    }
+}
