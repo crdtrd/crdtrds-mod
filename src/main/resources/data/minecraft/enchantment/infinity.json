@@ -33,5 +33,11 @@
     "mainhand"
   ],
   "supported_items": "#minecraft:enchantable/bow",
-  "weight": 1
+  "weight": 1,
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "enchantingEncore"
+    }
+  ]
 }

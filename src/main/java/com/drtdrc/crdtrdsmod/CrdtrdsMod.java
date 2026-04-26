@@ -3,9 +3,11 @@ package com.drtdrc.crdtrdsmod;
 import com.drtdrc.crdtrdsmod.afk.AFKCommand;
 import com.drtdrc.crdtrdsmod.cocktails.CocktailsInit;
 import com.drtdrc.crdtrdsmod.eggdrops.SpawnEggDrops;
+import com.drtdrc.crdtrdsmod.resource.ModuleEnabledCondition;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +17,7 @@ public class CrdtrdsMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        ResourceConditions.register(ModuleEnabledCondition.TYPE);
         ModConfig.load();
 
         CocktailsInit.register();

@@ -181,7 +181,7 @@
             },
             "movement": {
               "horizontal_speed": {
-                "min": 9.999999747378752E-6
+                "min": 9.999999747378752e-06
               }
             },
             "movement_affected_by": {
@@ -221,7 +221,7 @@
                 },
                 "movement": {
                   "horizontal_speed": {
-                    "min": 9.999999747378752E-6
+                    "min": 9.999999747378752e-06
                   }
                 },
                 "movement_affected_by": {
@@ -250,5 +250,11 @@
     "feet"
   ],
   "supported_items": "#minecraft:enchantable/foot_armor",
-  "weight": 1
+  "weight": 1,
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "enchantingEncore"
+    }
+  ]
 }

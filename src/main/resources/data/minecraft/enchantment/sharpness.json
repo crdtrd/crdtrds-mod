@@ -32,5 +32,11 @@
     "mainhand"
   ],
   "supported_items": "#minecraft:enchantable/sharp_weapon",
-  "weight": 10
+  "weight": 10,
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "enchantingEncore"
+    }
+  ]
 }

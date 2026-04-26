@@ -39,5 +39,11 @@
     "mainhand"
   ],
   "supported_items": "#minecraft:enchantable/weapon",
-  "weight": 5
+  "weight": 5,
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "enchantingEncore"
+    }
+  ]
 }

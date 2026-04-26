@@ -1,1 +1,9 @@
-{"type": "crdtrdsmod:cocktails"}
+{
+  "type": "crdtrdsmod:cocktails",
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "cocktails"
+    }
+  ]
+}
