@@ -22,7 +22,7 @@ public abstract class AFKServerLevelMixin {
     @Unique
     private static final int MAX_RING = 8;
 
-    @Inject(method = "isNaturalSpawningAllowed(Lnet/minecraft/world/level/ChunkPos;)Z",
+    @Inject(method = "anyPlayerCloseEnoughForSpawning(Lnet/minecraft/world/level/ChunkPos;)Z",
             at = @At("HEAD"), cancellable = true)
     private void goafk$anchorSpawnable(ChunkPos pos, CallbackInfoReturnable<Boolean> cir) {
         ServerLevel level = (ServerLevel) (Object) this;

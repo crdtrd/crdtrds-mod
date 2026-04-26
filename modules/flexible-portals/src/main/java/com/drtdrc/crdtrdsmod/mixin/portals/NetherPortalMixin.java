@@ -33,7 +33,7 @@ public abstract class NetherPortalMixin {
                 state.is(Blocks.OBSIDIAN) || state.is(Blocks.CRYING_OBSIDIAN);
     }
 
-    @Inject(method = "findAnyShape", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "findEmptyPortalShape", at = @At("HEAD"), cancellable = true)
     private static void crdtrdsmod$freeformCreateFirst(
             LevelAccessor level, BlockPos pos, Direction.Axis firstCheckedAxis,
             CallbackInfoReturnable<Optional<PortalShape>> cir) {
