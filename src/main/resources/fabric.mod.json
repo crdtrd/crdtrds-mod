@@ -1,0 +1,38 @@
+{
+    "schemaVersion": 1,
+    "id": "crdtrdsmod",
+    "version": "${version}",
+    "name": "crdtrd's mod",
+    "description": "A consolidated mod combining EnchantingEncore, FlexiblePortals, GoAFK, TickWarpSleep, MineableTrials, MineableBedrock, Cocktails, CheaperAnvils, MineableSpawners, SpawnEggDrops, DelimitedAnvils, and GiveMeRecipes into one configurable mod.",
+    "authors": [
+        "crdtrd"
+    ],
+    "contact": {
+        "homepage": "https://github.com/crdtrd/crdtrds-mod",
+        "sources": "https://github.com/crdtrd/crdtrds-mod"
+    },
+    "license": "MIT",
+    "icon": "assets/crdtrdsmod/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "com.drtdrc.crdtrdsmod.CrdtrdsMod"
+        ],
+        "client": [
+            "com.drtdrc.crdtrdsmod.client.CrdtrdsModClient"
+        ]
+    },
+    "mixins": [
+        "crdtrdsmod.mixins.json",
+        {
+            "config": "crdtrdsmod.client.mixins.json",
+            "environment": "client"
+        }
+    ],
+    "depends": {
+        "fabricloader": ">=0.19.2",
+        "minecraft": "~26.1.2",
+        "java": ">=25",
+        "fabric-api": "*"
+    }
+}

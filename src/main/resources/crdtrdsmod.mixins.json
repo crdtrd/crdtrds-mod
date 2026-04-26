@@ -1,0 +1,24 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.drtdrc.crdtrdsmod.mixin",
+    "compatibilityLevel": "JAVA_25",
+    "mixins": [
+        "enchanting.EnchantmentHelperMixin",
+        "enchanting.EnchantmentMenuMixin",
+        "enchanting.CombatRulesMixin",
+        "enchanting.LivingEntityMixin",
+        "enchanting.EnchantingTableBlockMixin",
+        "portals.ServerPlayerGameModeMixin",
+        "sleep.ServerLevelSleepMixin",
+        "sleep.PlayerSleepMixin",
+        "bedrock.BedrockBlocksMixin",
+        "anvils.CheaperAnvilMixin",
+        "anvils.DelimitedAnvilMixin",
+        "spawners.SpawnerBlockMixin",
+        "recipes.ServerRecipeBookMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
