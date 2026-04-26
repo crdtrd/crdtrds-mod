@@ -7,6 +7,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.crafting.*;
@@ -88,6 +89,11 @@ public class CocktailsRecipe extends CustomRecipe {
                 Optional.empty()
         );
         result.set(DataComponents.POTION_CONTENTS, contents);
+
+        String name = hasLingering ? "Lingering Cocktail" : hasSplash ? "Splash Cocktail" : "Cocktail";
+        result.set(DataComponents.CUSTOM_NAME,
+                Component.literal(name).withStyle(s -> s.withItalic(false)));
+
         return result;
     }
 
