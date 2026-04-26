@@ -3,6 +3,7 @@ package com.drtdrc.crdtrdsmod.client;
 import com.drtdrc.crdtrdsmod.ModConfig;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -27,18 +28,42 @@ public class ConfigScreen extends Screen {
         entries.clear();
         ModConfig cfg = ModConfig.get();
 
-        entries.add(new ToggleEntry("Enchanting Encore", () -> cfg.enchantingEncore, v -> cfg.enchantingEncore = v));
-        entries.add(new ToggleEntry("Flexible Portals", () -> cfg.flexiblePortals, v -> cfg.flexiblePortals = v));
-        entries.add(new ToggleEntry("Go AFK", () -> cfg.goAfk, v -> cfg.goAfk = v));
-        entries.add(new ToggleEntry("Tick Warp Sleep", () -> cfg.tickWarpSleep, v -> cfg.tickWarpSleep = v));
-        entries.add(new ToggleEntry("Mineable Trials", () -> cfg.mineableTrials, v -> cfg.mineableTrials = v));
-        entries.add(new ToggleEntry("Mineable Bedrock", () -> cfg.mineableBedrock, v -> cfg.mineableBedrock = v));
-        entries.add(new ToggleEntry("Cocktails", () -> cfg.cocktails, v -> cfg.cocktails = v));
-        entries.add(new ToggleEntry("Cheaper Anvils", () -> cfg.cheaperAnvils, v -> cfg.cheaperAnvils = v));
-        entries.add(new ToggleEntry("Mineable Spawners", () -> cfg.mineableSpawners, v -> cfg.mineableSpawners = v));
-        entries.add(new ToggleEntry("Spawn Egg Drops", () -> cfg.spawnEggDrops, v -> cfg.spawnEggDrops = v));
-        entries.add(new ToggleEntry("Delimited Anvils", () -> cfg.delimitedAnvils, v -> cfg.delimitedAnvils = v));
-        entries.add(new ToggleEntry("Give Me Recipes", () -> cfg.giveMeRecipes, v -> cfg.giveMeRecipes = v));
+        entries.add(new ToggleEntry("Enchanting Encore",
+                "Extended enchanting table range, bookshelf bias from chiseled bookshelves, enhanced protection, and water depth strider boost",
+                () -> cfg.enchantingEncore, v -> cfg.enchantingEncore = v));
+        entries.add(new ToggleEntry("Flexible Portals",
+                "Breaking an end portal frame block removes connected portal blocks",
+                () -> cfg.flexiblePortals, v -> cfg.flexiblePortals = v));
+        entries.add(new ToggleEntry("Go AFK",
+                "Use /afk to go AFK and keep your chunks loaded while disconnected",
+                () -> cfg.goAfk, v -> cfg.goAfk = v));
+        entries.add(new ToggleEntry("Tick Warp Sleep",
+                "Accelerates the game tick rate while players are sleeping for faster nights",
+                () -> cfg.tickWarpSleep, v -> cfg.tickWarpSleep = v));
+        entries.add(new ToggleEntry("Mineable Trials",
+                "Makes vault and trial spawner blocks mineable with the correct tool",
+                () -> cfg.mineableTrials, v -> cfg.mineableTrials = v));
+        entries.add(new ToggleEntry("Mineable Bedrock",
+                "Makes bedrock breakable with a very high hardness value",
+                () -> cfg.mineableBedrock, v -> cfg.mineableBedrock = v));
+        entries.add(new ToggleEntry("Cocktails",
+                "Blend multiple potions together in a crafting table to combine their effects",
+                () -> cfg.cocktails, v -> cfg.cocktails = v));
+        entries.add(new ToggleEntry("Cheaper Anvils",
+                "Reduces anvil repair cost scaling from +4 to +2 per level",
+                () -> cfg.cheaperAnvils, v -> cfg.cheaperAnvils = v));
+        entries.add(new ToggleEntry("Mineable Spawners",
+                "Spawner blocks can be picked up with Silk Touch",
+                () -> cfg.mineableSpawners, v -> cfg.mineableSpawners = v));
+        entries.add(new ToggleEntry("Spawn Egg Drops",
+                "Mobs have a small chance to drop their spawn egg on death",
+                () -> cfg.spawnEggDrops, v -> cfg.spawnEggDrops = v));
+        entries.add(new ToggleEntry("Delimited Anvils",
+                "Removes the anvil level 40 cost limit",
+                () -> cfg.delimitedAnvils, v -> cfg.delimitedAnvils = v));
+        entries.add(new ToggleEntry("Give Me Recipes",
+                "Automatically unlocks all crafting recipes when joining a world",
+                () -> cfg.giveMeRecipes, v -> cfg.giveMeRecipes = v));
 
         int cols = 2;
         int btnW = 150;
@@ -59,7 +84,9 @@ public class ConfigScreen extends Screen {
             Button btn = Button.builder(entry.displayText(), b -> {
                 entry.toggle();
                 b.setMessage(entry.displayText());
-            }).bounds(x, y, btnW, btnH).build();
+            }).bounds(x, y, btnW, btnH)
+                    .tooltip(Tooltip.create(Component.literal(entry.description())))
+                    .build();
 
             this.addRenderableWidget(btn);
         }
@@ -81,7 +108,7 @@ public class ConfigScreen extends Screen {
         graphics.centeredText(this.font, this.title, this.width / 2, 15, 0xFFFFFF);
     }
 
-    private record ToggleEntry(String label, Supplier<Boolean> getter, Consumer<Boolean> setter) {
+    private record ToggleEntry(String label, String description, Supplier<Boolean> getter, Consumer<Boolean> setter) {
         Component displayText() {
             boolean on = getter.get();
             return Component.literal(label + ": ").append(
