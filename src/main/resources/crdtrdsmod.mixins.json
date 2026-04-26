@@ -17,7 +17,11 @@
         "anvils.DelimitedAnvilMixin",
         "spawners.SpawnerBlockMixin",
         "recipes.ServerRecipeBookMixin",
-        "cursestone.CurseStoneMixin"
+        "cursestone.CurseStoneMixin",
+        "trials.VaultServerDataMixin",
+        "trials.VaultBlockEntityServerMixin",
+        "trials.TrialsBlockMixin",
+        "trials.TrialSpawnerFullConfigMixin"
     ],
     "injectors": {
         "defaultRequire": 1
