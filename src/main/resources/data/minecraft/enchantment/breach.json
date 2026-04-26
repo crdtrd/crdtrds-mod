@@ -31,5 +31,11 @@
     "mainhand"
   ],
   "supported_items": "#minecraft:enchantable/mace",
-  "weight": 2
+  "weight": 2,
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "enchantingEncore"
+    }
+  ]
 }

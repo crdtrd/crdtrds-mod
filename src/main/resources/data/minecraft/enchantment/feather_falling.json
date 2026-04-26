@@ -45,5 +45,11 @@
     "armor"
   ],
   "supported_items": "#minecraft:enchantable/foot_armor",
-  "weight": 5
+  "weight": 5,
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "enchantingEncore"
+    }
+  ]
 }

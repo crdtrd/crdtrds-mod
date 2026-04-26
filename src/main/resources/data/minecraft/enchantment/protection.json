@@ -42,5 +42,11 @@
     "armor"
   ],
   "supported_items": "#minecraft:enchantable/armor",
-  "weight": 10
+  "weight": 10,
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "enchantingEncore"
+    }
+  ]
 }

@@ -27,5 +27,11 @@
     "mainhand"
   ],
   "supported_items": "#minecraft:enchantable/mining_loot",
-  "weight": 1
+  "weight": 1,
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "enchantingEncore"
+    }
+  ]
 }

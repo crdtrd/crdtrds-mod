@@ -28,5 +28,11 @@
       ],
       "rolls": 1.0
     }
+  ],
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "mineableBedrock"
+    }
   ]
 }

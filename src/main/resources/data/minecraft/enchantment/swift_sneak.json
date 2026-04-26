@@ -30,5 +30,11 @@
     "legs"
   ],
   "supported_items": "#minecraft:enchantable/leg_armor",
-  "weight": 1
+  "weight": 1,
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "enchantingEncore"
+    }
+  ]
 }

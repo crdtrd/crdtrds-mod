@@ -2,5 +2,11 @@
   "values": [
     "#minecraft:non_treasure",
     "#minecraft:treasure"
+  ],
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "enchantingEncore"
+    }
   ]
 }

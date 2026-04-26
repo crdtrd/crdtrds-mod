@@ -3,5 +3,11 @@
   "values": [
     "minecraft:vault",
     "minecraft:trial_spawner"
+  ],
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "mineableTrials"
+    }
   ]
 }

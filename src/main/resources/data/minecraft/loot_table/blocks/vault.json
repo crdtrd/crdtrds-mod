@@ -4,13 +4,17 @@
     {
       "rolls": 1,
       "conditions": [
-        { "condition": "minecraft:survives_explosion" },
+        {
+          "condition": "minecraft:survives_explosion"
+        },
         {
           "condition": "minecraft:match_tool",
           "predicate": {
             "predicates": {
               "minecraft:enchantments": [
-                { "enchantments": "minecraft:silk_touch" }
+                {
+                  "enchantments": "minecraft:silk_touch"
+                }
               ]
             }
           }
@@ -18,7 +22,9 @@
         {
           "condition": "minecraft:block_state_property",
           "block": "minecraft:vault",
-          "properties": { "ominous": "true" }
+          "properties": {
+            "ominous": "true"
+          }
         }
       ],
       "entries": [
@@ -28,16 +34,24 @@
           "functions": [
             {
               "function": "minecraft:set_name",
-              "name": { "text": "Ominous Vault", "italic": false }
+              "name": {
+                "text": "Ominous Vault",
+                "italic": false
+              }
             },
             {
               "function": "minecraft:set_components",
               "components": {
-                "minecraft:block_state": { "ominous": "true" },
+                "minecraft:block_state": {
+                  "ominous": "true"
+                },
                 "minecraft:block_entity_data": {
                   "id": "minecraft:vault",
                   "config": {
-                    "key_item": { "count": 1, "id": "minecraft:ominous_trial_key" },
+                    "key_item": {
+                      "count": 1,
+                      "id": "minecraft:ominous_trial_key"
+                    },
                     "loot_table": "minecraft:chests/trial_chambers/reward_ominous"
                   }
                 }
@@ -47,17 +61,20 @@
         }
       ]
     },
-
     {
       "rolls": 1,
       "conditions": [
-        { "condition": "minecraft:survives_explosion" },
+        {
+          "condition": "minecraft:survives_explosion"
+        },
         {
           "condition": "minecraft:match_tool",
           "predicate": {
             "predicates": {
               "minecraft:enchantments": [
-                { "enchantments": "minecraft:silk_touch" }
+                {
+                  "enchantments": "minecraft:silk_touch"
+                }
               ]
             }
           }
@@ -65,12 +82,23 @@
         {
           "condition": "minecraft:block_state_property",
           "block": "minecraft:vault",
-          "properties": { "ominous": "false" }
+          "properties": {
+            "ominous": "false"
+          }
         }
       ],
       "entries": [
-        { "type": "minecraft:item", "name": "minecraft:vault" }
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:vault"
+        }
       ]
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "type": "crdtrdsmod:module_enabled",
+      "module": "mineableTrials"
     }
   ]
 }
