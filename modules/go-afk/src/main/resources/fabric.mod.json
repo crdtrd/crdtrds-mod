@@ -14,6 +14,9 @@
       "com.drtdrc.crdtrdsmod.goafk.GoafkInit"
     ]
   },
+  "mixins": [
+    "crdtrdsmod_go_afk.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.19.2",
     "minecraft": "~26.1.2",
