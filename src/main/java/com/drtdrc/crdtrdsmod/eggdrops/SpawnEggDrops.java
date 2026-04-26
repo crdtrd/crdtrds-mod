@@ -18,7 +18,7 @@ public class SpawnEggDrops {
 
     public static void register() {
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
-            if (!ModConfig.get().spawnEggDrops) return;
+            if (!ModConfig.active().spawnEggDrops) return;
             if (source.isBuiltin()) {
                 String path = key.identifier().getPath();
                 if (path.startsWith("entities/")) {

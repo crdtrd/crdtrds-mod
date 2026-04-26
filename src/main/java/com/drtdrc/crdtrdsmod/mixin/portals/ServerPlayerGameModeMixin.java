@@ -28,7 +28,7 @@ public abstract class ServerPlayerGameModeMixin {
 
     @Inject(method = "destroyBlock", at = @At("HEAD"))
     private void crdtrdsmod$onDestroyPortalFrame(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.get().flexiblePortals) return;
+        if (!ModConfig.active().flexiblePortals) return;
         BlockState state = level.getBlockState(pos);
         if (state.is(Blocks.END_PORTAL_FRAME)) {
             PortalsUtil.removeNearbyPortalBlocks(level, pos);

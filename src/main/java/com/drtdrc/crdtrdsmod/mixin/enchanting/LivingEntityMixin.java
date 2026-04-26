@@ -20,7 +20,7 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "travel", at = @At("HEAD"))
     private void crdtrdsmod$applyWaterSpeedBoost(Vec3 input, CallbackInfo ci) {
-        if (!ModConfig.get().enchantingEncore) return;
+        if (!ModConfig.active().enchantingEncore) return;
         LivingEntity self = (LivingEntity) (Object) this;
         if (self.level().isClientSide()) return;
 

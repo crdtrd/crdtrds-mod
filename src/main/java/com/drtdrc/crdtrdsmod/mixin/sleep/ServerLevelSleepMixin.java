@@ -23,7 +23,7 @@ public abstract class ServerLevelSleepMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void crdtrdsmod$tickWarpSleep(BooleanSupplier haveTime, CallbackInfo ci) {
-        if (!ModConfig.get().tickWarpSleep) return;
+        if (!ModConfig.active().tickWarpSleep) return;
         ServerLevel self = (ServerLevel) (Object) this;
         TickRateManager trm = self.tickRateManager();
 

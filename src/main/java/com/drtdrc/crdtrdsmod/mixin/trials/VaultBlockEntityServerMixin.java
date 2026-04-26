@@ -27,7 +27,7 @@ public abstract class VaultBlockEntityServerMixin {
     private static void crdtrdsmod$onTick(ServerLevel level, BlockPos pos, BlockState state,
                                           VaultConfig config, VaultServerData serverData,
                                           VaultSharedData sharedData, CallbackInfo ci) {
-        if (!ModConfig.get().mineableTrials) return;
+        if (!ModConfig.active().mineableTrials) return;
 
         VaultServerDataAccessor accessor = (VaultServerDataAccessor) (Object) serverData;
         int gcTicks = accessor.crdtrdsmod$getGlobalCooldownTicks();

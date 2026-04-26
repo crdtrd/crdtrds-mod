@@ -19,11 +19,11 @@ public class CrdtrdsMod implements ModInitializer {
 
         CocktailsInit.register();
 
-        if (ModConfig.get().spawnEggDrops) {
+        if (ModConfig.active().spawnEggDrops) {
             SpawnEggDrops.register();
         }
 
-        if (ModConfig.get().goAfk) {
+        if (ModConfig.active().goAfk) {
             CommandRegistrationCallback.EVENT.register(AFKCommand::register);
 
             ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {

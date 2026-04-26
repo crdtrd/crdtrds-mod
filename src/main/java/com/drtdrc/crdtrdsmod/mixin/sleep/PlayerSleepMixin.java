@@ -12,7 +12,7 @@ public abstract class PlayerSleepMixin {
 
     @Inject(method = "stopSleepInBed", at = @At("HEAD"))
     private void crdtrdsmod$onWakeUp(boolean forcefulWakeUp, boolean updateLevelList, CallbackInfo ci) {
-        if (!ModConfig.get().tickWarpSleep) return;
+        if (!ModConfig.active().tickWarpSleep) return;
         // Tick rate reset is handled by ServerLevelSleepMixin detecting no sleeping players
     }
 }

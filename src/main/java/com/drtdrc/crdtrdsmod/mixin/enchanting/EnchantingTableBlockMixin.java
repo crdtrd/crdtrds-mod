@@ -38,7 +38,7 @@ public abstract class EnchantingTableBlockMixin extends BaseEntityBlock {
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void crdtrdsmod$tweakBookshelfOffsets(CallbackInfo ci) {
-        if (!ModConfig.get().enchantingEncore) return;
+        if (!ModConfig.active().enchantingEncore) return;
         BOOKSHELF_OFFSETS = BlockPos.betweenClosedStream(-4, -4, -4, 4, 4, 4)
                 .filter(pos -> Math.abs(pos.getX()) > 1 || Math.abs(pos.getZ()) > 1)
                 .map(BlockPos::immutable)
@@ -47,7 +47,7 @@ public abstract class EnchantingTableBlockMixin extends BaseEntityBlock {
 
     @Inject(method = "isValidBookShelf", at = @At("HEAD"), cancellable = true)
     private static void crdtrdsmod$modifiedValidBookShelf(Level level, BlockPos tablePos, BlockPos providerOffset, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.get().enchantingEncore) return;
+        if (!ModConfig.active().enchantingEncore) return;
 
         BlockPos providerPos = tablePos.offset(providerOffset);
         BlockState provider = level.getBlockState(providerPos);
@@ -77,7 +77,7 @@ public abstract class EnchantingTableBlockMixin extends BaseEntityBlock {
 
     @Inject(method = "getTicker", at = @At("RETURN"), cancellable = true)
     private <T extends BlockEntity> void crdtrdsmod$onGetTicker(Level level, BlockState state, BlockEntityType<T> type, CallbackInfoReturnable<BlockEntityTicker<T>> cir) {
-        if (!ModConfig.get().enchantingEncore) return;
+        if (!ModConfig.active().enchantingEncore) return;
         if (level.isClientSide()) return;
         if (type != BlockEntityType.ENCHANTING_TABLE) return;
 

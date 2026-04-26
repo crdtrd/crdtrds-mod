@@ -25,7 +25,7 @@ public abstract class EnchantmentHelperMixin {
             cancellable = true
     )
     private static void crdtrdsmod$modifyEnchantmentCost(RandomSource random, int slotIndex, int bookshelfCount, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-        if (!ModConfig.get().enchantingEncore) return;
+        if (!ModConfig.active().enchantingEncore) return;
         Enchantable enchantable = stack.get(DataComponents.ENCHANTABLE);
         if (enchantable == null) {
             cir.setReturnValue(0);
@@ -53,7 +53,7 @@ public abstract class EnchantmentHelperMixin {
     private static ToIntFunction<EnchantmentInstance> crdtrdsmod$biasWeightFunction(
             ToIntFunction<EnchantmentInstance> original
     ) {
-        if (!ModConfig.get().enchantingEncore) return original;
+        if (!ModConfig.active().enchantingEncore) return original;
         return entry -> {
             int base = original.applyAsInt(entry);
             int bonus = BiasContext.bonus(entry.enchantment());

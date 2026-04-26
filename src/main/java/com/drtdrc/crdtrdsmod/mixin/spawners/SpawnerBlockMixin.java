@@ -23,7 +23,7 @@ public abstract class SpawnerBlockMixin {
 
     @Inject(method = "spawnAfterBreak", at = @At("HEAD"), cancellable = true)
     private void crdtrdsmod$silkTouchSpawner(BlockState state, ServerLevel level, BlockPos pos, ItemStack tool, boolean dropExperience, CallbackInfo ci) {
-        if (!ModConfig.get().mineableSpawners) return;
+        if (!ModConfig.active().mineableSpawners) return;
         Optional<Holder.Reference<Enchantment>> silkTouch = level.registryAccess()
                 .lookupOrThrow(Registries.ENCHANTMENT)
                 .get(Enchantments.SILK_TOUCH);

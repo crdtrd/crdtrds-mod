@@ -26,7 +26,7 @@ public class CocktailsRecipe extends CustomRecipe {
 
     @Override
     public boolean matches(CraftingInput input, Level level) {
-        if (!ModConfig.get().cocktails) return false;
+        if (!ModConfig.active().cocktails) return false;
         int potionCount = 0;
         for (int i = 0; i < input.size(); i++) {
             ItemStack stack = input.getItem(i);
