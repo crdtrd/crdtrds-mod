@@ -13,7 +13,6 @@
         "sleep.ServerLevelSleepMixin",
         "sleep.PlayerSleepMixin",
         "bedrock.BedrockBlocksMixin",
-        "bedrock.BedrockBreakMixin",
         "anvils.CheaperAnvilMixin",
         "anvils.DelimitedAnvilMixin",
         "spawners.SpawnerBlockMixin",
