@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "crdtrdsmod_give_me_recipes",
+  "version": "${version}",
+  "name": "crdtrd's mod - Give Me Recipes",
+  "description": "Give Me Recipes module for crdtrd's mod.",
+  "authors": [
+    "crdtrd"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "mixins": [
+    "crdtrdsmod_give_me_recipes.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.2",
+    "minecraft": "~26.1.2",
+    "java": ">=25",
+    "crdtrdsmod": "*"
+  }
+}

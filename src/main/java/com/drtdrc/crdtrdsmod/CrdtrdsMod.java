@@ -1,12 +1,7 @@
 package com.drtdrc.crdtrdsmod;
 
-import com.drtdrc.crdtrdsmod.afk.AFKCommand;
-import com.drtdrc.crdtrdsmod.cocktails.CocktailsInit;
-import com.drtdrc.crdtrdsmod.eggdrops.SpawnEggDrops;
 import com.drtdrc.crdtrdsmod.resource.ModuleEnabledCondition;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,21 +14,6 @@ public class CrdtrdsMod implements ModInitializer {
     public void onInitialize() {
         ResourceConditions.register(ModuleEnabledCondition.TYPE);
         ModConfig.load();
-
-        CocktailsInit.register();
-
-        if (ModConfig.active().spawnEggDrops) {
-            SpawnEggDrops.register();
-        }
-
-        if (ModConfig.active().goAfk) {
-            CommandRegistrationCallback.EVENT.register(AFKCommand::register);
-
-            ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-                com.drtdrc.crdtrdsmod.afk.AFKManager.onPlayerJoin(handler.getPlayer());
-            });
-        }
-
         LOGGER.info("crdtrd's mod initialized");
     }
 }
