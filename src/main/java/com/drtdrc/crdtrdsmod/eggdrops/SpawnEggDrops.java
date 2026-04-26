@@ -2,11 +2,9 @@ package com.drtdrc.crdtrdsmod.eggdrops;
 
 import com.drtdrc.crdtrdsmod.ModConfig;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithEnchantedBonusCondition;
@@ -25,17 +23,14 @@ public class SpawnEggDrops {
                 String path = key.identifier().getPath();
                 if (path.startsWith("entities/")) {
                     String entityName = path.substring("entities/".length());
-                    EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE
-                            .getOptional(net.minecraft.resources.Identifier.withDefaultNamespace(entityName))
-                            .orElse(null);
-                    if (entityType == null) return;
 
-                    Optional<Holder<Item>> eggHolder = SpawnEggItem.byId(entityType);
-                    if (eggHolder.isEmpty()) return;
+                    Identifier eggId = Identifier.withDefaultNamespace(entityName + "_spawn_egg");
+                    Optional<Item> eggItem = BuiltInRegistries.ITEM.getOptional(eggId);
+                    if (eggItem.isEmpty()) return;
 
                     LootPool.Builder pool = LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(eggHolder.get().value()))
+                            .add(LootItem.lootTableItem(eggItem.get()))
                             .when(LootItemRandomChanceWithEnchantedBonusCondition
                                     .randomChanceAndLootingBoost(registries, BASE_CHANCE, BASE_CHANCE));
 
