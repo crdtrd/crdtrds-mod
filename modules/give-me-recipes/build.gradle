@@ -2,6 +2,15 @@ plugins {
     id 'net.fabricmc.fabric-loom' version "${loom_version}"
 }
 
+
+loom {
+    mods {
+        "crdtrdsmod_give_me_recipes" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
 version = project.mod_version
 group = project.maven_group
 
@@ -13,7 +22,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    compileOnly project(":")
+    compileOnly project(":core")
 }
 
 processResources {

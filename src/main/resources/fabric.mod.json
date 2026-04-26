@@ -15,9 +15,6 @@
     "icon": "assets/crdtrdsmod/icon.png",
     "environment": "*",
     "entrypoints": {
-        "main": [
-            "com.drtdrc.crdtrdsmod.CrdtrdsMod"
-        ],
         "client": [
             "com.drtdrc.crdtrdsmod.client.CrdtrdsModClient"
         ],
@@ -35,7 +32,8 @@
         "fabricloader": ">=0.19.2",
         "minecraft": "~26.1.2",
         "java": ">=25",
-        "fabric-api": "*"
+        "fabric-api": "*",
+        "crdtrdsmod_core": "*"
     },
     "suggests": {
         "modmenu": "*"

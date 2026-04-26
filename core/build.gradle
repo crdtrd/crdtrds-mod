@@ -2,27 +2,21 @@ plugins {
     id 'net.fabricmc.fabric-loom' version "${loom_version}"
 }
 
-
-loom {
-    mods {
-        "crdtrdsmod_go_afk" {
-            sourceSet sourceSets.main
-        }
-    }
-}
-
 version = project.mod_version
 group = project.maven_group
-
-repositories {
-    maven { url = "https://maven.terraformersmc.com/" }
-}
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    compileOnly project(":core")
+}
+
+loom {
+    mods {
+        "crdtrdsmod_core" {
+            sourceSet sourceSets.main
+        }
+    }
 }
 
 processResources {
