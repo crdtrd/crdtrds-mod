@@ -16,7 +16,7 @@ public class AttributesMixin {
             method = "<clinit>",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/entity/ai/attributes/Attributes;register(Ljava/lang/String;Lnet/minecraft/world/entity/ai/attributes/Attribute;)Lnet/minecraft/core/Holder$Reference;"
+                    target = "Lnet/minecraft/world/entity/ai/attributes/Attributes;register(Ljava/lang/String;Lnet/minecraft/world/entity/ai/attributes/Attribute;)Lnet/minecraft/core/Holder;"
             ),
             index = 1,
             slice = @Slice(
