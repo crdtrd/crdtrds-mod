@@ -42,7 +42,7 @@ public class ModConfig {
             try {
                 String json = Files.readString(CONFIG_PATH);
                 INSTANCE = GSON.fromJson(json, ModConfig.class);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 CrdtrdsMod.LOGGER.error("Failed to load config", e);
             }
         }
