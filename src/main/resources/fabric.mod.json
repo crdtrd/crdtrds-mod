@@ -26,7 +26,6 @@
         ]
     },
     "mixins": [
-        "crdtrdsmod.mixins.json",
         {
             "config": "crdtrdsmod.client.mixins.json",
             "environment": "client"

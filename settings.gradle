@@ -10,3 +10,17 @@ pluginManagement {
 }
 
 rootProject.name = 'crdtrds-mod'
+
+include 'modules:enchanting-encore'
+include 'modules:flexible-portals'
+include 'modules:go-afk'
+include 'modules:tick-warp-sleep'
+include 'modules:mineable-trials'
+include 'modules:mineable-bedrock'
+include 'modules:cocktails'
+include 'modules:cheaper-anvils'
+include 'modules:mineable-spawners'
+include 'modules:spawn-egg-drops'
+include 'modules:delimited-anvils'
+include 'modules:give-me-recipes'
+include 'modules:curse-stone'

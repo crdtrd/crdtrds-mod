@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "crdtrdsmod_cocktails",
+  "version": "${version}",
+  "name": "crdtrd's mod - Cocktails",
+  "description": "Cocktails module for crdtrd's mod.",
+  "authors": [
+    "crdtrd"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.drtdrc.crdtrdsmod.cocktails.CocktailsInit"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.2",
+    "minecraft": "~26.1.2",
+    "java": ">=25",
+    "crdtrdsmod": "*"
+  }
+}

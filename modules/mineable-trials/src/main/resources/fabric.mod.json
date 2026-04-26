@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "crdtrdsmod_mineable_trials",
+  "version": "${version}",
+  "name": "crdtrd's mod - Mineable Trials",
+  "description": "Mineable Trials module for crdtrd's mod.",
+  "authors": [
+    "crdtrd"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "mixins": [
+    "crdtrdsmod_mineable_trials.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.2",
+    "minecraft": "~26.1.2",
+    "java": ">=25",
+    "crdtrdsmod": "*"
+  }
+}

@@ -28,6 +28,20 @@ dependencies {
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
     compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+    include project(":modules:enchanting-encore")
+    include project(":modules:flexible-portals")
+    include project(":modules:go-afk")
+    include project(":modules:tick-warp-sleep")
+    include project(":modules:mineable-trials")
+    include project(":modules:mineable-bedrock")
+    include project(":modules:cocktails")
+    include project(":modules:cheaper-anvils")
+    include project(":modules:mineable-spawners")
+    include project(":modules:spawn-egg-drops")
+    include project(":modules:delimited-anvils")
+    include project(":modules:give-me-recipes")
+    include project(":modules:curse-stone")
 }
 
 processResources {
