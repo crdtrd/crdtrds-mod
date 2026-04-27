@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.SleepStatus;
 import net.minecraft.world.TickRateManager;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,9 +35,6 @@ public abstract class ServerLevelSleepMixin {
     @Shadow
     public abstract List<ServerPlayer> players();
 
-    @Shadow
-    public abstract boolean isDarkOutside();
-
     @Redirect(
             method = "tick",
             at = @At(
@@ -51,7 +49,7 @@ public abstract class ServerLevelSleepMixin {
 
         boolean playerReq = instance.areEnoughSleeping(percentage)
                 && instance.areEnoughDeepSleeping(percentage, this.players());
-        boolean night = this.isDarkOutside();
+        boolean night = ((Level) (Object) this).isDarkOutside();
 
         if (playerReq && night && !crdtrdsmod$warping) {
             crdtrdsmod$warping = true;
