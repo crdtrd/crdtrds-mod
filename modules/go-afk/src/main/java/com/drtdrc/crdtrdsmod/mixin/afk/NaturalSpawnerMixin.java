@@ -31,7 +31,7 @@ import java.util.Optional;
 public abstract class NaturalSpawnerMixin {
 
     @Inject(
-            method = "spawnCategoryForPosition",
+            method = "spawnCategoryForPosition(Lnet/minecraft/world/entity/MobCategory;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/NaturalSpawner$SpawnPredicate;Lnet/minecraft/world/level/NaturalSpawner$AfterSpawnCallback;)V",
             at = @At("HEAD"),
             cancellable = true
     )
