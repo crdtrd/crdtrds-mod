@@ -2,14 +2,17 @@ package com.drtdrc.crdtrdsmod.mixin.sleep;
 
 import com.drtdrc.crdtrdsmod.ModConfig;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.SleepStatus;
 import net.minecraft.world.TickRateManager;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.function.BooleanSupplier;
+import java.util.List;
 
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelSleepMixin {
@@ -19,21 +22,66 @@ public abstract class ServerLevelSleepMixin {
     @Unique
     private static final float NORMAL_TICK_RATE = 20.0f;
     @Unique
-    private boolean crdtrdsmod$wasSleeping = false;
+    private boolean crdtrdsmod$warping = false;
 
-    @Inject(method = "tick", at = @At("HEAD"))
-    private void crdtrdsmod$tickWarpSleep(BooleanSupplier haveTime, CallbackInfo ci) {
-        if (!ModConfig.active().tickWarpSleep) return;
-        ServerLevel self = (ServerLevel) (Object) this;
-        TickRateManager trm = self.tickRateManager();
+    @Shadow
+    @Final
+    private SleepStatus sleepStatus;
 
-        boolean anySleeping = self.players().stream().anyMatch(p -> p.isSleeping());
-        if (anySleeping && !crdtrdsmod$wasSleeping) {
-            trm.setTickRate(SLEEP_TICK_RATE);
-            crdtrdsmod$wasSleeping = true;
-        } else if (!anySleeping && crdtrdsmod$wasSleeping) {
-            trm.setTickRate(NORMAL_TICK_RATE);
-            crdtrdsmod$wasSleeping = false;
+    @Shadow
+    public abstract TickRateManager tickRateManager();
+
+    @Shadow
+    public abstract List<ServerPlayer> players();
+
+    @Shadow
+    public abstract boolean isDarkOutside();
+
+    @Redirect(
+            method = "tick",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/server/players/SleepStatus;areEnoughSleeping(I)Z"
+            )
+    )
+    private boolean crdtrdsmod$onSleepCheck(SleepStatus instance, int percentage) {
+        if (!ModConfig.active().tickWarpSleep) {
+            return instance.areEnoughSleeping(percentage);
+        }
+
+        boolean playerReq = instance.areEnoughSleeping(percentage)
+                && instance.areEnoughDeepSleeping(percentage, this.players());
+        boolean night = this.isDarkOutside();
+
+        if (playerReq && night && !crdtrdsmod$warping) {
+            crdtrdsmod$warping = true;
+            this.tickRateManager().setTickRate(SLEEP_TICK_RATE);
+        }
+        if (playerReq && !night && crdtrdsmod$warping) {
+            crdtrdsmod$warping = false;
+            crdtrdsmod$wakeUpAllPlayers();
+            this.tickRateManager().setTickRate(NORMAL_TICK_RATE);
+        }
+        if (!playerReq && !night && crdtrdsmod$warping) {
+            crdtrdsmod$warping = false;
+            crdtrdsmod$wakeUpAllPlayers();
+            this.tickRateManager().setTickRate(NORMAL_TICK_RATE);
+        }
+        if (!playerReq && night && crdtrdsmod$warping) {
+            crdtrdsmod$warping = false;
+            this.tickRateManager().setTickRate(NORMAL_TICK_RATE);
+        }
+
+        return false;
+    }
+
+    @Unique
+    private void crdtrdsmod$wakeUpAllPlayers() {
+        this.sleepStatus.removeAllSleepers();
+        for (ServerPlayer player : List.copyOf(this.players())) {
+            if (player.isSleeping()) {
+                player.stopSleepInBed(false, true);
+            }
         }
     }
 }
