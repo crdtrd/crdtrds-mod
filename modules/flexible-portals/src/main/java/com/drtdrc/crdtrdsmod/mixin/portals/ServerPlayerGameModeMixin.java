@@ -42,7 +42,9 @@ public abstract class ServerPlayerGameModeMixin {
     private void crdtrdsmod$onDestroyPortalFrame(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (!ModConfig.active().flexiblePortals) return;
         BlockState state = level.getBlockState(pos);
-        if (state.is(Blocks.END_PORTAL_FRAME)) {
+        if (state.is(Blocks.END_PORTAL_FRAME)
+                || state.is(Blocks.OBSIDIAN)
+                || state.is(Blocks.CRYING_OBSIDIAN)) {
             PortalsUtil.removeNearbyPortalBlocks(level, pos);
         }
     }
