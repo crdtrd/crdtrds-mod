@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Blocks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -20,6 +21,16 @@ public class PortalServerLevelMixin {
 
     @Inject(method = "globalLevelEvent", at = @At("HEAD"), cancellable = true)
     private void crdtrdsmod$endPortalOpenedLocal(int eventId, BlockPos pos, int data, CallbackInfo ci) {
+        if (eventId == 1038) {
+            ServerLevel self = (ServerLevel) (Object) this;
+            BlockPos center = crdtrdsmod$findPortalCenter(self, pos);
+            self.playSound(null, center, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 1.0f, 1.0f);
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "levelEvent", at = @At("HEAD"), cancellable = true)
+    private void crdtrdsmod$endPortalOpenedNonGlobal(Entity entity, int eventId, BlockPos pos, int data, CallbackInfo ci) {
         if (eventId == 1038) {
             ServerLevel self = (ServerLevel) (Object) this;
             BlockPos center = crdtrdsmod$findPortalCenter(self, pos);
