@@ -18,8 +18,8 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
 
     @Override
     public void onInitialize() {
-        ResourceConditions.register(ModuleEnabledCondition.TYPE);
         LOGGER.info("crdtrd's mod initialized");
+        ResourceConditions.register(ModuleEnabledCondition.TYPE);
     }
 
     @Override
@@ -30,21 +30,21 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         ModConfig modConfig = ModConfig.get();
-        String prefix = "crdtrds-mod.modules.";
+        String prefix = "com.drtdrc.crdtrdsmod.";
 
-        if (mixinClassName.contains(prefix + "cheaper-anvils") && modConfig.cheaperAnvils) return true;
+        if (mixinClassName.contains(prefix + "cheaperanvils") && modConfig.cheaperAnvils) return true;
         if (mixinClassName.contains(prefix + "cocktails") && modConfig.cocktails) return true;
-        if (mixinClassName.contains(prefix + "curse-stone") && modConfig.curseStone) return true;
-        if (mixinClassName.contains(prefix + "delimited-anvils") && modConfig.delimitedAnvils) return true;
-        if (mixinClassName.contains(prefix + "enchantingencore-encore") && modConfig.enchantingEncore) return true;
-        if (mixinClassName.contains(prefix + "flexible-portals") && modConfig.flexiblePortals) return true;
-        if (mixinClassName.contains(prefix + "give-me-recipes") && modConfig.giveMeRecipes) return true;
-        if (mixinClassName.contains(prefix + "go-afk") && modConfig.goAfk) return true;
-        if (mixinClassName.contains(prefix + "mineable-bedrock") && modConfig.mineableBedrock) return true;
-        if (mixinClassName.contains(prefix + "mineable-spawners") && modConfig.mineableSpawners) return true;
-        if (mixinClassName.contains(prefix + "mineable-trials") && modConfig.mineableTrials) return true;
-        if (mixinClassName.contains(prefix + "spawn-egg-drops") && modConfig.spawnEggDrops) return true;
-        if (mixinClassName.contains(prefix + "tick-warp-sleep") && modConfig.tickWarpSleep) return true;
+        if (mixinClassName.contains(prefix + "cursestone") && modConfig.curseStone) return true;
+        if (mixinClassName.contains(prefix + "delimitedanvils") && modConfig.delimitedAnvils) return true;
+        if (mixinClassName.contains(prefix + "enchantingencore") && modConfig.enchantingEncore) return true;
+        if (mixinClassName.contains(prefix + "flexibleportals") && modConfig.flexiblePortals) return true;
+        if (mixinClassName.contains(prefix + "givemerecipes") && modConfig.giveMeRecipes) return true;
+        if (mixinClassName.contains(prefix + "goafk") && modConfig.goAfk) return true;
+        if (mixinClassName.contains(prefix + "mineablebedrock") && modConfig.mineableBedrock) return true;
+        if (mixinClassName.contains(prefix + "mineablespawners") && modConfig.mineableSpawners) return true;
+        if (mixinClassName.contains(prefix + "mineabletrials") && modConfig.mineableTrials) return true;
+        if (mixinClassName.contains(prefix + "spawneggdrops") && modConfig.spawnEggDrops) return true;
+        if (mixinClassName.contains(prefix + "tickwarpsleep") && modConfig.tickWarpSleep) return true;
 
         return false;
     }
@@ -53,8 +53,6 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
     public String getRefMapperConfig() {
         return "";
     }
-
-
 
     @Override
     public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {}
