@@ -1,6 +1,6 @@
 package com.drtdrc.crdtrdsmod.cocktails;
 
-import com.drtdrc.crdtrdsmod.ModConfig;
+import com.drtdrc.crdtrdsmod.core.ModConfig;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;

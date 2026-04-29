@@ -1,6 +1,6 @@
 package com.drtdrc.crdtrdsmod.client;
 
-import com.drtdrc.crdtrdsmod.ModConfig;
+import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
@@ -29,7 +29,7 @@ public class ConfigScreen extends Screen {
         ModConfig cfg = ModConfig.get();
 
         entries.add(new ToggleEntry("Enchanting Encore",
-                "Extended enchanting table range, bookshelf bias from chiseled bookshelves, enhanced protection, and water depth strider boost",
+                "Extended enchantingencore table range, bookshelf bias from chiseled bookshelves, enhanced protection, and water depth strider boost",
                 () -> cfg.enchantingEncore, v -> cfg.enchantingEncore = v));
         entries.add(new ToggleEntry("Flexible Portals",
                 "Breaking an end portal frame block removes connected portal blocks",

@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.drtdrc.crdtrdsmod.mixin.portals",
+  "package": "com.drtdrc.crdtrdsmod.flexibleportals.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
     "BucketItemMixin",

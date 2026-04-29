@@ -1,9 +1,6 @@
 package com.drtdrc.crdtrdsmod.goafk;
 
-import com.drtdrc.crdtrdsmod.ModConfig;
-import com.drtdrc.crdtrdsmod.afk.AFKAnchorsState;
-import com.drtdrc.crdtrdsmod.afk.AFKCommand;
-import com.drtdrc.crdtrdsmod.afk.AFKManager;
+import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;

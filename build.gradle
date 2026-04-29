@@ -31,7 +31,6 @@ dependencies {
 
     compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-    // JiJ: bundle core + modules into the root JAR for production
     include project(":core")
     include project(":modules:enchanting-encore")
     include project(":modules:flexible-portals")

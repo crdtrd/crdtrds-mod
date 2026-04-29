@@ -11,7 +11,7 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "com.drtdrc.crdtrdsmod.CrdtrdsMod"
+            "com.drtdrc.crdtrdsmod.core.CrdtrdsMod"
         ]
     },
     "depends": {
