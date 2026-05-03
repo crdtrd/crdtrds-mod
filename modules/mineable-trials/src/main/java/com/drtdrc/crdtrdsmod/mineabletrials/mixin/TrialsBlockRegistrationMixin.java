@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.mineabletrials.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;

@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.enchantingencore.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;

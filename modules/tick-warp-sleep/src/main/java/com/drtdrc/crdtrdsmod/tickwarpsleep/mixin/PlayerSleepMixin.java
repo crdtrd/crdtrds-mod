@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.tickwarpsleep.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.minecraft.world.attribute.BedRule;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;

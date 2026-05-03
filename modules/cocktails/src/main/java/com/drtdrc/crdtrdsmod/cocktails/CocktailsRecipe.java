@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.cocktails;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -26,7 +25,6 @@ public class CocktailsRecipe extends CustomRecipe {
 
     @Override
     public boolean matches(CraftingInput input, Level level) {
-        if (!ModConfig.active().cocktails) return false;
         int potionCount = 0;
         for (int i = 0; i < input.size(); i++) {
             ItemStack stack = input.getItem(i);

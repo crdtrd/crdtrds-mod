@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.mineablespawners.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;

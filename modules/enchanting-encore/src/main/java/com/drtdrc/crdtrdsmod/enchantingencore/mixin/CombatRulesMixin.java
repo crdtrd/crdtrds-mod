@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.enchantingencore.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.CombatRules;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.flexibleportals.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import com.drtdrc.crdtrdsmod.flexibleportals.PortalsUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;

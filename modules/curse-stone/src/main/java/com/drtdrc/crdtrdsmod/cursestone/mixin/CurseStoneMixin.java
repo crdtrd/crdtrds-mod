@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.cursestone.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;

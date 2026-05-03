@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.enchantingencore.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -20,7 +19,6 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "travel", at = @At("HEAD"))
     private void crdtrdsmod$applyWaterSpeedBoost(Vec3 input, CallbackInfo ci) {
-        if (!ModConfig.active().enchantingEncore) return;
         LivingEntity self = (LivingEntity) (Object) this;
         if (self.level().isClientSide()) return;
 

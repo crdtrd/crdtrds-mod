@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.flexibleportals.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.minecraft.world.level.block.EndPortalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;

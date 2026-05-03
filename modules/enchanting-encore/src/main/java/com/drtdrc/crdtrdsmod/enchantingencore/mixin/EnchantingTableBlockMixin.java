@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.enchantingencore.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -38,7 +37,6 @@ public abstract class EnchantingTableBlockMixin extends BaseEntityBlock {
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void crdtrdsmod$tweakBookshelfOffsets(CallbackInfo ci) {
-        if (!ModConfig.active().enchantingEncore) return;
         BOOKSHELF_OFFSETS = BlockPos.betweenClosedStream(-4, -4, -4, 4, 4, 4)
                 .filter(pos -> Math.abs(pos.getX()) > 1 || Math.abs(pos.getZ()) > 1)
                 .map(BlockPos::immutable)
@@ -47,8 +45,6 @@ public abstract class EnchantingTableBlockMixin extends BaseEntityBlock {
 
     @Inject(method = "isValidBookShelf", at = @At("HEAD"), cancellable = true)
     private static void crdtrdsmod$modifiedValidBookShelf(Level level, BlockPos tablePos, BlockPos providerOffset, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.active().enchantingEncore) return;
-
         BlockPos providerPos = tablePos.offset(providerOffset);
         BlockState provider = level.getBlockState(providerPos);
 

@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.mineabletrials.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import com.drtdrc.crdtrdsmod.mineabletrials.VaultServerDataAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
