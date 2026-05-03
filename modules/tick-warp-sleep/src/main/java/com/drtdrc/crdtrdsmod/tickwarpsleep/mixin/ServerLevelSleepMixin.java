@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.tickwarpsleep.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.SleepStatus;

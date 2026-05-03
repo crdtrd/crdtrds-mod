@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.flexibleportals.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;

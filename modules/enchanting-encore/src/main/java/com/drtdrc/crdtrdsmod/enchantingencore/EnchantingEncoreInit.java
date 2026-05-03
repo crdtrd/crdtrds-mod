@@ -8,8 +8,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.resources.Identifier;
 
-import static com.drtdrc.crdtrdsmod.core.CrdtrdsMod.LOGGER;
-
 public class EnchantingEncoreInit implements ModInitializer {
 
     @Override
