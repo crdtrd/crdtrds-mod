@@ -9,9 +9,11 @@
   ],
   "license": "MIT",
   "environment": "*",
-  "mixins": [
-    "crdtrdsmod_compostable_flesh.mixins.json"
-  ],
+  "entrypoints": {
+    "main": [
+      "com.drtdrc.crdtrdsmod.compostableflesh.CompostableFleshInit"
+    ]
+  },
   "depends": {
     "fabricloader": ">=0.19.2",
     "minecraft": "~26.1.2",
