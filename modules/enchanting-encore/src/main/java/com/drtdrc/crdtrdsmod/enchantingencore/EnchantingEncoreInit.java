@@ -1,5 +1,6 @@
 package com.drtdrc.crdtrdsmod.enchantingencore;
 
+import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
@@ -11,7 +12,9 @@ public class EnchantingEncoreInit implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        ModContainer container = FabricLoader.getInstance().getModContainer("crdtrdsmod_enchanting_encore").orElseThrow();
-        ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath("crdtrdsmod_enchanting_encore", "enchantingencore_enabled"), container, PackActivationType.ALWAYS_ENABLED);
+        if (ModConfig.active().enchantingEncore) {
+            ModContainer container = FabricLoader.getInstance().getModContainer("crdtrdsmod_enchanting_encore").orElseThrow();
+            ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath("crdtrdsmod_enchanting_encore", "enchantingencore_enabled"), container, PackActivationType.ALWAYS_ENABLED);
+        }
     }
 }
