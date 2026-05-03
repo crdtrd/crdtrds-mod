@@ -22,8 +22,6 @@ public class NetherPortalBlockMixin {
             BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState,
             RandomSource random, CallbackInfoReturnable<BlockState> cir
     ) {
-        if (ModConfig.active().flexiblePortals) {
-            cir.setReturnValue(state);
-        }
+        cir.setReturnValue(state);
     }
 }

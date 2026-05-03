@@ -17,5 +17,10 @@
     "minecraft": "~26.1.2",
     "java": ">=25",
     "crdtrdsmod_core": "*"
+  },
+  "entrypoints": {
+    "main": [
+      "com.drtdrc.crdtrdsmod.enchantingencore.EnchantingEncoreInit"
+    ]
   }
 }

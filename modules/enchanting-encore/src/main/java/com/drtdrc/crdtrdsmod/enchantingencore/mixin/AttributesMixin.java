@@ -24,7 +24,6 @@ public class AttributesMixin {
             )
     )
     private static Attribute crdtrdsmod$replaceWaterMovementAttr(Attribute original) {
-        if (!ModConfig.get().enchantingEncore) return original;
         return new RangedAttribute(
                 "attribute.name.water_movement_efficiency",
                 0.0, 0.0, 2.0

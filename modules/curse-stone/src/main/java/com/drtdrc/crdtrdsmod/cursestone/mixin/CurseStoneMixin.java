@@ -15,7 +15,6 @@ public class CurseStoneMixin {
 
     @Inject(method = "removeNonCursesFrom", at = @At("RETURN"))
     private void removeCurses(ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
-        if (!ModConfig.active().curseStone) return;
         EnchantmentHelper.updateEnchantments(cir.getReturnValue(), mutable -> {
             mutable.removeIf(holder -> holder.is(EnchantmentTags.CURSE));
         });

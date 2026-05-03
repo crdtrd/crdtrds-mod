@@ -43,9 +43,6 @@ public abstract class ServerLevelSleepMixin {
             )
     )
     private boolean crdtrdsmod$onSleepCheck(SleepStatus instance, int percentage) {
-        if (!ModConfig.active().tickWarpSleep) {
-            return instance.areEnoughSleeping(percentage);
-        }
 
         boolean playerReq = instance.areEnoughSleeping(percentage)
                 && instance.areEnoughDeepSleeping(percentage, this.players());

@@ -13,7 +13,6 @@ public abstract class CombatRulesMixin {
 
     @Inject(method = "getDamageAfterMagicAbsorb", at = @At("HEAD"), cancellable = true)
     private static void crdtrdsmod$modifyMagicAbsorb(float damage, float protection, CallbackInfoReturnable<Float> cir) {
-        if (!ModConfig.active().enchantingEncore) return;
         float f = Mth.clamp(protection, 0.0F, 35.0F);
         cir.setReturnValue(damage * (1.0F - f / 35.35F));
     }

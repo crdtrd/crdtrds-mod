@@ -27,7 +27,6 @@ public class PortalBlocksMixin {
             cancellable = true
     )
     private static void crdtrdsmod$onRegisterPortalBlocks(ResourceKey<Block> key, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings, CallbackInfoReturnable<Block> cir) {
-        if (!ModConfig.get().flexiblePortals) return;
 
         String id = key.identifier().toString();
 

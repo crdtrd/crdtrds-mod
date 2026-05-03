@@ -21,7 +21,6 @@ public class TrialsBlockMixin {
 
     @Inject(method = "setPlacedBy", at = @At(value = "TAIL"))
     void crdtrdsmod$onPlacedVault(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack, CallbackInfo ci) {
-        if (!ModConfig.active().mineableTrials) return;
         if (level.isClientSide()) return;
         if (!(placer instanceof Player)) return;
         if (!(state.getBlock() instanceof VaultBlock)) return;

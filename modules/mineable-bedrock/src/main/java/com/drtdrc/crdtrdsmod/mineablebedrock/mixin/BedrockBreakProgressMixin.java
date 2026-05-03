@@ -38,7 +38,6 @@ public abstract class BedrockBreakProgressMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     public void crdtrdsmod$bedrockOnUpdate(CallbackInfo ci) {
-        if (!ModConfig.active().mineableBedrock) return;
         if (!this.isDestroyingBlock) return;
 
         BlockState state = this.level.getBlockState(this.destroyPos);
@@ -55,7 +54,6 @@ public abstract class BedrockBreakProgressMixin {
 
     @Inject(method = "destroyBlock", at = @At("HEAD"))
     private void crdtrdsmod$bedrockCaptureOriginal(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.active().mineableBedrock) return;
         this.crdtrdsmod$bedrock_oldState = this.level.getBlockState(pos);
     }
 
@@ -68,7 +66,6 @@ public abstract class BedrockBreakProgressMixin {
             )
     )
     private void crdtrdsmod$bedrockOnBroken(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.active().mineableBedrock) return;
         if (crdtrdsmod$bedrock_oldState == null || !crdtrdsmod$bedrock_oldState.is(Blocks.BEDROCK)) return;
 
         this.level.sendParticles(
@@ -83,7 +80,6 @@ public abstract class BedrockBreakProgressMixin {
 
     @Inject(method = "incrementDestroyProgress", at = @At("RETURN"))
     private void crdtrdsmod$bedrockOnContinueMining(BlockState state, BlockPos pos, int startTime, CallbackInfoReturnable<Float> cir) {
-        if (!ModConfig.active().mineableBedrock) return;
         if (!state.is(Blocks.BEDROCK)) return;
 
         int ticks = this.gameTicks - startTime;

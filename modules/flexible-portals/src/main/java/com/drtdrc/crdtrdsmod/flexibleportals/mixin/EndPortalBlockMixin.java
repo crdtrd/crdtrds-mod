@@ -14,8 +14,6 @@ public class EndPortalBlockMixin {
 
     @Inject(method = "canBeReplaced", at = @At("HEAD"), cancellable = true)
     void crdtrdsmod$onCanBeReplaced(BlockState state, Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
-        if (ModConfig.active().flexiblePortals) {
-            cir.setReturnValue(true);
-        }
+        cir.setReturnValue(true);
     }
 }

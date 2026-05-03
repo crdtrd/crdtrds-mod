@@ -22,7 +22,6 @@ public class EnderEyeItemMixin {
 
     @Inject(method = "useOn", at = @At("HEAD"), cancellable = true)
     private void crdtrdsmod$onUseOn(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
-        //if (!ModConfig.active().flexiblePortals) return;
 
         Level level = context.getLevel();
         BlockPos blockPos = context.getClickedPos();

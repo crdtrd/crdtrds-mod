@@ -40,7 +40,6 @@ public abstract class ServerPlayerGameModeMixin {
 
     @Inject(method = "destroyBlock", at = @At("HEAD"))
     private void crdtrdsmod$onDestroyPortalFrame(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.active().flexiblePortals) return;
         BlockState state = level.getBlockState(pos);
         if (state.is(Blocks.END_PORTAL_FRAME)
                 || state.is(Blocks.OBSIDIAN)
@@ -51,7 +50,6 @@ public abstract class ServerPlayerGameModeMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     public void crdtrdsmod$onUpdate(CallbackInfo ci) {
-        if (!ModConfig.active().flexiblePortals) return;
         if (!this.isDestroyingBlock) return;
 
         BlockState state = this.level.getBlockState(this.destroyPos);
@@ -68,7 +66,6 @@ public abstract class ServerPlayerGameModeMixin {
 
     @Inject(method = "destroyBlock", at = @At("HEAD"))
     private void crdtrdsmod$captureOriginal(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.active().flexiblePortals) return;
         this.crdtrdsmod$oldState = this.level.getBlockState(pos);
     }
 
@@ -81,7 +78,6 @@ public abstract class ServerPlayerGameModeMixin {
             )
     )
     private void crdtrdsmod$onTryBreakBlockOnBroken(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.active().flexiblePortals) return;
         if (crdtrdsmod$oldState == null || !crdtrdsmod$oldState.is(Blocks.END_PORTAL_FRAME)) return;
 
         this.level.sendParticles(
@@ -96,7 +92,6 @@ public abstract class ServerPlayerGameModeMixin {
 
     @Inject(method = "incrementDestroyProgress", at = @At("RETURN"))
     private void crdtrdsmod$onContinueMining(BlockState state, BlockPos pos, int startTime, CallbackInfoReturnable<Float> cir) {
-        if (!ModConfig.active().flexiblePortals) return;
         if (!state.is(Blocks.END_PORTAL_FRAME)) return;
 
         int ticks = this.gameTicks - startTime;

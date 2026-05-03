@@ -1,7 +1,6 @@
 package com.drtdrc.crdtrdsmod.enchantingencore.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
-import com.drtdrc.crdtrdsmod.enchantingencore.BiasContext;
+import com.drtdrc.crdtrdsmod.enchantingencore.EnchantmentSelectionBiasContext;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
@@ -23,25 +22,21 @@ public abstract class EnchantmentMenuMixin {
 
     @Inject(method = "slotsChanged", at = @At("HEAD"))
     private void crdtrdsmod$prepareBias(Container container, CallbackInfo ci) {
-        if (!ModConfig.active().enchantingEncore) return;
-        access.execute(BiasContext::compute);
+        access.execute(EnchantmentSelectionBiasContext::compute);
     }
 
     @Inject(method = "slotsChanged", at = @At("TAIL"))
     private void crdtrdsmod$clearBias(Container container, CallbackInfo ci) {
-        if (!ModConfig.active().enchantingEncore) return;
-        BiasContext.deactivate();
+        EnchantmentSelectionBiasContext.deactivate();
     }
 
     @Inject(method = "clickMenuButton", at = @At("HEAD"))
     private void crdtrdsmod$prepareBiasOnApply(Player player, int id, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.active().enchantingEncore) return;
-        access.execute(BiasContext::compute);
+        access.execute(EnchantmentSelectionBiasContext::compute);
     }
 
     @Inject(method = "clickMenuButton", at = @At("RETURN"))
     private void crdtrdsmod$clearBiasOnApply(Player player, int id, CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.active().enchantingEncore) return;
-        BiasContext.deactivate();
+        EnchantmentSelectionBiasContext.deactivate();
     }
 }

@@ -23,8 +23,6 @@ public abstract class ServerRecipeBookMixin {
 
     @Inject(method = "sendInitialRecipeBook", at = @At("HEAD"))
     private void crdtrdsmod$unlockAll(ServerPlayer player, CallbackInfo ci) {
-        if (!ModConfig.active().giveMeRecipes) return;
-
         Collection<RecipeHolder<?>> allRecipes = player.level().getServer().getRecipeManager().getRecipes();
         for (RecipeHolder<?> recipe : allRecipes) {
             this.known.add(recipe.id());

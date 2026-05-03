@@ -25,7 +25,6 @@ public abstract class BedrockBlocksMixin {
             cancellable = true
     )
     private static void crdtrdsmod$makeBedrockMineable(ResourceKey<Block> key, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties, CallbackInfoReturnable<Block> cir) {
-        if (!ModConfig.active().mineableBedrock) return;
         String id = key.identifier().toString();
 
         if (id.equals("minecraft:bedrock")) {

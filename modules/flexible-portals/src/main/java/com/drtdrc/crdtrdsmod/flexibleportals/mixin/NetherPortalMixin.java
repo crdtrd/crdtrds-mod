@@ -28,7 +28,6 @@ public abstract class NetherPortalMixin {
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void crdtrdsmod$expandValidFrame(CallbackInfo ci) {
-        if (!ModConfig.get().flexiblePortals) return;
         FRAME = (state, level, pos) ->
                 state.is(Blocks.OBSIDIAN) || state.is(Blocks.CRYING_OBSIDIAN);
     }
@@ -37,7 +36,6 @@ public abstract class NetherPortalMixin {
     private static void crdtrdsmod$freeformCreateFirst(
             LevelAccessor level, BlockPos pos, Direction.Axis firstCheckedAxis,
             CallbackInfoReturnable<Optional<PortalShape>> cir) {
-        if (!ModConfig.active().flexiblePortals) return;
         if (!(level instanceof ServerLevel serverLevel)) return;
 
         boolean created = PortalsUtil.findAndCreate(serverLevel, pos, PortalsUtil.PortalSpec.nether(), null);

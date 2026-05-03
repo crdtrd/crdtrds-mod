@@ -23,7 +23,6 @@ public abstract class BucketItemMixin {
             )
     )
     private boolean crdtrdsmod$redirectBreakForPortal(Level level, BlockPos pos, boolean drop) {
-        if (!ModConfig.active().flexiblePortals) return level.destroyBlock(pos, drop);
 
         BlockState state = level.getBlockState(pos);
 

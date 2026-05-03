@@ -25,7 +25,6 @@ public abstract class TrialsBlockRegistrationMixin {
             cancellable = true
     )
     private static void crdtrdsmod$makeTrialsMineable(ResourceKey<Block> key, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties, CallbackInfoReturnable<Block> cir) {
-        if (!ModConfig.active().mineableTrials) return;
         String id = key.identifier().toString();
 
         if (id.equals("minecraft:vault")) {

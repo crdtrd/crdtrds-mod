@@ -8,6 +8,9 @@ loom {
         "crdtrdsmod_enchanting_encore" {
             sourceSet sourceSets.main
         }
+        crdtrdsmod_core {
+            sourceSet project(":core").sourceSets.main
+        }
     }
 }
 
@@ -22,7 +25,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    compileOnly project(":core")
+    implementation project(":core")
 }
 
 processResources {

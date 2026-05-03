@@ -77,7 +77,6 @@ public abstract class EnchantingTableBlockMixin extends BaseEntityBlock {
 
     @Inject(method = "getTicker", at = @At("RETURN"), cancellable = true)
     private <T extends BlockEntity> void crdtrdsmod$onGetTicker(Level level, BlockState state, BlockEntityType<T> type, CallbackInfoReturnable<BlockEntityTicker<T>> cir) {
-        if (!ModConfig.active().enchantingEncore) return;
         if (level.isClientSide()) return;
         if (type != BlockEntityType.ENCHANTING_TABLE) return;
 

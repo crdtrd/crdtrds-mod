@@ -1,7 +1,6 @@
 package com.drtdrc.crdtrdsmod.enchantingencore.mixin;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
-import com.drtdrc.crdtrdsmod.enchantingencore.BiasContext;
+import com.drtdrc.crdtrdsmod.enchantingencore.EnchantmentSelectionBiasContext;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantable;
@@ -25,7 +24,6 @@ public abstract class EnchantmentHelperMixin {
             cancellable = true
     )
     private static void crdtrdsmod$modifyEnchantmentCost(RandomSource random, int slotIndex, int bookshelfCount, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-        if (!ModConfig.active().enchantingEncore) return;
         Enchantable enchantable = stack.get(DataComponents.ENCHANTABLE);
         if (enchantable == null) {
             cir.setReturnValue(0);
@@ -53,10 +51,9 @@ public abstract class EnchantmentHelperMixin {
     private static ToIntFunction<EnchantmentInstance> crdtrdsmod$biasWeightFunction(
             ToIntFunction<EnchantmentInstance> original
     ) {
-        if (!ModConfig.active().enchantingEncore) return original;
         return entry -> {
             int base = original.applyAsInt(entry);
-            int bonus = BiasContext.bonus(entry.enchantment());
+            int bonus = EnchantmentSelectionBiasContext.bonus(entry.enchantment());
             return Math.max(1, base + bonus);
         };
     }

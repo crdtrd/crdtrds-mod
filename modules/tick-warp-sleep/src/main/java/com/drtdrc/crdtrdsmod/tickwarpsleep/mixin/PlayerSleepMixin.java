@@ -19,9 +19,6 @@ public abstract class PlayerSleepMixin {
             )
     )
     private boolean crdtrdsmod$preventAutoWake(BedRule bedRule, Level level) {
-        if (ModConfig.active().tickWarpSleep) {
             return true;
-        }
-        return bedRule.canSleep(level);
     }
 }
