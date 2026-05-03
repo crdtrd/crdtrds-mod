@@ -94,11 +94,5 @@
         }
       ]
     }
-  ],
-  "fabric:load_conditions": [
-    {
-      "type": "crdtrdsmod:module_enabled",
-      "module": "mineableTrials"
-    }
   ]
 }
