@@ -29,6 +29,7 @@ public class ModConfig {
     public boolean delimitedAnvils = true;
     public boolean giveMeRecipes = true;
     public boolean curseStone = true;
+    public boolean compostableFlesh = true;
 
     public static ModConfig get() {
         if (!loaded) {

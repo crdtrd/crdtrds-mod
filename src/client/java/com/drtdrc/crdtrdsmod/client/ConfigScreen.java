@@ -67,6 +67,9 @@ public class ConfigScreen extends Screen {
         entries.add(new ToggleEntry("CurseStone",
                 "Allows the grindstone to remove curse enchantments from items",
                 () -> cfg.curseStone, v -> cfg.curseStone = v));
+        entries.add(new ToggleEntry("Compostable Flesh",
+                "Makes rotten flesh compostable in the composter",
+                () -> cfg.compostableFlesh, v -> cfg.compostableFlesh = v));
 
         int cols = 2;
         int btnW = 150;

@@ -44,6 +44,7 @@ public record ModuleEnabledCondition(String module) implements ResourceCondition
             case "delimitedAnvils" -> cfg.delimitedAnvils;
             case "giveMeRecipes" -> cfg.giveMeRecipes;
             case "curseStone" -> cfg.curseStone;
+            case "compostableFlesh" -> cfg.compostableFlesh;
             default -> true;
         };
     }

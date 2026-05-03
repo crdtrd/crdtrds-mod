@@ -1,6 +1,5 @@
 package com.drtdrc.crdtrdsmod.spawneggdrops;
 
-import com.drtdrc.crdtrdsmod.core.ModConfig;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -20,7 +19,6 @@ public class SpawnEggDrops {
 
     public static void register() {
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
-            if (!ModConfig.active().spawnEggDrops) return;
             if (source.isBuiltin()) {
                 String path = key.identifier().getPath();
                 if (path.startsWith("entities/")) {

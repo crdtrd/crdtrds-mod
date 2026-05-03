@@ -13,7 +13,6 @@ public class EnchantingEncoreInit implements ModInitializer {
     @Override
     public void onInitialize() {
         if (ModConfig.active().enchantingEncore) {
-
             ModContainer container = FabricLoader.getInstance().getModContainer("crdtrdsmod_enchanting_encore").orElseThrow();
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath("crdtrdsmod_enchanting_encore", "enchantingencore_enabled"), container, PackActivationType.ALWAYS_ENABLED);
         }
