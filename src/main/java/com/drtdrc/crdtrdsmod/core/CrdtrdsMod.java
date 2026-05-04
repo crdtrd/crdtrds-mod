@@ -40,12 +40,6 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
         ModConfig cfg = ModConfig.active();
         ModContainer container = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow();
 
-        // Cocktails: always register the recipe serializer
-        Registry.register(
-                BuiltInRegistries.RECIPE_SERIALIZER,
-                Identifier.fromNamespaceAndPath(MOD_ID, "cocktails"),
-                CocktailsRecipe.SERIALIZER
-        );
 
         // Register builtin resource packs for enabled modules
         if (cfg.enchantingEncore) {
@@ -67,6 +61,11 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "mineable_trials_enabled"), container, PackActivationType.ALWAYS_ENABLED);
         }
         if (cfg.cocktails) {
+            Registry.register(
+                    BuiltInRegistries.RECIPE_SERIALIZER,
+                    Identifier.fromNamespaceAndPath(MOD_ID, "cocktails"),
+                    CocktailsRecipe.SERIALIZER
+            );
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "cocktails_enabled"), container, PackActivationType.ALWAYS_ENABLED);
         }
 
