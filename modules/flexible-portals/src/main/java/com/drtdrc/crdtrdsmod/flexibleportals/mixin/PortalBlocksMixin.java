@@ -33,7 +33,7 @@ public class PortalBlocksMixin {
             BlockBehaviour.Properties newSettings = BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_GREEN)
                     .instrument(NoteBlockInstrument.BASEDRUM)
-                    .sound(SoundType.GLASS)
+                    .sound(SoundType.STONE)
                     .lightLevel(state -> 1)
                     .strength(50.0f, 3600000.0f)
                     .requiresCorrectToolForDrops();
