@@ -1,8 +1,6 @@
 package com.drtdrc.crdtrdsmod.core;
 
-import com.drtdrc.crdtrdsmod.core.resource.ModuleEnabledCondition;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import org.objectweb.asm.tree.ClassNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +17,6 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
     @Override
     public void onInitialize() {
         LOGGER.info("crdtrd's mod initialized");
-        ResourceConditions.register(ModuleEnabledCondition.TYPE);
     }
 
     @Override
