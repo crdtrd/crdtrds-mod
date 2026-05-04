@@ -14,8 +14,8 @@ public class CocktailsInit implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        register();
         if (ModConfig.active().cocktails) {
+            register();
             ModContainer container = FabricLoader.getInstance().getModContainer("crdtrdsmod_cocktails").orElseThrow();
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath("crdtrdsmod_cocktails", "cocktails_enabled"), container, PackActivationType.ALWAYS_ENABLED);
         }
