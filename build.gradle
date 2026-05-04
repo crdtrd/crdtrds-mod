@@ -46,6 +46,7 @@ dependencies {
     include project(":modules:give-me-recipes")
     include project(":modules:curse-stone")
     include project(":modules:compostable-flesh")
+    include project(":modules:mineable-reinforced-deepslate")
 
     // Dev: put module classes/resources on runClient classpath
     runtimeOnly project(":modules:enchanting-encore")
@@ -62,6 +63,7 @@ dependencies {
     runtimeOnly project(":modules:give-me-recipes")
     runtimeOnly project(":modules:curse-stone")
     runtimeOnly project(":modules:compostable-flesh")
+    runtimeOnly project(":modules:mineable-reinforced-deepslate")
 }
 
 processResources {

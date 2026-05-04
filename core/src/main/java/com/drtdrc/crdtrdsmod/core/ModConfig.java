@@ -30,6 +30,7 @@ public class ModConfig {
     public boolean giveMeRecipes = true;
     public boolean curseStone = true;
     public boolean compostableFlesh = true;
+    public boolean mineableReinforcedDeepslate = true;
 
     public static ModConfig get() {
         if (!loaded) {

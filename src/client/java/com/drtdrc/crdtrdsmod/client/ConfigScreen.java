@@ -70,6 +70,9 @@ public class ConfigScreen extends Screen {
         entries.add(new ToggleEntry("Compostable Flesh",
                 "Makes rotten flesh compostable in the composter",
                 () -> cfg.compostableFlesh, v -> cfg.compostableFlesh = v));
+        entries.add(new ToggleEntry("Mineable Reinforced Deepslate",
+                "Reinforced deepslate can be harvested with a diamond silk touch pickaxe",
+                () -> cfg.mineableReinforcedDeepslate, v -> cfg.mineableReinforcedDeepslate = v));
 
         int cols = 2;
         int btnW = 150;
