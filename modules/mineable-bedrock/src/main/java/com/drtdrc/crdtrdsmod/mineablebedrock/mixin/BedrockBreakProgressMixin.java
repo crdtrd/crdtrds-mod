@@ -7,6 +7,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Final;
@@ -55,6 +56,9 @@ public abstract class BedrockBreakProgressMixin {
                 pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
                 10, 0.5, 0.5, 0.5, 0.1
         );
+
+        int rawId = Block.getId(crdtrdsmod$bedrock_oldState);
+        level.levelEvent(2001, pos, rawId);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
