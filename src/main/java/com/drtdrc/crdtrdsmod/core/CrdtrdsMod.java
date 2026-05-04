@@ -1,23 +1,14 @@
 package com.drtdrc.crdtrdsmod.core;
 
-import com.drtdrc.crdtrdsmod.cocktails.CocktailsRecipe;
-import com.drtdrc.crdtrdsmod.goafk.AFKAnchorsState;
-import com.drtdrc.crdtrdsmod.goafk.AFKCommand;
-import com.drtdrc.crdtrdsmod.goafk.AFKManager;
+import com.drtdrc.crdtrdsmod.cocktails.Cocktails;
+import com.drtdrc.crdtrdsmod.goafk.GoAFK;
 import com.drtdrc.crdtrdsmod.spawneggdrops.SpawnEggDrops;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.ComposterBlock;
 import org.objectweb.asm.tree.ClassNode;
@@ -41,7 +32,7 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
         ModContainer container = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow();
 
 
-        // Register builtin resource packs for enabled modules
+        // Register builtin resource packs and initialize code for enabled modules
         if (cfg.enchantingEncore) {
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "enchantingencore_enabled"), container, PackActivationType.ALWAYS_ENABLED);
         }
@@ -61,11 +52,7 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "mineable_trials_enabled"), container, PackActivationType.ALWAYS_ENABLED);
         }
         if (cfg.cocktails) {
-            Registry.register(
-                    BuiltInRegistries.RECIPE_SERIALIZER,
-                    Identifier.fromNamespaceAndPath(MOD_ID, "cocktails"),
-                    CocktailsRecipe.SERIALIZER
-            );
+            Cocktails.init();
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "cocktails_enabled"), container, PackActivationType.ALWAYS_ENABLED);
         }
 
@@ -81,19 +68,7 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
 
         // GoAFK
         if (cfg.goAfk) {
-            ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-                for (ServerLevel level : server.getAllLevels()) {
-                    var anchors = AFKAnchorsState.get(level).getAllPositions();
-                    int radius = AFKManager.computeRadius(server);
-                    for (BlockPos pos : anchors) {
-                        AFKManager.addTicketsAround(level, pos, radius);
-                    }
-                }
-            });
-            CommandRegistrationCallback.EVENT.register(AFKCommand::register);
-            ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-                AFKManager.onPlayerJoin(handler.getPlayer());
-            });
+            GoAFK.init();
         }
     }
 
