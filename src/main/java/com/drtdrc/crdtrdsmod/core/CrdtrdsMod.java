@@ -1,7 +1,6 @@
 package com.drtdrc.crdtrdsmod.core;
 
 import com.drtdrc.crdtrdsmod.cocktails.CocktailsRecipe;
-import com.drtdrc.crdtrdsmod.core.resource.ModuleEnabledCondition;
 import com.drtdrc.crdtrdsmod.goafk.AFKAnchorsState;
 import com.drtdrc.crdtrdsmod.goafk.AFKCommand;
 import com.drtdrc.crdtrdsmod.goafk.AFKManager;
@@ -10,7 +9,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -38,7 +36,6 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
     @Override
     public void onInitialize() {
         LOGGER.info("crdtrd's mod initialized");
-        ResourceConditions.register(ModuleEnabledCondition.TYPE);
 
         ModConfig cfg = ModConfig.active();
         ModContainer container = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow();
