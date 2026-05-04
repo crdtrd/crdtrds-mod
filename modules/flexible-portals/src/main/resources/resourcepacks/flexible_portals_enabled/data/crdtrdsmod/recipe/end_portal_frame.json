@@ -1,10 +1,4 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "crdtrdsmod:module_enabled",
-      "module": "flexiblePortals"
-    }
-  ],
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {

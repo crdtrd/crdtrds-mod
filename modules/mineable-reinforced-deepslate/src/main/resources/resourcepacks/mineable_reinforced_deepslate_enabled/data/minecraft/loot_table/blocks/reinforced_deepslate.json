@@ -1,11 +1,5 @@
 {
   "type": "minecraft:block",
-  "fabric:load_conditions": [
-    {
-      "condition": "crdtrdsmod:module_enabled",
-      "module": "mineableReinforcedDeepslate"
-    }
-  ],
   "pools": [
     {
       "bonus_rolls": 0.0,
