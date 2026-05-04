@@ -7,7 +7,6 @@
     "BucketItemMixin",
     "EnderEyeItemMixin",
     "EndPortalBlockMixin",
-    "EndPortalFrameDestroyParticlesMixin",
     "NetherPortalBlockMixin",
     "NetherPortalMixin",
     "PortalBlocksMixin",

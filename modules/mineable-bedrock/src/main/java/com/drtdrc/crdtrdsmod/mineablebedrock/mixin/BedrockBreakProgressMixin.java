@@ -10,6 +10,8 @@ import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -50,6 +52,7 @@ public abstract class BedrockBreakProgressMixin {
     )
     private void crdtrdsmod$bedrockOnBroken(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (crdtrdsmod$bedrock_oldState == null || !crdtrdsmod$bedrock_oldState.is(Blocks.BEDROCK)) return;
+        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.SERVER) return;
 
         this.level.sendParticles(
                 new BlockParticleOption(ParticleTypes.BLOCK, crdtrdsmod$bedrock_oldState),
