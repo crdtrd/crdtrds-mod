@@ -12,6 +12,11 @@
   "mixins": [
     "crdtrdsmod_flexible_portals.mixins.json"
   ],
+  "entrypoints": {
+    "main": [
+      "com.drtdrc.crdtrdsmod.flexibleportals.FlexiblePortalsInit"
+    ]
+  },
   "depends": {
     "fabricloader": ">=0.19.2",
     "minecraft": "~26.1.2",

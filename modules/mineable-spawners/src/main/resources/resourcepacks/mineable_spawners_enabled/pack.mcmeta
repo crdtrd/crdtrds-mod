@@ -1,0 +1,13 @@
+{
+  "pack": {
+    "description": "Mineable Spawners Resources",
+    "min_format": [
+      101,
+      0
+    ],
+    "max_format": [
+      101,
+      1
+    ]
+  }
+}
