@@ -3,7 +3,7 @@
     "id": "crdtrdsmod",
     "version": "${version}",
     "name": "crdtrd's mod",
-    "description": "A consolidated mod combining EnchantingEncore, FlexiblePortals, GoAFK, TickWarpSleep, MineableTrials, MineableBedrock, Cocktails, CheaperAnvils, MineableSpawners, SpawnEggDrops, DelimitedAnvils, and GiveMeRecipes into one configurable mod.",
+    "description": "A consolidated mod combining EnchantingEncore, FlexiblePortals, GoAFK, TickWarpSleep, MineableTrials, MineableBedrock, Cocktails, CheaperAnvils, MineableSpawners, SpawnEggDrops, DelimitedAnvils, GiveMeRecipes, CurseStone, CompostableFlesh, and MineableReinforcedDeepslate into one configurable mod.",
     "authors": [
         "crdtrd"
     ],
@@ -15,6 +15,9 @@
     "icon": "assets/crdtrdsmod/icon.png",
     "environment": "*",
     "entrypoints": {
+        "main": [
+            "com.drtdrc.crdtrdsmod.core.CrdtrdsMod"
+        ],
         "client": [
             "com.drtdrc.crdtrdsmod.client.CrdtrdsModClient"
         ],
@@ -23,6 +26,18 @@
         ]
     },
     "mixins": [
+        "crdtrdsmod_cheaper_anvils.mixins.json",
+        "crdtrdsmod_curse_stone.mixins.json",
+        "crdtrdsmod_delimited_anvils.mixins.json",
+        "crdtrdsmod_enchanting_encore.mixins.json",
+        "crdtrdsmod_flexible_portals.mixins.json",
+        "crdtrdsmod_give_me_recipes.mixins.json",
+        "crdtrdsmod_go_afk.mixins.json",
+        "crdtrdsmod_mineable_bedrock.mixins.json",
+        "crdtrdsmod_mineable_reinforced_deepslate.mixins.json",
+        "crdtrdsmod_mineable_spawners.mixins.json",
+        "crdtrdsmod_mineable_trials.mixins.json",
+        "crdtrdsmod_tick_warp_sleep.mixins.json",
         {
             "config": "crdtrdsmod.client.mixins.json",
             "environment": "client"
@@ -32,8 +47,7 @@
         "fabricloader": ">=0.19.2",
         "minecraft": "~26.1.2",
         "java": ">=25",
-        "fabric-api": "*",
-        "crdtrdsmod_core": "*"
+        "fabric-api": "*"
     },
     "suggests": {
         "modmenu": "*"
