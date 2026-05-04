@@ -27,43 +27,7 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-    implementation project(":core")
-
     compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
-
-    include project(":core")
-    include project(":modules:enchanting-encore")
-    include project(":modules:flexible-portals")
-    include project(":modules:go-afk")
-    include project(":modules:tick-warp-sleep")
-    include project(":modules:mineable-trials")
-    include project(":modules:mineable-bedrock")
-    include project(":modules:cocktails")
-    include project(":modules:cheaper-anvils")
-    include project(":modules:mineable-spawners")
-    include project(":modules:spawn-egg-drops")
-    include project(":modules:delimited-anvils")
-    include project(":modules:give-me-recipes")
-    include project(":modules:curse-stone")
-    include project(":modules:compostable-flesh")
-    include project(":modules:mineable-reinforced-deepslate")
-
-    // Dev: put module classes/resources on runClient classpath
-    runtimeOnly project(":modules:enchanting-encore")
-    runtimeOnly project(":modules:flexible-portals")
-    runtimeOnly project(":modules:go-afk")
-    runtimeOnly project(":modules:tick-warp-sleep")
-    runtimeOnly project(":modules:mineable-trials")
-    runtimeOnly project(":modules:mineable-bedrock")
-    runtimeOnly project(":modules:cocktails")
-    runtimeOnly project(":modules:cheaper-anvils")
-    runtimeOnly project(":modules:mineable-spawners")
-    runtimeOnly project(":modules:spawn-egg-drops")
-    runtimeOnly project(":modules:delimited-anvils")
-    runtimeOnly project(":modules:give-me-recipes")
-    runtimeOnly project(":modules:curse-stone")
-    runtimeOnly project(":modules:compostable-flesh")
-    runtimeOnly project(":modules:mineable-reinforced-deepslate")
 }
 
 processResources {
