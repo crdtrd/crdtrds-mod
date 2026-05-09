@@ -1,6 +1,7 @@
 package com.drtdrc.crdtrdsmod.core;
 
 import com.drtdrc.crdtrdsmod.cocktails.Cocktails;
+import com.drtdrc.crdtrdsmod.compostableflesh.CompostableFlesh;
 import com.drtdrc.crdtrdsmod.goafk.GoAFK;
 import com.drtdrc.crdtrdsmod.spawneggdrops.SpawnEggDrops;
 import net.fabricmc.api.ModInitializer;
@@ -58,7 +59,7 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
 
         // CompostableFlesh
         if (cfg.compostableFlesh) {
-            ComposterBlock.COMPOSTABLES.put(Items.ROTTEN_FLESH, 0.3f);
+            CompostableFlesh.init();
         }
 
         // SpawnEggDrops
