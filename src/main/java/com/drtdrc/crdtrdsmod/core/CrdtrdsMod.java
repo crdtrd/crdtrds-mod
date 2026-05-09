@@ -91,11 +91,11 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
         if (mixinClassName.contains(prefix + "givemerecipes") && modConfig.giveMeRecipes) return true;
         if (mixinClassName.contains(prefix + "goafk") && modConfig.goAfk) return true;
         if (mixinClassName.contains(prefix + "mineablebedrock") && modConfig.mineableBedrock) return true;
+        if (mixinClassName.contains(prefix + "mineablereinforceddeepslate") && modConfig.mineableReinforcedDeepslate) return true;
         if (mixinClassName.contains(prefix + "mineablespawners") && modConfig.mineableSpawners) return true;
         if (mixinClassName.contains(prefix + "mineabletrials") && modConfig.mineableTrials) return true;
         if (mixinClassName.contains(prefix + "spawneggdrops") && modConfig.spawnEggDrops) return true;
         if (mixinClassName.contains(prefix + "tickwarpsleep") && modConfig.tickWarpSleep) return true;
-        if (mixinClassName.contains(prefix + "mineablereinforceddeepslate") && modConfig.mineableReinforcedDeepslate) return true;
 
         return false;
     }

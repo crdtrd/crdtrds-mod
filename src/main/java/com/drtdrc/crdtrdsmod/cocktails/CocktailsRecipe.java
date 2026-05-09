@@ -13,6 +13,7 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class CocktailsRecipe extends CustomRecipe {
     public static final RecipeSerializer<CocktailsRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
     @Override
-    public boolean matches(CraftingInput input, Level level) {
+    public boolean matches(CraftingInput input, @NonNull Level level) {
         int potionCount = 0;
         for (int i = 0; i < input.size(); i++) {
             ItemStack stack = input.getItem(i);
@@ -44,6 +45,7 @@ public class CocktailsRecipe extends CustomRecipe {
     }
 
     @Override
+    @NonNull
     public ItemStack assemble(CraftingInput input) {
         List<MobEffectInstance> allEffects = new ArrayList<>();
         boolean hasSplash = false;
@@ -98,6 +100,7 @@ public class CocktailsRecipe extends CustomRecipe {
     }
 
     @Override
+    @NonNull
     public RecipeSerializer<CocktailsRecipe> getSerializer() {
         return SERIALIZER;
     }
