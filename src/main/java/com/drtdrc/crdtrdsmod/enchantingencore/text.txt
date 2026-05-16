@@ -1,0 +1,18 @@
+double the max enchantment level for each enchantment (some exceptions)
+xp costs
+- base 1
+- ax is going to be 1001
+
+so we got 500 bookshelves, adding two enchantment levels per bookshelf
+
+multiply all anvil costs by 10
+
+treasure enchantments. im thinking level 501
+
+efficiency
+- only max level X grants instamine deepslate no beacon
+
+protection:
+- max level 8
+- max epf is 32, which provides 95% damage reduction
+-

@@ -35,7 +35,7 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
 
         // Register builtin resource packs and initialize code for enabled modules
         if (cfg.enchantingEncore) {
-            ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "enchantingencore_enabled"), container, PackActivationType.ALWAYS_ENABLED);
+            ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "enchantingencore_casualmode_enabled"), container, PackActivationType.ALWAYS_ENABLED);
         }
         if (cfg.flexiblePortals) {
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "flexible_portals_enabled"), container, PackActivationType.ALWAYS_ENABLED);
