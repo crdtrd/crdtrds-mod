@@ -47,14 +47,8 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 
     @Inject(method = "mayPickup", at = @At("HEAD"), cancellable = true)
     private void crdtrdsmod$onMayPickup(Player player, boolean hasItem, CallbackInfoReturnable<Boolean> cir) {
-        // return (player.hasInfiniteMaterials() || player.experienceLevel >= this.cost.get()) && this.cost.get() > 0;
-        // if not spoofing creative, then we are in creative, so we return true.
-        // if we are spoofing creative, then we check if you can afford this. true if you can false if you can't
-        if (spoofingCreative) {
-            cir.setReturnValue((player.experienceLevel >= this.cost.get() && this.cost.get() > 0));
-        }
-        else {
-            cir.setReturnValue(true);
+        if (!player.isCreative()) {
+            cir.setReturnValue(player.experienceLevel >= this.cost.get() && this.cost.get() > 0);
         }
     }
 
@@ -63,7 +57,7 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;giveExperienceLevels(I)V")
     )
     private void crdtrdsmod$onTakeXPCharge(Player player, int amount) {
-        if (spoofingCreative) {
+        if (!player.isCreative()) {
             player.giveExperienceLevels(-cost.get());
         }
     }
