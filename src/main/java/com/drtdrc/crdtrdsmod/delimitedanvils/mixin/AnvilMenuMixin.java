@@ -20,8 +20,8 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 
     @Shadow @Final private DataSlot cost;
 
-    @Unique private boolean spoofingCreative = false;
     @Unique private boolean wasCreative = false;
+    @Unique private boolean currentlySpoofed = false;
 
     public AnvilMenuMixin(MenuType<?> type, int syncId, Inventory inventory, ContainerLevelAccess access, ItemCombinerMenuSlotDefinition slotDefinition) {
         super(type, syncId, inventory, access, slotDefinition);
@@ -41,7 +41,21 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
         wasCreative = sp.isCreative();
         if (!wasCreative) {
             crdtrdsmod$sendCreativeSpoof(sp, true);
-            spoofingCreative = true;
+            currentlySpoofed = true;
+        }
+    }
+
+    @Inject(method = "createResult", at = @At("TAIL"))
+    private void crdtrdsmod$afterCreateResult(CallbackInfo ci) {
+        if (!(this.player instanceof ServerPlayer sp) || wasCreative) return;
+        int levelCost = this.cost.get();
+        boolean canAfford = levelCost <= 0 || sp.experienceLevel >= levelCost;
+        if (canAfford && !currentlySpoofed) {
+            crdtrdsmod$sendCreativeSpoof(sp, true);
+            currentlySpoofed = true;
+        } else if (!canAfford && currentlySpoofed) {
+            crdtrdsmod$sendCreativeSpoof(sp, false);
+            currentlySpoofed = false;
         }
     }
 
@@ -64,9 +78,9 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
 
     @Override
     public void removed(@NonNull Player player) {
-        if (player instanceof ServerPlayer sp && spoofingCreative && !wasCreative) {
+        if (player instanceof ServerPlayer sp && currentlySpoofed && !wasCreative) {
             crdtrdsmod$sendCreativeSpoof(sp, false);
-            spoofingCreative = false;
+            currentlySpoofed = false;
         }
         super.removed(player);
     }
