@@ -34,8 +34,10 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
 
 
         // Register builtin resource packs and initialize code for enabled modules
-        if (cfg.enchantingEncore) {
+        if ("casual".equals(cfg.enchantingEncore)) {
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "enchantingencore_casualmode_enabled"), container, PackActivationType.ALWAYS_ENABLED);
+        } else if ("pro".equals(cfg.enchantingEncore)) {
+            ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "enchantingencore_promode_enabled"), container, PackActivationType.ALWAYS_ENABLED);
         }
         if (cfg.flexiblePortals) {
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "flexible_portals_enabled"), container, PackActivationType.ALWAYS_ENABLED);
@@ -87,7 +89,7 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
         if (mixinClassName.contains(prefix + "cocktails") && modConfig.cocktails) return true;
         if (mixinClassName.contains(prefix + "cursestone") && modConfig.curseStone) return true;
         if (mixinClassName.contains(prefix + "delimitedanvils") && modConfig.delimitedAnvils) return true;
-        if (mixinClassName.contains(prefix + "enchantingencore") && modConfig.enchantingEncore) return true;
+        if (mixinClassName.contains(prefix + "enchantingencore") && !"disabled".equals(modConfig.enchantingEncore)) return true;
         if (mixinClassName.contains(prefix + "flexibleportals") && modConfig.flexiblePortals) return true;
         if (mixinClassName.contains(prefix + "givemerecipes") && modConfig.giveMeRecipes) return true;
         if (mixinClassName.contains(prefix + "goafk") && modConfig.goAfk) return true;

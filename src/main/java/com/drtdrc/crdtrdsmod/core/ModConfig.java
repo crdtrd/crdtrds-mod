@@ -16,7 +16,7 @@ public class ModConfig {
     private static ModConfig ACTIVE;
     private static boolean loaded = false;
 
-    public boolean enchantingEncore = true;
+    public String enchantingEncore = "casual";
     public boolean flexiblePortals = true;
     public boolean goAfk = true;
     public boolean tickWarpSleep = true;
