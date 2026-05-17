@@ -12,11 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.Map;
 
 public class ConfigScreen extends Screen {
 
     private final Screen parent;
     private final List<ToggleEntry> entries = new ArrayList<>();
+    private final List<CycleEntry> cycleEntries = new ArrayList<>();
 
     public ConfigScreen(Screen parent) {
         super(Component.literal("crdtrd's mod - Config"));
@@ -26,10 +28,13 @@ public class ConfigScreen extends Screen {
     @Override
     protected void init() {
         entries.clear();
+        cycleEntries.clear();
         ModConfig cfg = ModConfig.get();
 
-        entries.add(new ToggleEntry("Enchanting Encore",
-                "Extended enchantingencore table range, bookshelf bias from chiseled bookshelves, enhanced protection, and water depth strider boost",
+        cycleEntries.add(new CycleEntry("Enchanting Encore",
+                "Extended enchanting table range, bookshelf bias from chiseled bookshelves, enhanced protection, and water depth strider boost",
+                new String[]{"casual", "pro", "disabled"},
+                Map.of("casual", 0x55FF55, "pro", 0x55FFFF, "disabled", 0xFF5555),
                 () -> cfg.enchantingEncore, v -> cfg.enchantingEncore = v));
         entries.add(new ToggleEntry("Flexible Portals",
                 "Breaking an end portal frame block removes connected portal blocks",
@@ -83,10 +88,27 @@ public class ConfigScreen extends Screen {
         int startX = (this.width - totalW) / 2;
         int startY = 40;
 
-        for (int i = 0; i < entries.size(); i++) {
-            ToggleEntry entry = entries.get(i);
-            int col = i % cols;
-            int row = i / cols;
+        int idx = 0;
+        for (CycleEntry entry : cycleEntries) {
+            int col = idx % cols;
+            int row = idx / cols;
+            int x = startX + col * (btnW + gapX);
+            int y = startY + row * (btnH + gapY);
+
+            Button btn = Button.builder(entry.displayText(), b -> {
+                entry.cycle();
+                b.setMessage(entry.displayText());
+            }).bounds(x, y, btnW, btnH)
+                    .tooltip(Tooltip.create(Component.literal(entry.description())))
+                    .build();
+
+            this.addRenderableWidget(btn);
+            idx++;
+        }
+
+        for (ToggleEntry entry : entries) {
+            int col = idx % cols;
+            int row = idx / cols;
             int x = startX + col * (btnW + gapX);
             int y = startY + row * (btnH + gapY);
 
@@ -98,9 +120,11 @@ public class ConfigScreen extends Screen {
                     .build();
 
             this.addRenderableWidget(btn);
+            idx++;
         }
 
-        int doneY = startY + ((entries.size() + cols - 1) / cols) * (btnH + gapY) + 16;
+        int total = cycleEntries.size() + entries.size();
+        int doneY = startY + ((total + cols - 1) / cols) * (btnH + gapY) + 16;
         this.addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, b -> this.onClose())
                 .bounds((this.width - 200) / 2, doneY, 200, 20).build());
     }
@@ -129,6 +153,28 @@ public class ConfigScreen extends Screen {
 
         void toggle() {
             setter.accept(!getter.get());
+        }
+    }
+
+    private record CycleEntry(String label, String description, String[] values, Map<String, Integer> colors,
+                              Supplier<String> getter, Consumer<String> setter) {
+        Component displayText() {
+            String current = getter.get();
+            int color = colors.getOrDefault(current, 0xFFFFFF);
+            return Component.literal(label + ": ").append(
+                    Component.literal(current.toUpperCase()).withColor(color)
+            );
+        }
+
+        void cycle() {
+            String current = getter.get();
+            for (int i = 0; i < values.length; i++) {
+                if (values[i].equals(current)) {
+                    setter.accept(values[(i + 1) % values.length]);
+                    return;
+                }
+            }
+            setter.accept(values[0]);
         }
     }
 }
