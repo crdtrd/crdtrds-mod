@@ -102,12 +102,13 @@ public abstract class EnchantmentHelperMixin {
             float randomSpan = (random.nextFloat() + random.nextFloat() - 1.0F) * 0.15F;
             enchantmentCost = Mth.clamp(Math.round(enchantmentCost + enchantmentCost * randomSpan), 1, Integer.MAX_VALUE);
             List<EnchantmentInstance> enchantments = getAvailableEnchantmentResults(enchantmentCost, itemStack, source);
+
             if (!enchantments.isEmpty()) {
 
                 ToIntFunction<EnchantmentInstance> weightFn = addChiseledBookshelfWeightBias(EnchantmentInstance::weight);
                 int totalWeight = WeightedRandom.getTotalWeight(enchantments, weightFn);
 
-                // if any enchantment has weight > 50% of total, it becomes the sole candidate
+                // if any enchantment has weight > 75% of total, it becomes the sole candidate
                 enchantments = filterMajorityEnchantment(enchantments, weightFn, totalWeight);
 
                 // select and add first enchantment
@@ -154,7 +155,7 @@ public abstract class EnchantmentHelperMixin {
             int totalWeight
     ) {
         for (EnchantmentInstance entry : enchantments) {
-            if (weightFn.applyAsInt(entry) * 2 > totalWeight) {
+            if (weightFn.applyAsInt(entry) * 3 > totalWeight ) {
                 return List.of(entry);
             }
         }

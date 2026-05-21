@@ -77,9 +77,9 @@ public final class EnchantmentSelectionBiasContext {
 
             if (!allEnchanted || bookCount == 0 || common == null || common.isEmpty()) continue;
 
-            // add 1 weight value for common enchantments
+            // add 5 weight value for common enchantments
             for (Holder<Enchantment> ench : common) {
-                map.merge(ench, 10, Integer::sum);
+                map.merge(ench, 5, Integer::sum);
             }
         }
     }
