@@ -66,7 +66,7 @@ public abstract class EnchantmentHelperMixin {
             if (slotIndex == 0) {
                 cir.setReturnValue(Math.max(i / 3, 1));
             } else {
-                cir.setReturnValue(slotIndex == 1 ? i * 2 / 3 + 100 : bookshelfCount * 2);
+                cir.setReturnValue(slotIndex == 1 ? i * 2 : bookshelfCount * 2);
             }
         }
     }
