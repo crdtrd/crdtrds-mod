@@ -34,6 +34,7 @@ public final class EnchantmentSelectionBiasContext {
         map.clear();
         ACTIVE.set(Boolean.TRUE);
 
+        // iterating through all the blocks to find cbookshelves
         for (BlockPos off : EnchantingTableBlock.BOOKSHELF_OFFSETS) {
             if (!EnchantingTableBlock.isValidBookShelf(level, tablePos, off)) continue;
 
@@ -44,6 +45,7 @@ public final class EnchantmentSelectionBiasContext {
             BlockEntity be = level.getBlockEntity(bp);
             if (!(be instanceof ChiseledBookShelfBlockEntity shelf)) continue;
 
+            // check if all the books in a cbookshelf are enchanted
             int slots = shelf.getContainerSize();
             boolean allEnchanted = true;
             for (int i = 0; i < slots; i++) {
@@ -52,8 +54,10 @@ public final class EnchantmentSelectionBiasContext {
             }
             if (!allEnchanted) continue;
 
+
             Set<Holder<Enchantment>> common = null;
             int bookCount = 0;
+            // checking each book for enchantment and finding the common enchantments between each book
             for (int i = 0; i < slots; i++) {
                 ItemStack book = shelf.getItem(i);
                 ItemEnchantments stored = book.get(DataComponents.STORED_ENCHANTMENTS);
@@ -70,10 +74,12 @@ public final class EnchantmentSelectionBiasContext {
                 }
             }
 
+
             if (!allEnchanted || bookCount == 0 || common == null || common.isEmpty()) continue;
 
+            // add 1 weight value for common enchantments
             for (Holder<Enchantment> ench : common) {
-                map.merge(ench, 1, Integer::sum);
+                map.merge(ench, 10, Integer::sum);
             }
         }
     }

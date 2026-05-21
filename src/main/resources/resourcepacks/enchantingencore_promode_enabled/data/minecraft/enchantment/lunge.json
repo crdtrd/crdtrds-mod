@@ -143,5 +143,5 @@
     "hand"
   ],
   "supported_items": "#minecraft:enchantable/lunge",
-  "weight": 5
+  "weight": 10
 }

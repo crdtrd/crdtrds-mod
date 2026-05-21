@@ -18,16 +18,13 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
-import static net.minecraft.world.item.enchantment.EnchantmentHelper.filterCompatibleEnchantments;
 import static net.minecraft.world.item.enchantment.EnchantmentHelper.getAvailableEnchantmentResults;
 
 @Mixin(EnchantmentHelper.class)
@@ -106,12 +103,23 @@ public abstract class EnchantmentHelperMixin {
             enchantmentCost = Mth.clamp(Math.round(enchantmentCost + enchantmentCost * randomSpan), 1, Integer.MAX_VALUE);
             List<EnchantmentInstance> enchantments = getAvailableEnchantmentResults(enchantmentCost, itemStack, source);
             if (!enchantments.isEmpty()) {
-                WeightedRandom.getRandomItem(random, enchantments, crdtrdsmod$biasedWeightFunction(EnchantmentInstance::weight)).ifPresent(results::add);
+
+                // modify enchantment weights
+
+
+                // get total weight for enchantment adjustment
+                int totalWeight = WeightedRandom.getTotalWeight(enchantments, addChiseledBookshelfWeightBias(EnchantmentInstance::weight));
+
+                // select and add first enchantment
+                WeightedRandom.getRandomItem(random, enchantments, addMajorityWeightBias(addChiseledBookshelfWeightBias(EnchantmentInstance::weight), totalWeight)).ifPresent(results::add);
 
                 while (random.nextInt(50) <= enchantmentCost) {
 
+                    // modified additional ench select logic: keep incompatible enchants in selection pool and just no apply if not compatible
+                    // vanilla removes incompatible from pool, i don't want that.
                     // get additional enchantment
-                    EnchantmentInstance additionalEnchantment = WeightedRandom.getRandomItem(random, enchantments, crdtrdsmod$biasedWeightFunction(EnchantmentInstance::weight)).orElseThrow();
+                    EnchantmentInstance additionalEnchantment = WeightedRandom.getRandomItem(random, enchantments, addMajorityWeightBias(addChiseledBookshelfWeightBias(EnchantmentInstance::weight), totalWeight)).orElseThrow();
+
                     //check if additional enchantment is compatible and add to result if so
                     boolean compatible = true;
                     for (EnchantmentInstance e : results) {
@@ -132,13 +140,28 @@ public abstract class EnchantmentHelperMixin {
     }
 
     @Unique
-    private static ToIntFunction<EnchantmentInstance> crdtrdsmod$biasedWeightFunction(
+    private static ToIntFunction<EnchantmentInstance> addChiseledBookshelfWeightBias(
             ToIntFunction<EnchantmentInstance> original
     ) {
         return entry -> {
             int base = original.applyAsInt(entry);
             int bonus = EnchantmentSelectionBiasContext.bonus(entry.enchantment());
+
             return Math.max(1, base + bonus);
         };
     }
+
+    @Unique
+    private static ToIntFunction<EnchantmentInstance> addMajorityWeightBias(
+            ToIntFunction<EnchantmentInstance> original,
+            int totalWeight
+    ) {
+        // adjusts weight to be massive and effectively 100% if the base weight is at least 50% of the total weight
+        return entry -> {
+            int base = original.applyAsInt(entry);
+            if ((float)totalWeight/base < 0.5f) return Integer.MAX_VALUE-7777;
+            else return base;
+        };
+    }
+
 }

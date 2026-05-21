@@ -26,5 +26,5 @@
     "any"
   ],
   "supported_items": "#minecraft:enchantable/durability",
-  "weight": 2
+  "weight": 10
 }
