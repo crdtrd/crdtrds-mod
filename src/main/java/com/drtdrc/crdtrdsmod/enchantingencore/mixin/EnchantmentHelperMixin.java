@@ -20,8 +20,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
@@ -105,30 +107,38 @@ public abstract class EnchantmentHelperMixin {
 
             if (!enchantments.isEmpty()) {
 
-                ToIntFunction<EnchantmentInstance> weightFn = addChiseledBookshelfWeightBias(EnchantmentInstance::weight);
-                int totalWeight = WeightedRandom.getTotalWeight(enchantments, weightFn);
+                // if chiseled bookshelves are present, restrict to only their enchantments
+                if (EnchantmentSelectionBiasContext.hasChiseledBookshelves()) {
+                    enchantments = filterToChiseledBookshelfEnchantments(enchantments);
+                }
 
-                // if any enchantment has weight > 75% of total, it becomes the sole candidate
-                enchantments = filterMajorityEnchantment(enchantments, weightFn, totalWeight);
+                if (!enchantments.isEmpty()) {
+                    // weight function: use bookshelf power levels when present, otherwise base weight
+                    ToIntFunction<EnchantmentInstance> weightFn = chiseledBookshelfWeightFn();
+                    int totalWeight = WeightedRandom.getTotalWeight(enchantments, weightFn);
 
-                // select and add first enchantment
-                WeightedRandom.getRandomItem(random, enchantments, weightFn).ifPresent(results::add);
+                    // if any enchantment has weight > 75% of total, it becomes the sole candidate
+                    enchantments = filterMajorityEnchantment(enchantments, weightFn, totalWeight);
 
-                while (random.nextInt(50) <= enchantmentCost) {
+                    // select and add first enchantment
+                    WeightedRandom.getRandomItem(random, enchantments, weightFn).ifPresent(results::add);
 
-                    // keep incompatible enchants in selection pool, only skip if not compatible
-                    EnchantmentInstance additionalEnchantment = WeightedRandom.getRandomItem(random, enchantments, weightFn).orElseThrow();
+                    while (random.nextInt(50) <= enchantmentCost) {
 
-                    boolean compatible = true;
-                    for (EnchantmentInstance e : results) {
-                        if (!Enchantment.areCompatible(e.enchantment(), additionalEnchantment.enchantment())) {
-                            compatible = false;
-                            break;
+                        // keep incompatible enchants in selection pool, only skip if not compatible
+                        EnchantmentInstance additionalEnchantment = WeightedRandom.getRandomItem(random, enchantments, weightFn).orElseThrow();
+
+                        boolean compatible = true;
+                        for (EnchantmentInstance e : results) {
+                            if (!Enchantment.areCompatible(e.enchantment(), additionalEnchantment.enchantment())) {
+                                compatible = false;
+                                break;
+                            }
                         }
-                    }
-                    if (compatible) results.add(additionalEnchantment);
+                        if (compatible) results.add(additionalEnchantment);
 
-                    enchantmentCost /= 2;
+                        enchantmentCost /= 2;
+                    }
                 }
             }
 
@@ -137,15 +147,25 @@ public abstract class EnchantmentHelperMixin {
     }
 
     @Unique
-    private static ToIntFunction<EnchantmentInstance> addChiseledBookshelfWeightBias(
-            ToIntFunction<EnchantmentInstance> original
+    private static List<EnchantmentInstance> filterToChiseledBookshelfEnchantments(
+            List<EnchantmentInstance> enchantments
     ) {
-        return entry -> {
-            int base = original.applyAsInt(entry);
-            int bonus = EnchantmentSelectionBiasContext.bonus(entry.enchantment());
+        Set<Holder<Enchantment>> allowed = EnchantmentSelectionBiasContext.allowedEnchantments();
+        List<EnchantmentInstance> filtered = new ArrayList<>();
+        for (EnchantmentInstance entry : enchantments) {
+            if (allowed.contains(entry.enchantment())) {
+                filtered.add(entry);
+            }
+        }
+        return filtered;
+    }
 
-            return Math.max(1, base + bonus);
-        };
+    @Unique
+    private static ToIntFunction<EnchantmentInstance> chiseledBookshelfWeightFn() {
+        if (EnchantmentSelectionBiasContext.hasChiseledBookshelves()) {
+            return entry -> Math.max(1, EnchantmentSelectionBiasContext.weight(entry.enchantment()));
+        }
+        return EnchantmentInstance::weight;
     }
 
     @Unique
@@ -155,7 +175,7 @@ public abstract class EnchantmentHelperMixin {
             int totalWeight
     ) {
         for (EnchantmentInstance entry : enchantments) {
-            if (weightFn.applyAsInt(entry) * 3 > totalWeight ) {
+            if (weightFn.applyAsInt(entry) * 3 > totalWeight) {
                 return List.of(entry);
             }
         }
