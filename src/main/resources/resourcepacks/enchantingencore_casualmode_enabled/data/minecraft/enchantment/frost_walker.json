@@ -121,5 +121,5 @@
     "feet"
   ],
   "supported_items": "#minecraft:enchantable/foot_armor",
-  "weight": 2
+  "weight": 10
 }

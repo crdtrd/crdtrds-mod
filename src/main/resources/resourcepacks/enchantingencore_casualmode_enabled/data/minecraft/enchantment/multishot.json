@@ -43,5 +43,5 @@
     "mainhand"
   ],
   "supported_items": "#minecraft:enchantable/crossbow",
-  "weight": 2
+  "weight": 10
 }

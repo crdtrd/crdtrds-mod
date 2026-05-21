@@ -19,5 +19,5 @@
     "any"
   ],
   "supported_items": "#minecraft:enchantable/vanishing",
-  "weight": 1
+  "weight": 10
 }
