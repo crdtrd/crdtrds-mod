@@ -24,7 +24,7 @@ max level 3
 
 
 update with new weights for new seleciton system, both pro and casual, same weight values
-- chiseled bookshelves with enchanted books restrict the pool of available enchantments to only the ones contained within them.
+- chiseled bookshelves with enchanted books restrict the pool of available enchantments to only the ones contained within them. increase still for each included enchantment
 
 totalWeight = entry weight plus the weight of everything else
 the entry weight is 75% of the total weight
