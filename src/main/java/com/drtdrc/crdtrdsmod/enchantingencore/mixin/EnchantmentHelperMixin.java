@@ -104,33 +104,29 @@ public abstract class EnchantmentHelperMixin {
             List<EnchantmentInstance> enchantments = getAvailableEnchantmentResults(enchantmentCost, itemStack, source);
             if (!enchantments.isEmpty()) {
 
-                // modify enchantment weights
+                ToIntFunction<EnchantmentInstance> weightFn = addChiseledBookshelfWeightBias(EnchantmentInstance::weight);
+                int totalWeight = WeightedRandom.getTotalWeight(enchantments, weightFn);
 
-
-                // get total weight for enchantment adjustment
-                int totalWeight = WeightedRandom.getTotalWeight(enchantments, addChiseledBookshelfWeightBias(EnchantmentInstance::weight));
+                // if any enchantment has weight > 50% of total, it becomes the sole candidate
+                enchantments = filterMajorityEnchantment(enchantments, weightFn, totalWeight);
 
                 // select and add first enchantment
-                WeightedRandom.getRandomItem(random, enchantments, addMajorityWeightBias(addChiseledBookshelfWeightBias(EnchantmentInstance::weight), totalWeight)).ifPresent(results::add);
+                WeightedRandom.getRandomItem(random, enchantments, weightFn).ifPresent(results::add);
 
                 while (random.nextInt(50) <= enchantmentCost) {
 
-                    // modified additional ench select logic: keep incompatible enchants in selection pool and just no apply if not compatible
-                    // vanilla removes incompatible from pool, i don't want that.
-                    // get additional enchantment
-                    EnchantmentInstance additionalEnchantment = WeightedRandom.getRandomItem(random, enchantments, addMajorityWeightBias(addChiseledBookshelfWeightBias(EnchantmentInstance::weight), totalWeight)).orElseThrow();
+                    // keep incompatible enchants in selection pool, only skip if not compatible
+                    EnchantmentInstance additionalEnchantment = WeightedRandom.getRandomItem(random, enchantments, weightFn).orElseThrow();
 
-                    //check if additional enchantment is compatible and add to result if so
                     boolean compatible = true;
                     for (EnchantmentInstance e : results) {
-                        if (!Enchantment.areCompatible(e.enchantment(),additionalEnchantment.enchantment())) {
+                        if (!Enchantment.areCompatible(e.enchantment(), additionalEnchantment.enchantment())) {
                             compatible = false;
                             break;
                         }
                     }
                     if (compatible) results.add(additionalEnchantment);
 
-                    // vanilla: divide enchantment cost by 2 to limit the number of enchantments
                     enchantmentCost /= 2;
                 }
             }
@@ -152,16 +148,17 @@ public abstract class EnchantmentHelperMixin {
     }
 
     @Unique
-    private static ToIntFunction<EnchantmentInstance> addMajorityWeightBias(
-            ToIntFunction<EnchantmentInstance> original,
+    private static List<EnchantmentInstance> filterMajorityEnchantment(
+            List<EnchantmentInstance> enchantments,
+            ToIntFunction<EnchantmentInstance> weightFn,
             int totalWeight
     ) {
-        // adjusts weight to be massive and effectively 100% if the base weight is at least 50% of the total weight
-        return entry -> {
-            int base = original.applyAsInt(entry);
-            if ((float)totalWeight/base < 0.5f) return Integer.MAX_VALUE-7777;
-            else return base;
-        };
+        for (EnchantmentInstance entry : enchantments) {
+            if (weightFn.applyAsInt(entry) * 2 > totalWeight) {
+                return List.of(entry);
+            }
+        }
+        return enchantments;
     }
 
 }
