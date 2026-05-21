@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 2,
+  "anvil_cost": 20,
   "description": {
     "translate": "enchantment.minecraft.unbreaking"
   },
@@ -59,13 +59,13 @@
     ]
   },
   "max_cost": {
-    "base": 55,
-    "per_level_above_first": 8
+    "base": 205,
+    "per_level_above_first": 205
   },
-  "max_level": 3,
+  "max_level": 6,
   "min_cost": {
     "base": 5,
-    "per_level_above_first": 8
+    "per_level_above_first": 205
   },
   "slots": [
     "any"

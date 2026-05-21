@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 1,
+  "anvil_cost": 10,
   "description": {
     "translate": "enchantment.minecraft.sharpness"
   },
@@ -19,13 +19,13 @@
   },
   "exclusive_set": "#minecraft:exclusive_set/damage",
   "max_cost": {
-    "base": 21,
-    "per_level_above_first": 11
+    "base": 114,
+    "per_level_above_first": 114
   },
-  "max_level": 5,
+  "max_level": 10,
   "min_cost": {
     "base": 1,
-    "per_level_above_first": 11
+    "per_level_above_first": 114
   },
   "primary_items": "#minecraft:enchantable/melee_weapon",
   "slots": [

@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 8,
+  "anvil_cost": 80,
   "description": {
     "translate": "enchantment.minecraft.soul_speed"
   },
@@ -238,13 +238,13 @@
     ]
   },
   "max_cost": {
-    "base": 25,
-    "per_level_above_first": 10
+    "base": 614,
+    "per_level_above_first": 102
   },
-  "max_level": 3,
+  "max_level": 6,
   "min_cost": {
-    "base": 10,
-    "per_level_above_first": 10
+    "base": 512,
+    "per_level_above_first": 102
   },
   "slots": [
     "feet"

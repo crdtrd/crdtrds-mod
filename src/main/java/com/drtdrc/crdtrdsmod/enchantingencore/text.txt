@@ -9,10 +9,18 @@ multiply all anvil costs by 10
 
 treasure enchantments. im thinking level 501
 
-efficiency
+efficiency - DONE
 - only max level X grants instamine deepslate no beacon
+
+quick charge -DONE
+- make sure last level only is instacharge
 
 protection:
 - max level 8
 - max epf is 32, which provides 95% damage reduction
--
+
+
+max level 3
+
+
+update with new weights for new seleciton system, both pro and casual, same weight values

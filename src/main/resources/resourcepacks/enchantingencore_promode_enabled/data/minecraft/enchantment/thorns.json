@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 8,
+  "anvil_cost": 80,
   "description": {
     "translate": "enchantment.minecraft.thorns"
   },
@@ -38,13 +38,13 @@
     ]
   },
   "max_cost": {
-    "base": 60,
-    "per_level_above_first": 20
+    "base": 205,
+    "per_level_above_first": 205
   },
-  "max_level": 3,
+  "max_level": 6,
   "min_cost": {
     "base": 10,
-    "per_level_above_first": 20
+    "per_level_above_first": 205
   },
   "primary_items": "#minecraft:enchantable/chest_armor",
   "slots": [

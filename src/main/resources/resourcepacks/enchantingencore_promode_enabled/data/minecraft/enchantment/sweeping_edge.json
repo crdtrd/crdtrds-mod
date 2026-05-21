@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 4,
+  "anvil_cost": 40,
   "description": {
     "translate": "enchantment.minecraft.sweeping_edge"
   },
@@ -26,13 +26,13 @@
     ]
   },
   "max_cost": {
-    "base": 20,
-    "per_level_above_first": 9
+    "base": 205,
+    "per_level_above_first": 205
   },
-  "max_level": 3,
+  "max_level": 6,
   "min_cost": {
     "base": 5,
-    "per_level_above_first": 9
+    "per_level_above_first": 205
   },
   "slots": [
     "mainhand"

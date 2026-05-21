@@ -18,13 +18,13 @@
     ]
   },
   "max_cost": {
-    "base": 301,
-    "per_level_above_first": 300
+    "base": 512,
+    "per_level_above_first": 512
   },
   "max_level": 3,
   "min_cost": {
     "base": 1,
-    "per_level_above_first": 300
+    "per_level_above_first": 512
   },
   "slots": [
     "head"

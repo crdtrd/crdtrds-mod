@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 8,
+  "anvil_cost": 80,
   "description": {
     "translate": "enchantment.minecraft.silk_touch"
   },
@@ -15,12 +15,12 @@
   },
   "exclusive_set": "#minecraft:exclusive_set/mining",
   "max_cost": {
-    "base": 65,
+    "base": 1512,
     "per_level_above_first": 0
   },
   "max_level": 1,
   "min_cost": {
-    "base": 15,
+    "base": 256,
     "per_level_above_first": 0
   },
   "slots": [

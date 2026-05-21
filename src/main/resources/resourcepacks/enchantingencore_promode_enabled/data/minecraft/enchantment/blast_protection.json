@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 4,
+  "anvil_cost": 40,
   "description": {
     "translate": "enchantment.minecraft.blast_protection"
   },
@@ -22,8 +22,8 @@
           "type": "minecraft:add",
           "value": {
             "type": "minecraft:linear",
-            "base": 2.0,
-            "per_level_above_first": 2.0
+            "base": 9.40625,
+            "per_level_above_first": 9.40625
           }
         },
         "requirements": {
@@ -46,13 +46,13 @@
   },
   "exclusive_set": "#minecraft:exclusive_set/armor",
   "max_cost": {
-    "base": 13,
-    "per_level_above_first": 8
+    "base": 146,
+    "per_level_above_first": 146
   },
-  "max_level": 4,
+  "max_level": 8,
   "min_cost": {
     "base": 5,
-    "per_level_above_first": 8
+    "per_level_above_first": 146
   },
   "slots": [
     "armor"

@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 2,
+  "anvil_cost": 20,
   "description": {
     "translate": "enchantment.minecraft.feather_falling"
   },
@@ -10,8 +10,8 @@
           "type": "minecraft:add",
           "value": {
             "type": "minecraft:linear",
-            "base": 3.0,
-            "per_level_above_first": 3.0
+            "base": 9.40625,
+            "per_level_above_first": 9.40625
           }
         },
         "requirements": {
@@ -33,13 +33,13 @@
     ]
   },
   "max_cost": {
-    "base": 11,
-    "per_level_above_first": 6
+    "base": 146,
+    "per_level_above_first": 146
   },
-  "max_level": 4,
+  "max_level": 8,
   "min_cost": {
     "base": 5,
-    "per_level_above_first": 6
+    "per_level_above_first": 146
   },
   "slots": [
     "armor"

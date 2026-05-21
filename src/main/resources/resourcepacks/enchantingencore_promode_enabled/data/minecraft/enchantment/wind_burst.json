@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 4,
+  "anvil_cost": 40,
   "description": {
     "translate": "enchantment.minecraft.wind_burst"
   },
@@ -52,13 +52,13 @@
     ]
   },
   "max_cost": {
-    "base": 65,
-    "per_level_above_first": 9
+    "base": 614,
+    "per_level_above_first": 102
   },
-  "max_level": 3,
+  "max_level": 6,
   "min_cost": {
-    "base": 15,
-    "per_level_above_first": 9
+    "base": 512,
+    "per_level_above_first": 102
   },
   "slots": [
     "mainhand"

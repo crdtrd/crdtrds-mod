@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 2,
+  "anvil_cost": 20,
   "description": {
     "translate": "enchantment.minecraft.smite"
   },
@@ -26,13 +26,13 @@
   },
   "exclusive_set": "#minecraft:exclusive_set/damage",
   "max_cost": {
-    "base": 25,
-    "per_level_above_first": 8
+    "base": 114,
+    "per_level_above_first": 114
   },
-  "max_level": 5,
+  "max_level": 10,
   "min_cost": {
     "base": 5,
-    "per_level_above_first": 8
+    "per_level_above_first": 114
   },
   "primary_items": "#minecraft:enchantable/melee_weapon",
   "slots": [

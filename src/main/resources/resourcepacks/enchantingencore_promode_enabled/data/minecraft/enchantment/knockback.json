@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 2,
+  "anvil_cost": 20,
   "description": {
     "translate": "enchantment.minecraft.knockback"
   },
@@ -18,13 +18,13 @@
     ]
   },
   "max_cost": {
-    "base": 55,
-    "per_level_above_first": 20
+    "base": 341,
+    "per_level_above_first": 341
   },
-  "max_level": 2,
+  "max_level": 4,
   "min_cost": {
     "base": 5,
-    "per_level_above_first": 20
+    "per_level_above_first": 341
   },
   "slots": [
     "mainhand"

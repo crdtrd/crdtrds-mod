@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 1,
+  "anvil_cost": 10,
   "description": {
     "translate": "enchantment.minecraft.piercing"
   },
@@ -19,13 +19,13 @@
   },
   "exclusive_set": "#minecraft:exclusive_set/crossbow",
   "max_cost": {
-    "base": 50,
-    "per_level_above_first": 0
+    "base": 146,
+    "per_level_above_first": 146
   },
-  "max_level": 4,
+  "max_level": 8,
   "min_cost": {
     "base": 1,
-    "per_level_above_first": 10
+    "per_level_above_first": 146
   },
   "slots": [
     "mainhand"

@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 2,
+  "anvil_cost": 20,
   "description": {
     "translate": "enchantment.minecraft.quick_charge"
   },
@@ -8,8 +8,8 @@
       "type": "minecraft:add",
       "value": {
         "type": "minecraft:linear",
-        "base": -0.25,
-        "per_level_above_first": -0.25
+        "base": -0.20,
+        "per_level_above_first": -0.20
       }
     },
     "minecraft:crossbow_charging_sounds": [
@@ -28,13 +28,13 @@
     ]
   },
   "max_cost": {
-    "base": 50,
-    "per_level_above_first": 0
+    "base": 205,
+    "per_level_above_first": 205
   },
-  "max_level": 3,
+  "max_level": 6,
   "min_cost": {
     "base": 12,
-    "per_level_above_first": 20
+    "per_level_above_first": 205
   },
   "slots": [
     "mainhand",
