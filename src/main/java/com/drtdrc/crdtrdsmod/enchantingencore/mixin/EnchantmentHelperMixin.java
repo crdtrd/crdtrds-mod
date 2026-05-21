@@ -71,24 +71,6 @@ public abstract class EnchantmentHelperMixin {
         }
     }
 
-//    @ModifyArg(
-//            method = "selectEnchantment",
-//            at = @At(
-//                    value = "INVOKE",
-//                    target = "Lnet/minecraft/util/random/WeightedRandom;getRandomItem(Lnet/minecraft/util/RandomSource;Ljava/util/List;Ljava/util/function/ToIntFunction;)Ljava/util/Optional;"
-//            ),
-//            index = 2
-//    )
-//    private static ToIntFunction<EnchantmentInstance> crdtrdsmod$biasWeightFunction(
-//            ToIntFunction<EnchantmentInstance> original
-//    ) {
-//        return entry -> {
-//            int base = original.applyAsInt(entry);
-//            int bonus = EnchantmentSelectionBiasContext.bonus(entry.enchantment());
-//            return Math.max(1, base + bonus);
-//        };
-//    }
-
     @Inject(
             method = "selectEnchantment",
             at = @At("HEAD"),
@@ -115,10 +97,6 @@ public abstract class EnchantmentHelperMixin {
                 if (!enchantments.isEmpty()) {
                     // weight function: use bookshelf power levels when present, otherwise base weight
                     ToIntFunction<EnchantmentInstance> weightFn = chiseledBookshelfWeightFn();
-                    int totalWeight = WeightedRandom.getTotalWeight(enchantments, weightFn);
-
-                    // if any enchantment has weight > 75% of total, it becomes the sole candidate
-                    enchantments = filterMajorityEnchantment(enchantments, weightFn, totalWeight);
 
                     // select and add first enchantment
                     WeightedRandom.getRandomItem(random, enchantments, weightFn).ifPresent(results::add);
@@ -166,20 +144,6 @@ public abstract class EnchantmentHelperMixin {
             return entry -> Math.max(1, EnchantmentSelectionBiasContext.weight(entry.enchantment()));
         }
         return EnchantmentInstance::weight;
-    }
-
-    @Unique
-    private static List<EnchantmentInstance> filterMajorityEnchantment(
-            List<EnchantmentInstance> enchantments,
-            ToIntFunction<EnchantmentInstance> weightFn,
-            int totalWeight
-    ) {
-        for (EnchantmentInstance entry : enchantments) {
-            if (weightFn.applyAsInt(entry) * 3 > totalWeight) {
-                return List.of(entry);
-            }
-        }
-        return enchantments;
     }
 
 }

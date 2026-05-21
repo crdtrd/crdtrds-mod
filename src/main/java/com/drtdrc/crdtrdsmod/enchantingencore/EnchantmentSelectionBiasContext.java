@@ -41,25 +41,14 @@ public final class EnchantmentSelectionBiasContext {
 
         for (BlockPos off : EnchantingTableBlock.BOOKSHELF_OFFSETS) {
             if (!EnchantingTableBlock.isValidBookShelf(level, tablePos, off)) continue;
-
+            // do chiseled bookshelf things
             BlockPos bp = tablePos.offset(off);
             BlockState st = level.getBlockState(bp);
             if (!st.is(Blocks.CHISELED_BOOKSHELF)) continue;
-
             BlockEntity be = level.getBlockEntity(bp);
             if (!(be instanceof ChiseledBookShelfBlockEntity shelf)) continue;
-
-            // check if all slots contain enchanted books
-            int slots = shelf.getContainerSize();
-            boolean allEnchanted = true;
-            for (int i = 0; i < slots; i++) {
-                ItemStack s = shelf.getItem(i);
-                if (!s.is(Items.ENCHANTED_BOOK)) { allEnchanted = false; break; }
-            }
-            if (!allEnchanted) continue;
-
             HAS_CHISELED_BOOKSHELVES.set(Boolean.TRUE);
-
+            int slots = shelf.getContainerSize();
             // sum up power levels for each enchantment across all books in this shelf
             for (int i = 0; i < slots; i++) {
                 ItemStack book = shelf.getItem(i);
@@ -94,7 +83,4 @@ public final class EnchantmentSelectionBiasContext {
         return WEIGHTS.get().getOrDefault(ench, 0);
     }
 
-    public static int bonus(Holder<Enchantment> ench) {
-        return WEIGHTS.get().getOrDefault(ench, 0);
-    }
 }
