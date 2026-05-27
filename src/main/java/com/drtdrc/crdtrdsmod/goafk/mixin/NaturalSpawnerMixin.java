@@ -35,75 +35,78 @@ public abstract class NaturalSpawnerMixin {
             at = @At("HEAD"),
             cancellable = true
     )
-    private static void goafk$onSpawnEntitiesInChunk(MobCategory category, ServerLevel level, ChunkAccess chunk, BlockPos pos, NaturalSpawner.SpawnPredicate checker, NaturalSpawner.AfterSpawnCallback runner, CallbackInfo ci) {
+    private static void goafk$onSpawnCategoryForPosition(MobCategory mobCategory, ServerLevel level, ChunkAccess chunk, BlockPos start, NaturalSpawner.SpawnPredicate extraTest, NaturalSpawner.AfterSpawnCallback spawnCallback, CallbackInfo ci) {
         List<BlockPos> anchors = AFKManager.getAnchorPositions(level);
         if (anchors.isEmpty()) return;
 
         StructureManager structureManager = level.structureManager();
         ChunkGenerator chunkGenerator = level.getChunkSource().getGenerator();
-        int py = pos.getY();
-        BlockState blockState = chunk.getBlockState(pos);
-        if (blockState.isRedstoneConductor(chunk, pos)) {
+        int yStart = start.getY();
+        BlockState state = chunk.getBlockState(start);
+        if (state.isRedstoneConductor(chunk, start)) {
             ci.cancel();
             return;
         }
 
-        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        int totalSpawnedThisCall = 0;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        int clusterSize = 0;
 
-        for (int attempt = 0; attempt < 3; attempt++) {
-            int baseX = pos.getX();
-            int baseZ = pos.getZ();
-            MobSpawnSettings.SpawnerData spawnEntry = null;
-            SpawnGroupData entityData = null;
-            int triesForPack = Mth.ceil(level.getRandom().nextFloat() * 4.0F);
-            int spawnedInPack = 0;
+        for (int groupCount = 0; groupCount < 3; groupCount++) {
+            int x = start.getX();
+            int z = start.getZ();
+            MobSpawnSettings.SpawnerData currentSpawnData = null;
+            SpawnGroupData groupData = null;
+            int max = Mth.ceil(level.getRandom().nextFloat() * 4.0F);
+            int groupSize = 0;
 
-            for (int t = 0; t < triesForPack; t++) {
-                baseX += level.getRandom().nextInt(6) - level.getRandom().nextInt(6);
-                baseZ += level.getRandom().nextInt(6) - level.getRandom().nextInt(6);
-                mutable.set(baseX, py, baseZ);
+            for (int ll = 0; ll < max; ll++) {
+                x += level.getRandom().nextInt(6) - level.getRandom().nextInt(6);
+                z += level.getRandom().nextInt(6) - level.getRandom().nextInt(6);
+                pos.set(x, yStart, z);
 
-                final double px = baseX + 0.5;
-                final double pz = baseZ + 0.5;
+                double xx = x + 0.5;
+                double zz = z + 0.5;
 
-                Double nearestSq = goafk$getNearestPlayerOrAnchorSq(level, anchors, px, py, pz);
-                if (nearestSq == null) {
+                // factoring in afk anchors as well as players, instead of just players
+                Double nearestPlayerOrAnchorDistanceSq = goafk$getNearestPlayerOrAnchorSq(level, anchors, xx, yStart, zz);
+                // replacing vanilla check for existence of nearest player with existence of nearest distance value
+                if (nearestPlayerOrAnchorDistanceSq == null) {
                     continue;
                 }
 
-                if (NaturalSpawnerInvokers.goafk$isRightDistanceToPlayerAndSpawnPoint(level, chunk, mutable, nearestSq)) {
-                    if (spawnEntry == null) {
-                        Optional<MobSpawnSettings.SpawnerData> optional = NaturalSpawnerInvokers.goafk$getRandomSpawnMobAt(level, structureManager, chunkGenerator, category, level.getRandom(), mutable);
-                        if (optional.isEmpty()) {
+
+                if (NaturalSpawnerInvokers.goafk$isRightDistanceToPlayerAndSpawnPoint(level, chunk, pos, nearestPlayerOrAnchorDistanceSq)) {
+                    if (currentSpawnData == null) {
+                        Optional<MobSpawnSettings.SpawnerData> nextSpawnData = NaturalSpawnerInvokers.goafk$getRandomSpawnMobAt(level, structureManager, chunkGenerator, mobCategory, level.getRandom(), pos);
+                        if (nextSpawnData.isEmpty()) {
                             continue;
                         }
-                        spawnEntry = optional.get();
-                        triesForPack = spawnEntry.minCount() + level.getRandom().nextInt(1 + spawnEntry.maxCount() - spawnEntry.minCount());
+                        currentSpawnData = nextSpawnData.get();
+                        max = currentSpawnData.minCount() + level.getRandom().nextInt(1 + currentSpawnData.maxCount() - currentSpawnData.minCount());
                     }
 
-                    if (NaturalSpawnerInvokers.goafk$isValidSpawnPostitionForType(level, category, structureManager, chunkGenerator, spawnEntry, mutable, nearestSq)
-                            && checker.test(spawnEntry.type(), mutable, chunk)) {
+                    if (NaturalSpawnerInvokers.goafk$isValidSpawnPostitionForType(level, mobCategory, structureManager, chunkGenerator, currentSpawnData, pos, nearestPlayerOrAnchorDistanceSq)
+                            && extraTest.test(currentSpawnData.type(), pos, chunk)) {
 
-                        Mob mob = NaturalSpawnerInvokers.goafk$getMobForSpawn(level, spawnEntry.type());
+                        Mob mob = NaturalSpawnerInvokers.goafk$getMobForSpawn(level, currentSpawnData.type());
                         if (mob == null) {
                             ci.cancel();
                             return;
                         }
 
-                        mob.snapTo(px, (double) py, pz, level.getRandom().nextFloat() * 360.0F, 0.0F);
-                        if (NaturalSpawnerInvokers.goafk$isValidPositionForMob(level, mob, nearestSq)) {
-                            entityData = mob.finalizeSpawn(level, level.getCurrentDifficultyAt(mob.blockPosition()), EntitySpawnReason.NATURAL, entityData);
-                            totalSpawnedThisCall++;
-                            spawnedInPack++;
-                            level.addFreshEntity(mob);
-                            runner.run(mob, chunk);
+                        mob.snapTo(xx, (double) yStart, zz, level.getRandom().nextFloat() * 360.0F, 0.0F);
+                        if (NaturalSpawnerInvokers.goafk$isValidPositionForMob(level, mob, nearestPlayerOrAnchorDistanceSq)) {
+                            groupData = mob.finalizeSpawn(level, level.getCurrentDifficultyAt(mob.blockPosition()), EntitySpawnReason.NATURAL, groupData);
+                            clusterSize++;
+                            groupSize++;
+                            level.addFreshEntityWithPassengers(mob);
+                            spawnCallback.run(mob, chunk);
 
-                            if (totalSpawnedThisCall >= mob.getMaxSpawnClusterSize()) {
+                            if (clusterSize >= mob.getMaxSpawnClusterSize()) {
                                 ci.cancel();
                                 return;
                             }
-                            if (mob.isMaxGroupSizeReached(spawnedInPack)) {
+                            if (mob.isMaxGroupSizeReached(groupSize)) {
                                 break;
                             }
                         }
@@ -116,12 +119,14 @@ public abstract class NaturalSpawnerMixin {
 
     @Unique
     private static Double goafk$getNearestPlayerOrAnchorSq(ServerLevel level, List<BlockPos> anchors, double x, double y, double z) {
+        // vanilla getNearestPlayer behavior
         Player nearestPlayer = level.getNearestPlayer(x, y, z, -1.0, false);
         double bestSq = Double.POSITIVE_INFINITY;
         if (nearestPlayer != null) {
             bestSq = nearestPlayer.distanceToSqr(x, y, z);
         }
 
+        // also see if there is a closer afk anchor
         double anchorBest = Double.POSITIVE_INFINITY;
         for (BlockPos ap : anchors) {
             double dx = ap.getX() + 0.5 - x;
@@ -131,6 +136,7 @@ public abstract class NaturalSpawnerMixin {
             if (d < anchorBest) anchorBest = d;
         }
 
+        // compare nearest player distance with nearest anchor distance and choose smallest.
         double result = Math.min(bestSq, anchorBest);
         return Double.isFinite(result) ? result : null;
     }

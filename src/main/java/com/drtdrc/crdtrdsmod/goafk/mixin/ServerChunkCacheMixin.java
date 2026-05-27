@@ -37,7 +37,7 @@ public abstract class ServerChunkCacheMixin {
                     target = "Lnet/minecraft/world/level/NaturalSpawner;createState(ILjava/lang/Iterable;Lnet/minecraft/world/level/NaturalSpawner$ChunkGetter;Lnet/minecraft/world/level/LocalMobCapCalculator;)Lnet/minecraft/world/level/NaturalSpawner$SpawnState;"
             )
     )
-    private void goafk$appendAnchorSpawningChunks(ProfilerFiller profiler, long timeDelta, CallbackInfo ci) {
+    private void goafk$appendAnchorSpawningChunks(ProfilerFiller profiler, long timeDiff, CallbackInfo ci) {
         List<BlockPos> anchors = AFKManager.getAnchorPositions(this.level);
         if (anchors.isEmpty()) return;
 
@@ -46,6 +46,7 @@ public abstract class ServerChunkCacheMixin {
             existing.add(lc.getPos().pack());
         }
 
+        // calculate chunks to add to the list of chunks to tick from anchor positions
         List<LevelChunk> toAdd = new ArrayList<>();
         for (BlockPos ap : anchors) {
             ChunkPos center = ChunkPos.containing(ap);
@@ -61,6 +62,7 @@ public abstract class ServerChunkCacheMixin {
             }
         }
 
+        // actually add new spawning chunks if we found any
         if (!toAdd.isEmpty()) {
             List<LevelChunk> combined = new ArrayList<>(this.spawningChunks);
             combined.addAll(toAdd);
