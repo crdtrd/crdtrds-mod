@@ -31,6 +31,8 @@ public final class AFKManager {
     }
 
     public static void onPlayerJoin(@NotNull ServerPlayer player) {
+        if (FakePlayer.isFake(player)) return;
+
         String playerName = player.getGameProfile().name();
         MinecraftServer server = player.level().getServer();
 
