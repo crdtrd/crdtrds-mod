@@ -37,16 +37,16 @@ public final class AFKCommand {
                                             var src = ctx.getSource();
                                             var level = src.getLevel();
                                             BlockPos pos = BlockPos.containing(src.getPosition());
-                                            boolean ok = AFKManager.addAnchor(level, pos, AFKManager.getDefaultName(pos));
-                                            src.sendSuccess(() -> Component.literal(ok ? "Anchor added at your position" : "Anchor already exists here"), true);
+                                            boolean ok = AFKManager.addFakePlayer(level, pos, AFKManager.getDefaultName(pos));
+                                            src.sendSuccess(() -> Component.literal(ok ? "Fake player added at your position" : "Fake player already exists here"), true);
                                             return ok ? 1 : 0;
                                         })
                                         .then(Commands.argument("pos", BlockPosArgument.blockPos())
                                                 .executes(ctx -> {
                                                     var src = ctx.getSource();
                                                     BlockPos pos = BlockPosArgument.getLoadedBlockPos(ctx, "pos");
-                                                    boolean ok = AFKManager.addAnchor(src.getLevel(), pos, AFKManager.getDefaultName(pos));
-                                                    src.sendSuccess(() -> Component.literal(ok ? "Anchor added" : "Anchor already exists here"), true);
+                                                    boolean ok = AFKManager.addFakePlayer(src.getLevel(), pos, AFKManager.getDefaultName(pos));
+                                                    src.sendSuccess(() -> Component.literal(ok ? "Fake player added" : "Fake player already exists here"), true);
                                                     return ok ? 1 : 0;
                                                 })
                                                 .then(Commands.argument("name", StringArgumentType.string())
@@ -54,8 +54,8 @@ public final class AFKCommand {
                                                             var src = ctx.getSource();
                                                             BlockPos pos = BlockPosArgument.getLoadedBlockPos(ctx, "pos");
                                                             String name = StringArgumentType.getString(ctx, "name");
-                                                            boolean ok = AFKManager.addAnchor(src.getLevel(), pos, name);
-                                                            src.sendSuccess(() -> Component.literal(ok ? "Anchor added" : "Anchor already exists here"), true);
+                                                            boolean ok = AFKManager.addFakePlayer(src.getLevel(), pos, name);
+                                                            src.sendSuccess(() -> Component.literal(ok ? "Fake player added" : "Fake player already exists here"), true);
                                                             return ok ? 1 : 0;
                                                         })
                                                 )
@@ -66,9 +66,9 @@ public final class AFKCommand {
                                                 .executes(ctx -> {
                                                     var src = ctx.getSource();
                                                     BlockPos pos = BlockPosArgument.getLoadedBlockPos(ctx, "pos");
-                                                    boolean ok = AFKManager.removeAnchor(src.getLevel(), pos, AFKManager.getDefaultName(pos));
-                                                    if (ok) src.sendSuccess(() -> Component.literal("Anchor removed"), true);
-                                                    else src.sendFailure(Component.literal("No anchor at this position"));
+                                                    boolean ok = AFKManager.removeFakePlayer(src.getLevel(), pos, AFKManager.getDefaultName(pos));
+                                                    if (ok) src.sendSuccess(() -> Component.literal("Fake player removed"), true);
+                                                    else src.sendFailure(Component.literal("No fake player at this position"));
                                                     return ok ? 1 : 0;
                                                 })
                                         )
@@ -78,9 +78,9 @@ public final class AFKCommand {
                                                     var src = ctx.getSource();
                                                     var level = src.getLevel();
                                                     String name = StringArgumentType.getString(ctx, "name");
-                                                    boolean ok = AFKManager.removeAnchor(level, null, name);
-                                                    if (ok) src.sendSuccess(() -> Component.literal("Removed anchors named " + name), true);
-                                                    else src.sendFailure(Component.literal("No anchors named " + name + " in this world"));
+                                                    boolean ok = AFKManager.removeFakePlayer(level, null, name);
+                                                    if (ok) src.sendSuccess(() -> Component.literal("Removed fake players named " + name), true);
+                                                    else src.sendFailure(Component.literal("No fake players named " + name + " in this world"));
                                                     return ok ? 1 : 0;
                                                 })
                                         )
@@ -90,13 +90,13 @@ public final class AFKCommand {
                                                     var level = src.getLevel();
                                                     List<AFKAnchorsState.AFKAnchor> anchors = AFKAnchorsState.get(level).getAllEntries();
                                                     if (anchors.isEmpty()) {
-                                                        src.sendSuccess(() -> Component.literal("No anchors removed"), true);
+                                                        src.sendSuccess(() -> Component.literal("No fake players to remove"), true);
                                                         return 0;
                                                     }
                                                     for (AFKAnchorsState.AFKAnchor a : anchors) {
-                                                        AFKManager.removeAnchor(level, a.pos(), a.name());
+                                                        AFKManager.removeFakePlayer(level, a.pos(), a.name());
                                                     }
-                                                    src.sendSuccess(() -> Component.literal("All anchors removed"), true);
+                                                    src.sendSuccess(() -> Component.literal("All fake players removed"), true);
                                                     return 1;
                                                 })
                                         )
