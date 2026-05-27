@@ -17,8 +17,16 @@ import java.util.UUID;
 public final class FakePlayer {
     private FakePlayer() {}
 
+    public static UUID fakeUUID(String name) {
+        return UUID.nameUUIDFromBytes(("GoAFK:" + name).getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static boolean isFake(ServerPlayer player) {
+        return player.getUUID().equals(fakeUUID(player.getGameProfile().name()));
+    }
+
     public static ServerPlayer spawn(MinecraftServer server, ServerLevel level, BlockPos pos, String name) {
-        UUID uuid = UUID.nameUUIDFromBytes(("GoAFK:" + name).getBytes(StandardCharsets.UTF_8));
+        UUID uuid = fakeUUID(name);
         GameProfile profile = new GameProfile(uuid, name);
 
         Connection connection = new Connection(PacketFlow.SERVERBOUND);
