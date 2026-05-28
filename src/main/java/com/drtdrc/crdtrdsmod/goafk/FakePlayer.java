@@ -36,6 +36,9 @@ public final class FakePlayer {
         player.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0f, 0f);
 
         CommonListenerCookie cookie = CommonListenerCookie.createInitial(profile, false);
+        player.setInvulnerable(true);
+        player.setInvisible(true);
+
         server.getPlayerList().placeNewPlayer(connection, player, cookie);
 
         return player;
