@@ -10,6 +10,8 @@ import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.CommonListenerCookie;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -36,6 +38,9 @@ public final class FakePlayer {
         player.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0f, 0f);
 
         CommonListenerCookie cookie = CommonListenerCookie.createInitial(profile, false);
+        player.setInvulnerable(true);
+        player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, MobEffectInstance.INFINITE_DURATION, 0, false, false));
+
         server.getPlayerList().placeNewPlayer(connection, player, cookie);
 
         return player;
