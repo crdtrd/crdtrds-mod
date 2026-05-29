@@ -27,10 +27,9 @@ public final class FakePlayer {
 
     public static ServerPlayer spawn(MinecraftServer server, ServerLevel level, BlockPos pos, String name) {
         UUID uuid = fakeUUID(name);
-        GameProfile profile = new GameProfile(uuid, name);
-
-        server.services().profileResolver().fetchByName(name)
-                .ifPresent(resolved -> profile.properties().putAll(resolved.properties()));
+        GameProfile profile = server.services().profileResolver().fetchByName(name)
+                .map(resolved -> new GameProfile(uuid, name, resolved.properties()))
+                .orElseGet(() -> new GameProfile(uuid, name));
 
         Connection connection = new Connection(PacketFlow.SERVERBOUND);
         new EmbeddedChannel(connection);
