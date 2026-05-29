@@ -29,6 +29,9 @@ public final class FakePlayer {
         UUID uuid = fakeUUID(name);
         GameProfile profile = new GameProfile(uuid, name);
 
+        server.services().profileResolver().fetchByName(name)
+                .ifPresent(resolved -> profile.properties().putAll(resolved.properties()));
+
         Connection connection = new Connection(PacketFlow.SERVERBOUND);
         new EmbeddedChannel(connection);
 
