@@ -39,9 +39,11 @@ public final class AFKCommand {
                                         .executes(ctx -> {
                                             var src = ctx.getSource();
                                             var level = src.getLevel();
-                                            BlockPos pos = BlockPos.containing(src.getPosition());
+                                            var srcPos = src.getPosition();
+                                            BlockPos pos = BlockPos.containing(srcPos);
                                             Vec2 rot = src.getRotation();
-                                            boolean ok = AFKManager.addFakePlayer(level, pos, AFKManager.getDefaultName(pos), rot.y, rot.x);
+                                            boolean ok = AFKManager.addFakePlayer(level, srcPos.x, srcPos.y, srcPos.z,
+                                                    AFKManager.getDefaultName(pos), rot.y, rot.x);
                                             src.sendSuccess(() -> Component.literal(ok ? "Fake player added at your position" : "Fake player already exists here"), true);
                                             return ok ? 1 : 0;
                                         })
@@ -49,7 +51,9 @@ public final class AFKCommand {
                                                 .executes(ctx -> {
                                                     var src = ctx.getSource();
                                                     BlockPos pos = BlockPosArgument.getLoadedBlockPos(ctx, "pos");
-                                                    boolean ok = AFKManager.addFakePlayer(src.getLevel(), pos, AFKManager.getDefaultName(pos), 0f, 0f);
+                                                    boolean ok = AFKManager.addFakePlayer(src.getLevel(),
+                                                            pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
+                                                            AFKManager.getDefaultName(pos), 0f, 0f);
                                                     src.sendSuccess(() -> Component.literal(ok ? "Fake player added" : "Fake player already exists here"), true);
                                                     return ok ? 1 : 0;
                                                 })
@@ -58,7 +62,9 @@ public final class AFKCommand {
                                                             var src = ctx.getSource();
                                                             BlockPos pos = BlockPosArgument.getLoadedBlockPos(ctx, "pos");
                                                             String name = StringArgumentType.getString(ctx, "name");
-                                                            boolean ok = AFKManager.addFakePlayer(src.getLevel(), pos, name, 0f, 0f);
+                                                            boolean ok = AFKManager.addFakePlayer(src.getLevel(),
+                                                                    pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
+                                                                    name, 0f, 0f);
                                                             src.sendSuccess(() -> Component.literal(ok ? "Fake player added" : "Fake player already exists here"), true);
                                                             return ok ? 1 : 0;
                                                         })
@@ -68,7 +74,9 @@ public final class AFKCommand {
                                                                     BlockPos pos = BlockPosArgument.getLoadedBlockPos(ctx, "pos");
                                                                     String name = StringArgumentType.getString(ctx, "name");
                                                                     Vec2 rot = RotationArgument.getRotation(ctx, "rotation").getRotation(src);
-                                                                    boolean ok = AFKManager.addFakePlayer(src.getLevel(), pos, name, rot.y, rot.x);
+                                                                    boolean ok = AFKManager.addFakePlayer(src.getLevel(),
+                                                                            pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
+                                                                            name, rot.y, rot.x);
                                                                     src.sendSuccess(() -> Component.literal(ok ? "Fake player added" : "Fake player already exists here"), true);
                                                                     return ok ? 1 : 0;
                                                                 })
@@ -109,7 +117,7 @@ public final class AFKCommand {
                                                         return 0;
                                                     }
                                                     for (AFKAnchorsState.AFKAnchor a : anchors) {
-                                                        AFKManager.removeFakePlayer(level, a.pos(), a.name());
+                                                        AFKManager.removeFakePlayer(level, a.blockPos(), a.name());
                                                     }
                                                     src.sendSuccess(() -> Component.literal("All fake players removed"), true);
                                                     return 1;
