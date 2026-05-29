@@ -7,9 +7,13 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ClientInformation;
+import net.minecraft.server.level.ParticleStatus;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.CommonListenerCookie;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.ChatVisiblity;
+import net.minecraft.world.entity.player.PlayerModelPart;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -34,7 +38,15 @@ public final class FakePlayer {
         Connection connection = new Connection(PacketFlow.SERVERBOUND);
         new EmbeddedChannel(connection);
 
-        ServerPlayer player = new ServerPlayer(server, level, profile, ClientInformation.createDefault());
+        int allSkinParts = 0;
+        for (PlayerModelPart part : PlayerModelPart.values()) {
+            allSkinParts |= part.getMask();
+        }
+        ClientInformation clientInfo = new ClientInformation(
+                "en_us", 2, ChatVisiblity.FULL, true, allSkinParts,
+                HumanoidArm.RIGHT, false, false, ParticleStatus.ALL);
+
+        ServerPlayer player = new ServerPlayer(server, level, profile, clientInfo);
         player.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0f, 0f);
 
         CommonListenerCookie cookie = CommonListenerCookie.createInitial(profile, false);
