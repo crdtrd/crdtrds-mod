@@ -39,6 +39,10 @@ public final class AFKManager {
         for (ServerLevel level : server.getAllLevels()) {
             removeFakePlayer(level, null, playerName);
         }
+
+        if (!activeFakePlayers.isEmpty()) {
+            FakePlayer.ensureOnTeam(server.overworld().getScoreboard(), playerName);
+        }
     }
 
     public static boolean addFakePlayer(ServerLevel level, BlockPos pos, String name) {

@@ -4,8 +4,6 @@
     "package": "com.drtdrc.crdtrdsmod.mixin.client",
     "compatibilityLevel": "JAVA_25",
     "client": [
-        "FakePlayerPickMixin",
-        "FakePlayerRenderMixin"
     ],
     "injectors": {
         "defaultRequire": 1
