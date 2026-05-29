@@ -35,7 +35,7 @@ public final class AFKManager {
     }
 
     public static void onPlayerJoin(@NotNull ServerPlayer player) {
-        if (DummyPlayer.isDummy(player)) return;
+        if (DummyPlayerManager.isDummy(player)) return;
 
         String playerName = player.getGameProfile().name();
         MinecraftServer server = player.level().getServer();
@@ -51,7 +51,7 @@ public final class AFKManager {
         if (!state.add(x, y, z, name, yaw, pitch)) return false;
 
         MinecraftServer server = level.getServer();
-        ServerPlayer fakePlayer = DummyPlayer.spawn(server, level, x, y, z, name, yaw, pitch);
+        ServerPlayer fakePlayer = DummyPlayerManager.spawn(server, level, x, y, z, name, yaw, pitch);
         activeFakePlayers.put(name, fakePlayer);
         return true;
     }
@@ -64,7 +64,7 @@ public final class AFKManager {
         for (AFKDummiesState.AFKDummy a : removed) {
             ServerPlayer fakePlayer = activeFakePlayers.remove(a.name());
             if (fakePlayer != null) {
-                DummyPlayer.remove(level.getServer(), fakePlayer);
+                DummyPlayerManager.remove(level.getServer(), fakePlayer);
             }
         }
         return true;
@@ -78,7 +78,7 @@ public final class AFKManager {
         for (ServerLevel level : server.getAllLevels()) {
             var entries = AFKDummiesState.get(level).getAllEntries();
             for (AFKDummiesState.AFKDummy entry : entries) {
-                ServerPlayer fakePlayer = DummyPlayer.spawn(server, level,
+                ServerPlayer fakePlayer = DummyPlayerManager.spawn(server, level,
                         entry.x(), entry.y(), entry.z(), entry.name(),
                         entry.yaw(), entry.pitch());
                 activeFakePlayers.put(entry.name(), fakePlayer);

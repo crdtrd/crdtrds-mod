@@ -20,8 +20,8 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-public final class DummyPlayer {
-    private DummyPlayer() {}
+public final class DummyPlayerManager {
+    private DummyPlayerManager() {}
 
     public static UUID fakeUUID(String name) {
         return UUID.nameUUIDFromBytes(("GoAFK:" + name).getBytes(StandardCharsets.UTF_8));
@@ -64,18 +64,19 @@ public final class DummyPlayer {
         // We cannot use profileResolver().fetchByName() because placeNewPlayer
         // pollutes the usercache with our fake UUID, causing future lookups to
         // resolve the fake UUID instead of the real one.
+        String afkName = "(AFK) " + name;
         return server.services().profileRepository().findProfileByName(name)
                 .map(nameAndId -> {
                     ProfileResult result = server.services().sessionService()
                             .fetchProfile(nameAndId.id(), true);
                     if (result != null) {
-                        return new GameProfile(fakeUuid, name,
+                        return new GameProfile(fakeUuid, afkName,
                                 new PropertyMap(LinkedHashMultimap.create(
                                         result.profile().properties())));
                     }
-                    return new GameProfile(fakeUuid, name);
+                    return new GameProfile(fakeUuid, afkName);
                 })
-                .orElseGet(() -> new GameProfile(fakeUuid, name));
+                .orElseGet(() -> new GameProfile(fakeUuid, afkName));
     }
 
     public static void remove(MinecraftServer server, ServerPlayer player) {
