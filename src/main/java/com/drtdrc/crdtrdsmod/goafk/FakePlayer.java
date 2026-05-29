@@ -3,6 +3,7 @@ package com.drtdrc.crdtrdsmod.goafk;
 import com.google.common.collect.LinkedHashMultimap;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.PropertyMap;
+import com.mojang.authlib.yggdrasil.ProfileResult;
 import io.netty.channel.embedded.EmbeddedChannel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.Connection;
@@ -33,10 +34,7 @@ public final class FakePlayer {
 
     public static ServerPlayer spawn(MinecraftServer server, ServerLevel level, BlockPos pos, String name) {
         UUID uuid = fakeUUID(name);
-        GameProfile profile = server.services().profileResolver().fetchByName(name)
-                .map(resolved -> new GameProfile(uuid, name,
-                        new PropertyMap(LinkedHashMultimap.create(resolved.properties()))))
-                .orElseGet(() -> new GameProfile(uuid, name));
+        GameProfile profile = resolveProfileWithSkin(server, uuid, name);
 
         Connection connection = new Connection(PacketFlow.SERVERBOUND);
         new EmbeddedChannel(connection);
@@ -58,6 +56,25 @@ public final class FakePlayer {
         server.getPlayerList().placeNewPlayer(connection, player, cookie);
 
         return player;
+    }
+
+    private static GameProfile resolveProfileWithSkin(MinecraftServer server, UUID fakeUuid, String name) {
+        // Look up the player's real UUID directly from Mojang API.
+        // We cannot use profileResolver().fetchByName() because placeNewPlayer
+        // pollutes the usercache with our fake UUID, causing future lookups to
+        // resolve the fake UUID instead of the real one.
+        return server.services().profileRepository().findProfileByName(name)
+                .map(nameAndId -> {
+                    ProfileResult result = server.services().sessionService()
+                            .fetchProfile(nameAndId.id(), true);
+                    if (result != null) {
+                        return new GameProfile(fakeUuid, name,
+                                new PropertyMap(LinkedHashMultimap.create(
+                                        result.profile().properties())));
+                    }
+                    return new GameProfile(fakeUuid, name);
+                })
+                .orElseGet(() -> new GameProfile(fakeUuid, name));
     }
 
     public static void remove(MinecraftServer server, ServerPlayer player) {
