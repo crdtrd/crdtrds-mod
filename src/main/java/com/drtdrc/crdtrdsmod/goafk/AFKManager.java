@@ -22,13 +22,15 @@ public final class AFKManager {
 
     public static boolean goAFKAndKick(@NotNull ServerPlayer player) {
         ServerLevel level = player.level();
-        BlockPos pos = player.blockPosition();
         String playerName = player.getGameProfile().name();
+        double x = player.getX();
+        double y = player.getY();
+        double z = player.getZ();
         float yaw = player.getYRot();
         float pitch = player.getXRot();
 
         player.connection.disconnect(Component.literal("You are now AFK!"));
-        addFakePlayer(level, pos, playerName, yaw, pitch);
+        addFakePlayer(level, x, y, z, playerName, yaw, pitch);
         return true;
     }
 
@@ -43,12 +45,13 @@ public final class AFKManager {
         }
     }
 
-    public static boolean addFakePlayer(ServerLevel level, BlockPos pos, String name, float yaw, float pitch) {
+    public static boolean addFakePlayer(ServerLevel level, double x, double y, double z,
+                                         String name, float yaw, float pitch) {
         var state = AFKAnchorsState.get(level);
-        if (!state.add(pos, name, yaw, pitch)) return false;
+        if (!state.add(x, y, z, name, yaw, pitch)) return false;
 
         MinecraftServer server = level.getServer();
-        ServerPlayer fakePlayer = FakePlayer.spawn(server, level, pos, name, yaw, pitch);
+        ServerPlayer fakePlayer = FakePlayer.spawn(server, level, x, y, z, name, yaw, pitch);
         activeFakePlayers.put(name, fakePlayer);
         return true;
     }
@@ -75,7 +78,8 @@ public final class AFKManager {
         for (ServerLevel level : server.getAllLevels()) {
             var entries = AFKAnchorsState.get(level).getAllEntries();
             for (AFKAnchorsState.AFKAnchor entry : entries) {
-                ServerPlayer fakePlayer = FakePlayer.spawn(server, level, entry.pos(), entry.name(),
+                ServerPlayer fakePlayer = FakePlayer.spawn(server, level,
+                        entry.x(), entry.y(), entry.z(), entry.name(),
                         entry.yaw(), entry.pitch());
                 activeFakePlayers.put(entry.name(), fakePlayer);
             }

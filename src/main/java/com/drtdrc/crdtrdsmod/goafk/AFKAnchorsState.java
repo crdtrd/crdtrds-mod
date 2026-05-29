@@ -17,15 +17,21 @@ import java.util.List;
 
 public final class AFKAnchorsState extends SavedData {
 
-    public record AFKAnchor(BlockPos pos, String name, float yaw, float pitch) {
+    public record AFKAnchor(double x, double y, double z, String name, float yaw, float pitch) {
         public static final Codec<AFKAnchor> CODEC = RecordCodecBuilder.create(inst ->
                 inst.group(
-                        BlockPos.CODEC.fieldOf("pos").forGetter(AFKAnchor::pos),
+                        Codec.DOUBLE.fieldOf("x").forGetter(AFKAnchor::x),
+                        Codec.DOUBLE.fieldOf("y").forGetter(AFKAnchor::y),
+                        Codec.DOUBLE.fieldOf("z").forGetter(AFKAnchor::z),
                         Codec.STRING.fieldOf("name").forGetter(AFKAnchor::name),
                         Codec.FLOAT.optionalFieldOf("yaw", 0f).forGetter(AFKAnchor::yaw),
                         Codec.FLOAT.optionalFieldOf("pitch", 0f).forGetter(AFKAnchor::pitch)
                 ).apply(inst, AFKAnchor::new)
         );
+
+        public BlockPos blockPos() {
+            return BlockPos.containing(x, y, z);
+        }
     }
 
     public static final Codec<AFKAnchorsState> CODEC = RecordCodecBuilder.create(inst ->
@@ -56,13 +62,14 @@ public final class AFKAnchorsState extends SavedData {
     }
 
     public List<BlockPos> getAllPositions() {
-        return afkAnchors.stream().map(AFKAnchor::pos).toList();
+        return afkAnchors.stream().map(AFKAnchor::blockPos).toList();
     }
 
-    public boolean add(BlockPos pos, String name, float yaw, float pitch) {
-        boolean exists = afkAnchors.stream().anyMatch(e -> e.pos.equals(pos) && e.name.equals(name));
+    public boolean add(double x, double y, double z, String name, float yaw, float pitch) {
+        BlockPos blockPos = BlockPos.containing(x, y, z);
+        boolean exists = afkAnchors.stream().anyMatch(e -> e.blockPos().equals(blockPos) && e.name.equals(name));
         if (exists) return false;
-        afkAnchors.add(new AFKAnchor(pos.immutable(), name, yaw, pitch));
+        afkAnchors.add(new AFKAnchor(x, y, z, name, yaw, pitch));
         this.setDirty();
         return true;
     }
@@ -75,7 +82,7 @@ public final class AFKAnchorsState extends SavedData {
             AFKAnchor a = it.next();
             boolean matches;
             if (hasPos) {
-                matches = a.pos.equals(pos) && a.name.equals(name);
+                matches = a.blockPos().equals(pos) && a.name.equals(name);
             } else {
                 matches = a.name.equals(name);
             }

@@ -5,7 +5,6 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import io.netty.channel.embedded.EmbeddedChannel;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.server.MinecraftServer;
@@ -32,7 +31,8 @@ public final class FakePlayer {
         return player.getUUID().equals(fakeUUID(player.getGameProfile().name()));
     }
 
-    public static ServerPlayer spawn(MinecraftServer server, ServerLevel level, BlockPos pos, String name,
+    public static ServerPlayer spawn(MinecraftServer server, ServerLevel level,
+                                     double x, double y, double z, String name,
                                      float yaw, float pitch) {
         UUID uuid = fakeUUID(name);
         GameProfile profile = resolveProfileWithSkin(server, uuid, name);
@@ -49,7 +49,7 @@ public final class FakePlayer {
                 HumanoidArm.RIGHT, false, false, ParticleStatus.ALL);
 
         ServerPlayer player = new ServerPlayer(server, level, profile, clientInfo);
-        player.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, yaw, pitch);
+        player.snapTo(x, y, z, yaw, pitch);
 
         CommonListenerCookie cookie = CommonListenerCookie.createInitial(profile, false);
         player.setInvulnerable(true);
