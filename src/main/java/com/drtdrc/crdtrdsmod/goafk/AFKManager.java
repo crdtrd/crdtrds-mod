@@ -24,9 +24,11 @@ public final class AFKManager {
         ServerLevel level = player.level();
         BlockPos pos = player.blockPosition();
         String playerName = player.getGameProfile().name();
+        float yaw = player.getYRot();
+        float pitch = player.getXRot();
 
         player.connection.disconnect(Component.literal("You are now AFK!"));
-        addFakePlayer(level, pos, playerName);
+        addFakePlayer(level, pos, playerName, yaw, pitch);
         return true;
     }
 
@@ -41,12 +43,12 @@ public final class AFKManager {
         }
     }
 
-    public static boolean addFakePlayer(ServerLevel level, BlockPos pos, String name) {
+    public static boolean addFakePlayer(ServerLevel level, BlockPos pos, String name, float yaw, float pitch) {
         var state = AFKAnchorsState.get(level);
-        if (!state.add(pos, name)) return false;
+        if (!state.add(pos, name, yaw, pitch)) return false;
 
         MinecraftServer server = level.getServer();
-        ServerPlayer fakePlayer = FakePlayer.spawn(server, level, pos, name);
+        ServerPlayer fakePlayer = FakePlayer.spawn(server, level, pos, name, yaw, pitch);
         activeFakePlayers.put(name, fakePlayer);
         return true;
     }
@@ -73,7 +75,8 @@ public final class AFKManager {
         for (ServerLevel level : server.getAllLevels()) {
             var entries = AFKAnchorsState.get(level).getAllEntries();
             for (AFKAnchorsState.AFKAnchor entry : entries) {
-                ServerPlayer fakePlayer = FakePlayer.spawn(server, level, entry.pos(), entry.name());
+                ServerPlayer fakePlayer = FakePlayer.spawn(server, level, entry.pos(), entry.name(),
+                        entry.yaw(), entry.pitch());
                 activeFakePlayers.put(entry.name(), fakePlayer);
             }
         }

@@ -32,7 +32,8 @@ public final class FakePlayer {
         return player.getUUID().equals(fakeUUID(player.getGameProfile().name()));
     }
 
-    public static ServerPlayer spawn(MinecraftServer server, ServerLevel level, BlockPos pos, String name) {
+    public static ServerPlayer spawn(MinecraftServer server, ServerLevel level, BlockPos pos, String name,
+                                     float yaw, float pitch) {
         UUID uuid = fakeUUID(name);
         GameProfile profile = resolveProfileWithSkin(server, uuid, name);
 
@@ -48,7 +49,7 @@ public final class FakePlayer {
                 HumanoidArm.RIGHT, false, false, ParticleStatus.ALL);
 
         ServerPlayer player = new ServerPlayer(server, level, profile, clientInfo);
-        player.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0f, 0f);
+        player.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, yaw, pitch);
 
         CommonListenerCookie cookie = CommonListenerCookie.createInitial(profile, false);
         player.setInvulnerable(true);

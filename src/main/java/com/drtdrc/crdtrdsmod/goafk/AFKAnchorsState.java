@@ -17,11 +17,13 @@ import java.util.List;
 
 public final class AFKAnchorsState extends SavedData {
 
-    public record AFKAnchor(BlockPos pos, String name) {
+    public record AFKAnchor(BlockPos pos, String name, float yaw, float pitch) {
         public static final Codec<AFKAnchor> CODEC = RecordCodecBuilder.create(inst ->
                 inst.group(
                         BlockPos.CODEC.fieldOf("pos").forGetter(AFKAnchor::pos),
-                        Codec.STRING.fieldOf("name").forGetter(AFKAnchor::name)
+                        Codec.STRING.fieldOf("name").forGetter(AFKAnchor::name),
+                        Codec.FLOAT.optionalFieldOf("yaw", 0f).forGetter(AFKAnchor::yaw),
+                        Codec.FLOAT.optionalFieldOf("pitch", 0f).forGetter(AFKAnchor::pitch)
                 ).apply(inst, AFKAnchor::new)
         );
     }
@@ -57,10 +59,10 @@ public final class AFKAnchorsState extends SavedData {
         return afkAnchors.stream().map(AFKAnchor::pos).toList();
     }
 
-    public boolean add(BlockPos pos, String name) {
+    public boolean add(BlockPos pos, String name, float yaw, float pitch) {
         boolean exists = afkAnchors.stream().anyMatch(e -> e.pos.equals(pos) && e.name.equals(name));
         if (exists) return false;
-        afkAnchors.add(new AFKAnchor(pos.immutable(), name));
+        afkAnchors.add(new AFKAnchor(pos.immutable(), name, yaw, pitch));
         this.setDirty();
         return true;
     }
