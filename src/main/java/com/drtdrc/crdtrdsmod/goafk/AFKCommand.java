@@ -111,7 +111,7 @@ public final class AFKCommand {
                                                 .executes(ctx -> {
                                                     var src = ctx.getSource();
                                                     var level = src.getLevel();
-                                                    List<AFKAnchorsState.AFKAnchor> anchors = AFKAnchorsState.get(level).getAllEntries();
+                                                    List<AFKAnchorsState.AFKAnchor> anchors = List.copyOf(AFKAnchorsState.get(level).getAllEntries());
                                                     if (anchors.isEmpty()) {
                                                         src.sendSuccess(() -> Component.literal("No fake players to remove"), true);
                                                         return 0;
