@@ -20,14 +20,14 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-public final class FakePlayer {
-    private FakePlayer() {}
+public final class DummyPlayer {
+    private DummyPlayer() {}
 
     public static UUID fakeUUID(String name) {
         return UUID.nameUUIDFromBytes(("GoAFK:" + name).getBytes(StandardCharsets.UTF_8));
     }
 
-    public static boolean isFake(ServerPlayer player) {
+    public static boolean isDummy(ServerPlayer player) {
         return player.getUUID().equals(fakeUUID(player.getGameProfile().name()));
     }
 

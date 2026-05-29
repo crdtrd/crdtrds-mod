@@ -35,7 +35,7 @@ public final class AFKManager {
     }
 
     public static void onPlayerJoin(@NotNull ServerPlayer player) {
-        if (FakePlayer.isFake(player)) return;
+        if (DummyPlayer.isDummy(player)) return;
 
         String playerName = player.getGameProfile().name();
         MinecraftServer server = player.level().getServer();
@@ -47,38 +47,38 @@ public final class AFKManager {
 
     public static boolean addFakePlayer(ServerLevel level, double x, double y, double z,
                                          String name, float yaw, float pitch) {
-        var state = AFKAnchorsState.get(level);
+        var state = AFKDummiesState.get(level);
         if (!state.add(x, y, z, name, yaw, pitch)) return false;
 
         MinecraftServer server = level.getServer();
-        ServerPlayer fakePlayer = FakePlayer.spawn(server, level, x, y, z, name, yaw, pitch);
+        ServerPlayer fakePlayer = DummyPlayer.spawn(server, level, x, y, z, name, yaw, pitch);
         activeFakePlayers.put(name, fakePlayer);
         return true;
     }
 
     public static boolean removeFakePlayer(ServerLevel level, BlockPos pos, String name) {
-        var state = AFKAnchorsState.get(level);
-        List<AFKAnchorsState.AFKAnchor> removed = state.removeAnchor(pos, name);
+        var state = AFKDummiesState.get(level);
+        List<AFKDummiesState.AFKDummy> removed = state.removeDummy(pos, name);
         if (removed.isEmpty()) return false;
 
-        for (AFKAnchorsState.AFKAnchor a : removed) {
+        for (AFKDummiesState.AFKDummy a : removed) {
             ServerPlayer fakePlayer = activeFakePlayers.remove(a.name());
             if (fakePlayer != null) {
-                FakePlayer.remove(level.getServer(), fakePlayer);
+                DummyPlayer.remove(level.getServer(), fakePlayer);
             }
         }
         return true;
     }
 
     public static @NotNull List<BlockPos> getAnchorPositions(ServerLevel level) {
-        return AFKAnchorsState.get(level).getAllPositions();
+        return AFKDummiesState.get(level).getAllPositions();
     }
 
     public static void restoreFakePlayers(MinecraftServer server) {
         for (ServerLevel level : server.getAllLevels()) {
-            var entries = AFKAnchorsState.get(level).getAllEntries();
-            for (AFKAnchorsState.AFKAnchor entry : entries) {
-                ServerPlayer fakePlayer = FakePlayer.spawn(server, level,
+            var entries = AFKDummiesState.get(level).getAllEntries();
+            for (AFKDummiesState.AFKDummy entry : entries) {
+                ServerPlayer fakePlayer = DummyPlayer.spawn(server, level,
                         entry.x(), entry.y(), entry.z(), entry.name(),
                         entry.yaw(), entry.pitch());
                 activeFakePlayers.put(entry.name(), fakePlayer);

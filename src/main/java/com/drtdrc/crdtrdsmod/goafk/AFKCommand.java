@@ -7,7 +7,6 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
-import net.minecraft.commands.arguments.coordinates.Coordinates;
 import net.minecraft.commands.arguments.coordinates.RotationArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -33,7 +32,7 @@ public final class AFKCommand {
 
         dispatcher.register(
                 Commands.literal("afk")
-                        .then(Commands.literal("anchor")
+                        .then(Commands.literal("modify")
                                 .requires(Commands.hasPermission(Commands.LEVEL_ADMINS))
                                 .then(Commands.literal("add")
                                         .executes(ctx -> {
@@ -96,7 +95,7 @@ public final class AFKCommand {
                                                 })
                                         )
                                         .then(Commands.argument("name", StringArgumentType.word())
-                                                .suggests(ANCHOR_SUGGESTIONS)
+                                                .suggests(DUMMY_SUGGESTIONS)
                                                 .executes(ctx -> {
                                                     var src = ctx.getSource();
                                                     var level = src.getLevel();
@@ -111,12 +110,12 @@ public final class AFKCommand {
                                                 .executes(ctx -> {
                                                     var src = ctx.getSource();
                                                     var level = src.getLevel();
-                                                    List<AFKAnchorsState.AFKAnchor> anchors = List.copyOf(AFKAnchorsState.get(level).getAllEntries());
-                                                    if (anchors.isEmpty()) {
+                                                    List<AFKDummiesState.AFKDummy> dummies = List.copyOf(AFKDummiesState.get(level).getAllEntries());
+                                                    if (dummies.isEmpty()) {
                                                         src.sendSuccess(() -> Component.literal("No fake players to remove"), true);
                                                         return 0;
                                                     }
-                                                    for (AFKAnchorsState.AFKAnchor a : anchors) {
+                                                    for (AFKDummiesState.AFKDummy a : dummies) {
                                                         AFKManager.removeFakePlayer(level, a.blockPos(), a.name());
                                                     }
                                                     src.sendSuccess(() -> Component.literal("All fake players removed"), true);
@@ -128,9 +127,9 @@ public final class AFKCommand {
         );
     }
 
-    private static final SuggestionProvider<CommandSourceStack> ANCHOR_SUGGESTIONS = (ctx, builder) -> {
+    private static final SuggestionProvider<CommandSourceStack> DUMMY_SUGGESTIONS = (ctx, builder) -> {
         ServerLevel level = ctx.getSource().getLevel();
-        for (var e : AFKAnchorsState.get(level).getAllEntries()) {
+        for (var e : AFKDummiesState.get(level).getAllEntries()) {
             builder.suggest(e.name());
         }
         return builder.buildFuture();
