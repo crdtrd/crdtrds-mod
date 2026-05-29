@@ -32,12 +32,11 @@ public final class FakePlayer {
         Connection connection = new Connection(PacketFlow.SERVERBOUND);
         new EmbeddedChannel(connection);
 
-        ServerPlayer player = new FakeServerPlayer(server, level, profile, ClientInformation.createDefault());
+        ServerPlayer player = new ServerPlayer(server, level, profile, ClientInformation.createDefault());
         player.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0f, 0f);
 
         CommonListenerCookie cookie = CommonListenerCookie.createInitial(profile, false);
         player.setInvulnerable(true);
-        player.setInvisible(true);
 
         server.getPlayerList().placeNewPlayer(connection, player, cookie);
 
