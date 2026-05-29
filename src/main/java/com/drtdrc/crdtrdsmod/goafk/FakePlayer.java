@@ -21,7 +21,7 @@ public final class FakePlayer {
         return UUID.nameUUIDFromBytes(("GoAFK:" + name).getBytes(StandardCharsets.UTF_8));
     }
 
-    public static boolean isFake(ServerPlayer player) {
+    public static boolean isFake(net.minecraft.world.entity.player.Player player) {
         return player.getUUID().equals(fakeUUID(player.getGameProfile().name()));
     }
 
