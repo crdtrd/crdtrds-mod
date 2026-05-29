@@ -1,6 +1,8 @@
 package com.drtdrc.crdtrdsmod.goafk;
 
+import com.google.common.collect.LinkedHashMultimap;
 import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.PropertyMap;
 import io.netty.channel.embedded.EmbeddedChannel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.Connection;
@@ -32,7 +34,8 @@ public final class FakePlayer {
     public static ServerPlayer spawn(MinecraftServer server, ServerLevel level, BlockPos pos, String name) {
         UUID uuid = fakeUUID(name);
         GameProfile profile = server.services().profileResolver().fetchByName(name)
-                .map(resolved -> new GameProfile(uuid, name, resolved.properties()))
+                .map(resolved -> new GameProfile(uuid, name,
+                        new PropertyMap(LinkedHashMultimap.create(resolved.properties()))))
                 .orElseGet(() -> new GameProfile(uuid, name));
 
         Connection connection = new Connection(PacketFlow.SERVERBOUND);
