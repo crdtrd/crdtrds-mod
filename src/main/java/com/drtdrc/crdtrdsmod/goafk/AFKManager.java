@@ -47,12 +47,16 @@ public final class AFKManager {
 
     public static boolean addFakePlayer(ServerLevel level, double x, double y, double z,
                                          String name, float yaw, float pitch) {
+
         var state = AFKDummiesState.get(level);
-        if (!state.add(x, y, z, name, yaw, pitch)) return false;
+
+        String trimmedName = name.substring(0, Math.min(name.length(), 15));
+
+        if (!state.add(x, y, z, trimmedName, yaw, pitch)) return false;
 
         MinecraftServer server = level.getServer();
-        ServerPlayer fakePlayer = DummyPlayerManager.spawn(server, level, x, y, z, name, yaw, pitch);
-        activeFakePlayers.put(name, fakePlayer);
+        ServerPlayer fakePlayer = DummyPlayerManager.spawn(server, level, x, y, z, trimmedName, yaw, pitch);
+        activeFakePlayers.put(trimmedName, fakePlayer);
         return true;
     }
 
