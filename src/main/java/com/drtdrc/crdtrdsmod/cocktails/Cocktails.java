@@ -13,5 +13,10 @@ public class Cocktails {
                 Identifier.fromNamespaceAndPath(MOD_ID, "cocktails"),
                 CocktailsRecipe.SERIALIZER
         );
+        Registry.register(
+                BuiltInRegistries.RECIPE_SERIALIZER,
+                Identifier.fromNamespaceAndPath(MOD_ID, "cocktail_tipped_arrow"),
+                CocktailTippedArrowsRecipe.SERIALIZER
+        );
     }
 }
