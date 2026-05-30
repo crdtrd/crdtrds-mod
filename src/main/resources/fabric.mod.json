@@ -38,6 +38,7 @@
         "crdtrdsmod_mineable_spawners.mixins.json",
         "crdtrdsmod_mineable_trials.mixins.json",
         "crdtrdsmod_tick_warp_sleep.mixins.json",
+        "crdtrdsmod_undead_variant_buff.mixins.json",
         {
             "config": "crdtrdsmod.client.mixins.json",
             "environment": "client"
