@@ -32,51 +32,51 @@ public class ConfigScreen extends Screen {
         ModConfig cfg = ModConfig.get();
 
         entries.add(new ToggleEntry("Cheaper Anvils",
-                "Reduces anvil repair cost scaling from +4 to +2 per level",
+                "Reduces anvil repair cost scaling from +4 to +2 per level.",
                 () -> cfg.cheaperAnvils, v -> cfg.cheaperAnvils = v));
         entries.add(new ToggleEntry("Cocktails",
-                "Blend multiple potions together in a crafting table to combine their effects",
+                "Blend multiple potions together in a crafting table to combine their effects.",
                 () -> cfg.cocktails, v -> cfg.cocktails = v));
         entries.add(new ToggleEntry("Compostable Flesh",
-                "Makes rotten flesh compostable in the composter",
+                "Makes rotten flesh compostable in the composter.",
                 () -> cfg.compostableFlesh, v -> cfg.compostableFlesh = v));
         entries.add(new ToggleEntry("CurseStone",
-                "Allows the grindstone to remove curse enchantments from items",
+                "Allows the grindstone to remove curse enchantments from items.",
                 () -> cfg.curseStone, v -> cfg.curseStone = v));
         entries.add(new ToggleEntry("Delimited Anvils",
-                "Removes the anvil level 40 cost limit",
+                "Removes the anvil level 40 cost limit.",
                 () -> cfg.delimitedAnvils, v -> cfg.delimitedAnvils = v));
         cycleEntries.add(new CycleEntry("Enchanting Encore",
-                "Extended enchanting table range, bookshelf bias from chiseled bookshelves, enhanced protection, and water depth strider boost",
+                "Higher level vanilla enchantments, enhanced enchanting table bookshelf detection range, and ability to influence available enchantments with chiseled bookshelves. Two balancing modes to suit your experience.",
                 new String[]{"casual", "pro", "disabled"},
                 Map.of("casual", 0x55FF55, "pro", 0x55FFFF, "disabled", 0xFF5555),
                 () -> cfg.enchantingEncore, v -> cfg.enchantingEncore = v));
         entries.add(new ToggleEntry("Flexible Portals",
-                "Breaking an end portal frame block removes connected portal blocks",
+                "Make portals any shape you want. Allows breaking and placing of end portal frames and makes crying obsidian a valid nether portal frame block.",
                 () -> cfg.flexiblePortals, v -> cfg.flexiblePortals = v));
         entries.add(new ToggleEntry("Give Me Recipes",
-                "Automatically unlocks all crafting recipes when joining a world",
+                "Automatically unlocks all crafting recipes when joining a world, no toast required!",
                 () -> cfg.giveMeRecipes, v -> cfg.giveMeRecipes = v));
         entries.add(new ToggleEntry("Mineable Bedrock",
-                "Makes bedrock breakable with a very high hardness value",
+                "Allows breaking and placing of bedrock with diamond level silk touch pickaxes.",
                 () -> cfg.mineableBedrock, v -> cfg.mineableBedrock = v));
         entries.add(new ToggleEntry("Mineable Reinforced Deepslate",
-                "Reinforced deepslate can be harvested with a diamond silk touch pickaxe",
+                "Allows breaking and placing of reinforced deepslate with diamond level silk touch pickaxes.",
                 () -> cfg.mineableReinforcedDeepslate, v -> cfg.mineableReinforcedDeepslate = v));
         entries.add(new ToggleEntry("Mineable Spawners",
-                "Spawner blocks can be picked up with Silk Touch",
+                "Allows breaking and placing of normal spawners with any silk touch pickaxe. Use spawn eggs to repopulate the spawners.",
                 () -> cfg.mineableSpawners, v -> cfg.mineableSpawners = v));
         entries.add(new ToggleEntry("Mineable Trials",
-                "Makes vault and trial spawner blocks mineable with the correct tool",
+                "Allows breaking and placing of trial vaults and spawners with iron level silk touch pickaxes and allows vaults to be reused after one hour. Use spawn eggs to repopulate the trial spawners.",
                 () -> cfg.mineableTrials, v -> cfg.mineableTrials = v));
         entries.add(new ToggleEntry("Spawn Egg Drops",
-                "Mobs have a small chance to drop their spawn egg on death",
+                "Mobs have a small chance to drop their spawn egg on death.",
                 () -> cfg.spawnEggDrops, v -> cfg.spawnEggDrops = v));
         entries.add(new ToggleEntry("Tick Warp Sleep",
-                "Accelerates the game tick rate while players are sleeping for faster nights",
+                "Accelerates the game tick rate while players are sleeping for faster simulated nights.",
                 () -> cfg.tickWarpSleep, v -> cfg.tickWarpSleep = v));
         entries.add(new ToggleEntry("Undead Variant Buff",
-                "Adds useful drops and changes spawn mechanics of undead variant mobs",
+                "Adds useful drops and changes spawn mechanics to make more common and no longer require sky access for undead variant mobs.",
                 () -> cfg.undeadVariantBuff, v -> cfg.undeadVariantBuff = v));
 
         int cols = 2;
