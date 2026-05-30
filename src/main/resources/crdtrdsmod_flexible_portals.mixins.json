@@ -8,9 +8,9 @@
     "EnderEyeItemMixin",
     "EndPortalBlockMixin",
     "NetherPortalBlockMixin",
-    "NetherPortalMixin",
-    "PortalBlocksMixin",
-    "PortalServerLevelMixin",
+    "PortalShapeMixin",
+    "BlocksMixin",
+    "ServerLevelMixin",
     "ServerPlayerGameModeMixin"
   ],
   "injectors": {

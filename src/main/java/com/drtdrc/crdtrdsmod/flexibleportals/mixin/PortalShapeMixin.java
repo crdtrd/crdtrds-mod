@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Optional;
 
 @Mixin(PortalShape.class)
-public abstract class NetherPortalMixin {
+public abstract class PortalShapeMixin {
 
     @Shadow @Final @Mutable
     private static BlockBehaviour.StatePredicate FRAME;

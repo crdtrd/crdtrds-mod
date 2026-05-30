@@ -16,7 +16,7 @@ import java.util.ArrayDeque;
 import java.util.HashSet;
 
 @Mixin(ServerLevel.class)
-public class PortalServerLevelMixin {
+public class ServerLevelMixin {
 
     @Inject(method = "globalLevelEvent", at = @At("HEAD"), cancellable = true)
     private void crdtrdsmod$endPortalOpenedLocal(int eventId, BlockPos pos, int data, CallbackInfo ci) {
@@ -27,16 +27,6 @@ public class PortalServerLevelMixin {
             ci.cancel();
         }
     }
-
-//    @Inject(method = "levelEvent", at = @At("HEAD"), cancellable = true)
-//    private void crdtrdsmod$endPortalOpenedNonGlobal(Entity entity, int eventId, BlockPos pos, int data, CallbackInfo ci) {
-//        if (eventId == 1038) {
-//            ServerLevel self = (ServerLevel) (Object) this;
-//            BlockPos center = crdtrdsmod$findPortalCenter(self, pos);
-//            self.playSound(null, center, SoundEvents.END_PORTAL_SPAWN, SoundSource.BLOCKS, 1.0f, 1.0f);
-//            ci.cancel();
-//        }
-//    }
 
     @Unique
     private static BlockPos crdtrdsmod$findPortalCenter(ServerLevel level, BlockPos origin) {
