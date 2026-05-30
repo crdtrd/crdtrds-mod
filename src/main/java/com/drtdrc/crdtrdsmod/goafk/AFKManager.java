@@ -14,10 +14,10 @@ import java.util.Map;
 public final class AFKManager {
     private AFKManager() {}
 
-    private static final Map<String, ServerPlayer> activeFakePlayers = new HashMap<>();
+    private static final Map<String, ServerPlayer> activeDummyPlayers = new HashMap<>();
 
     public static String getDefaultName(BlockPos pos) {
-        return pos.getX() + " " + pos.getY() + " " + pos.getZ();
+        return "Dummy " ;
     }
 
     public static boolean goAFKAndKick(@NotNull ServerPlayer player) {
@@ -28,6 +28,8 @@ public final class AFKManager {
         double z = player.getZ();
         float yaw = player.getYRot();
         float pitch = player.getXRot();
+
+        DummyPlayerManager.GOING_AFK.add(player.getUUID());
 
         player.connection.disconnect(Component.literal("You are now AFK!"));
         addFakePlayer(level, x, y, z, playerName, yaw, pitch);
@@ -56,7 +58,7 @@ public final class AFKManager {
 
         MinecraftServer server = level.getServer();
         ServerPlayer fakePlayer = DummyPlayerManager.spawn(server, level, x, y, z, trimmedName, yaw, pitch);
-        activeFakePlayers.put(trimmedName, fakePlayer);
+        activeDummyPlayers.put(trimmedName, fakePlayer);
         return true;
     }
 
@@ -66,7 +68,7 @@ public final class AFKManager {
         if (removed.isEmpty()) return false;
 
         for (AFKDummiesState.AFKDummy a : removed) {
-            ServerPlayer fakePlayer = activeFakePlayers.remove(a.name());
+            ServerPlayer fakePlayer = activeDummyPlayers.remove(a.name());
             if (fakePlayer != null) {
                 DummyPlayerManager.remove(level.getServer(), fakePlayer);
             }
@@ -85,12 +87,12 @@ public final class AFKManager {
                 ServerPlayer fakePlayer = DummyPlayerManager.spawn(server, level,
                         entry.x(), entry.y(), entry.z(), entry.name(),
                         entry.yaw(), entry.pitch());
-                activeFakePlayers.put(entry.name(), fakePlayer);
+                activeDummyPlayers.put(entry.name(), fakePlayer);
             }
         }
     }
 
     public static void clearFakePlayers() {
-        activeFakePlayers.clear();
+        activeDummyPlayers.clear();
     }
 }

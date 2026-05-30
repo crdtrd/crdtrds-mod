@@ -66,8 +66,7 @@ public final class AFKDummiesState extends SavedData {
     }
 
     public boolean add(double x, double y, double z, String name, float yaw, float pitch) {
-        BlockPos blockPos = BlockPos.containing(x, y, z);
-        boolean exists = afkDummies.stream().anyMatch(e -> e.blockPos().equals(blockPos) && e.name.equals(name));
+        boolean exists = afkDummies.stream().anyMatch(e -> e.name.equals(name));
         if (exists) return false;
         afkDummies.add(new AFKDummy(x, y, z, name, yaw, pitch));
         this.setDirty();

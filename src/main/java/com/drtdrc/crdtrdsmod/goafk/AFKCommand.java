@@ -35,27 +35,7 @@ public final class AFKCommand {
                         .then(Commands.literal("modify")
                                 .requires(Commands.hasPermission(Commands.LEVEL_ADMINS))
                                 .then(Commands.literal("add")
-                                        .executes(ctx -> {
-                                            var src = ctx.getSource();
-                                            var level = src.getLevel();
-                                            var srcPos = src.getPosition();
-                                            BlockPos pos = BlockPos.containing(srcPos);
-                                            Vec2 rot = src.getRotation();
-                                            boolean ok = AFKManager.addFakePlayer(level, srcPos.x, srcPos.y, srcPos.z,
-                                                    AFKManager.getDefaultName(pos), rot.y, rot.x);
-                                            src.sendSuccess(() -> Component.literal(ok ? "Fake player added at your position" : "Fake player already exists here"), true);
-                                            return ok ? 1 : 0;
-                                        })
                                         .then(Commands.argument("pos", BlockPosArgument.blockPos())
-                                                .executes(ctx -> {
-                                                    var src = ctx.getSource();
-                                                    BlockPos pos = BlockPosArgument.getLoadedBlockPos(ctx, "pos");
-                                                    boolean ok = AFKManager.addFakePlayer(src.getLevel(),
-                                                            pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
-                                                            AFKManager.getDefaultName(pos), 0f, 0f);
-                                                    src.sendSuccess(() -> Component.literal(ok ? "Fake player added" : "Fake player already exists here"), true);
-                                                    return ok ? 1 : 0;
-                                                })
                                                 .then(Commands.argument("name", StringArgumentType.string())
                                                         .executes(ctx -> {
                                                             var src = ctx.getSource();
@@ -64,7 +44,7 @@ public final class AFKCommand {
                                                             boolean ok = AFKManager.addFakePlayer(src.getLevel(),
                                                                     pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
                                                                     name, 0f, 0f);
-                                                            src.sendSuccess(() -> Component.literal(ok ? "Fake player added" : "Fake player already exists here"), true);
+                                                            src.sendSuccess(() -> Component.literal(ok ? "Fake player added" : "Fake player already exists"), true);
                                                             return ok ? 1 : 0;
                                                         })
                                                         .then(Commands.argument("rotation", RotationArgument.rotation())
@@ -76,7 +56,7 @@ public final class AFKCommand {
                                                                     boolean ok = AFKManager.addFakePlayer(src.getLevel(),
                                                                             pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
                                                                             name, rot.y, rot.x);
-                                                                    src.sendSuccess(() -> Component.literal(ok ? "Fake player added" : "Fake player already exists here"), true);
+                                                                    src.sendSuccess(() -> Component.literal(ok ? "Fake player added" : "Fake player already exists"), true);
                                                                     return ok ? 1 : 0;
                                                                 })
                                                         )

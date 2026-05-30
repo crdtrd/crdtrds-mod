@@ -24,12 +24,15 @@ import net.minecraft.world.scores.Team;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class DummyPlayerManager {
     private DummyPlayerManager() {}
 
     private static final String AFK_TEAM = "goafk_dummies";
+    public static final Set<UUID> GOING_AFK = ConcurrentHashMap.newKeySet();
     public static UUID fakeUUID(String name) {
         return UUID.nameUUIDFromBytes(("GoAFK:" + name).getBytes(StandardCharsets.UTF_8));
     }
