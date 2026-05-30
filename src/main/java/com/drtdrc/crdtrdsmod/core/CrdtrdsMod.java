@@ -4,7 +4,6 @@ import com.drtdrc.crdtrdsmod.cocktails.Cocktails;
 import com.drtdrc.crdtrdsmod.compostableflesh.CompostableFlesh;
 import com.drtdrc.crdtrdsmod.goafk.GoAFK;
 import com.drtdrc.crdtrdsmod.spawneggdrops.SpawnEggDrops;
-import com.drtdrc.crdtrdsmod.undeadvariantbuff.UndeadVariantBuff;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
@@ -12,8 +11,6 @@ import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.ComposterBlock;
 import org.objectweb.asm.tree.ClassNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,7 +90,6 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
         // UndeadVariantBuff
         if(cfg.undeadVariantBuff) {
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "undead_variant_buff_enabled"), container, PackActivationType.ALWAYS_ENABLED);
-            UndeadVariantBuff.init();
         }
     }
 

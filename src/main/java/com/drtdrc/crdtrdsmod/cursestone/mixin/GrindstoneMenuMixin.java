@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(GrindstoneMenu.class)
-public class CurseStoneMixin {
+public class GrindstoneMenuMixin {
 
     @Inject(method = "removeNonCursesFrom", at = @At("RETURN"))
     private void removeCurses(ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {

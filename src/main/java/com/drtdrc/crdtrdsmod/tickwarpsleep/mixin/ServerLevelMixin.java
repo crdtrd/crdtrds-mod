@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.List;
 
 @Mixin(ServerLevel.class)
-public abstract class ServerLevelSleepMixin {
+public abstract class ServerLevelMixin {
 
     @Unique
     private static final float SLEEP_TICK_RATE = 200.0f;

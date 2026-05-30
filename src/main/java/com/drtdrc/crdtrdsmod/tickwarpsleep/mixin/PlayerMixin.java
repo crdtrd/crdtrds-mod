@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Player.class)
-public abstract class PlayerSleepMixin {
+public abstract class PlayerMixin {
 
     @Redirect(
             method = "tick()V",

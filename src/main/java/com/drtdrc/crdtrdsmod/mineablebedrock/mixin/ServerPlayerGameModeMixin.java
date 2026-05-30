@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerGameMode.class)
-public abstract class BedrockBreakProgressMixin {
+public abstract class ServerPlayerGameModeMixin {
 
     @Shadow private boolean isDestroyingBlock;
     @Shadow private int destroyProgressStart;

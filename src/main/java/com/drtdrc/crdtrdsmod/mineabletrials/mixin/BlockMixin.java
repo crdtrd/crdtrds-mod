@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Block.class)
-public class TrialsBlockMixin {
+public class BlockMixin {
 
     @Inject(method = "setPlacedBy", at = @At(value = "TAIL"))
     void crdtrdsmod$onPlacedVault(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack, CallbackInfo ci) {

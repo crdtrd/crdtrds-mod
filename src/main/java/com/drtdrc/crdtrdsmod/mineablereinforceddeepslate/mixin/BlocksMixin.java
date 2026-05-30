@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.function.Function;
 
 @Mixin(Blocks.class)
-public abstract class ReinforcedDeepslateBlocksMixin {
+public abstract class BlocksMixin {
 
     @Inject(
             method = "register(Lnet/minecraft/resources/ResourceKey;Ljava/util/function/Function;Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)Lnet/minecraft/world/level/block/Block;",

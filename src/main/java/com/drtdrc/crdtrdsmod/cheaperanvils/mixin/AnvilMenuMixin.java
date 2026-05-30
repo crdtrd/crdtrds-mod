@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AnvilMenu.class)
-public abstract class CheaperAnvilMixin {
+public abstract class AnvilMenuMixin {
 
     @Inject(method = "calculateIncreasedRepairCost", at = @At("HEAD"), cancellable = true)
     private static void crdtrdsmod$cheaperRepairCost(int baseCost, CallbackInfoReturnable<Integer> cir) {
