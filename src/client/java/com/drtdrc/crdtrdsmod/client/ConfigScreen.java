@@ -39,9 +39,6 @@ public class ConfigScreen extends Screen {
         entries.add(new ToggleEntry("Flexible Portals",
                 "Breaking an end portal frame block removes connected portal blocks",
                 () -> cfg.flexiblePortals, v -> cfg.flexiblePortals = v));
-        entries.add(new ToggleEntry("Go AFK",
-                "Use /afk to go AFK and keep your chunks loaded while disconnected",
-                () -> cfg.goAfk, v -> cfg.goAfk = v));
         entries.add(new ToggleEntry("Tick Warp Sleep",
                 "Accelerates the game tick rate while players are sleeping for faster nights",
                 () -> cfg.tickWarpSleep, v -> cfg.tickWarpSleep = v));

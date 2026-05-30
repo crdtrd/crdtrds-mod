@@ -7,6 +7,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ModConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -15,7 +17,10 @@ public class ModConfig {
     private static ModConfig INSTANCE;
     private static ModConfig ACTIVE;
     private static boolean loaded = false;
-
+    public Map<String, String> _notes = new LinkedHashMap<>(Map.of(
+            "enchantingEncore", "Two args: casual, pro. Anything else will disable.",
+            "goAfk", "GoAFK is server only. It will not function in singleplayer."
+    ));
     public String enchantingEncore = "casual";
     public boolean flexiblePortals = true;
     public boolean goAfk = true;
