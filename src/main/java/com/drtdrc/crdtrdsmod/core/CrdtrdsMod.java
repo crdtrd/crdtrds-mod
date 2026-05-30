@@ -92,6 +92,7 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
 
         // UndeadVariantBuff
         if(cfg.undeadVariantBuff) {
+            ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "undead_variant_buff_enabled"), container, PackActivationType.ALWAYS_ENABLED);
             UndeadVariantBuff.init();
         }
     }
