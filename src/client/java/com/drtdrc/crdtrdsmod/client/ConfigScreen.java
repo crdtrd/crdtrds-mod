@@ -31,6 +31,21 @@ public class ConfigScreen extends Screen {
         cycleEntries.clear();
         ModConfig cfg = ModConfig.get();
 
+        entries.add(new ToggleEntry("Cheaper Anvils",
+                "Reduces anvil repair cost scaling from +4 to +2 per level",
+                () -> cfg.cheaperAnvils, v -> cfg.cheaperAnvils = v));
+        entries.add(new ToggleEntry("Cocktails",
+                "Blend multiple potions together in a crafting table to combine their effects",
+                () -> cfg.cocktails, v -> cfg.cocktails = v));
+        entries.add(new ToggleEntry("Compostable Flesh",
+                "Makes rotten flesh compostable in the composter",
+                () -> cfg.compostableFlesh, v -> cfg.compostableFlesh = v));
+        entries.add(new ToggleEntry("CurseStone",
+                "Allows the grindstone to remove curse enchantments from items",
+                () -> cfg.curseStone, v -> cfg.curseStone = v));
+        entries.add(new ToggleEntry("Delimited Anvils",
+                "Removes the anvil level 40 cost limit",
+                () -> cfg.delimitedAnvils, v -> cfg.delimitedAnvils = v));
         cycleEntries.add(new CycleEntry("Enchanting Encore",
                 "Extended enchanting table range, bookshelf bias from chiseled bookshelves, enhanced protection, and water depth strider boost",
                 new String[]{"casual", "pro", "disabled"},
@@ -39,42 +54,30 @@ public class ConfigScreen extends Screen {
         entries.add(new ToggleEntry("Flexible Portals",
                 "Breaking an end portal frame block removes connected portal blocks",
                 () -> cfg.flexiblePortals, v -> cfg.flexiblePortals = v));
-        entries.add(new ToggleEntry("Tick Warp Sleep",
-                "Accelerates the game tick rate while players are sleeping for faster nights",
-                () -> cfg.tickWarpSleep, v -> cfg.tickWarpSleep = v));
-        entries.add(new ToggleEntry("Mineable Trials",
-                "Makes vault and trial spawner blocks mineable with the correct tool",
-                () -> cfg.mineableTrials, v -> cfg.mineableTrials = v));
-        entries.add(new ToggleEntry("Mineable Bedrock",
-                "Makes bedrock breakable with a very high hardness value",
-                () -> cfg.mineableBedrock, v -> cfg.mineableBedrock = v));
-        entries.add(new ToggleEntry("Cocktails",
-                "Blend multiple potions together in a crafting table to combine their effects",
-                () -> cfg.cocktails, v -> cfg.cocktails = v));
-        entries.add(new ToggleEntry("Cheaper Anvils",
-                "Reduces anvil repair cost scaling from +4 to +2 per level",
-                () -> cfg.cheaperAnvils, v -> cfg.cheaperAnvils = v));
-        entries.add(new ToggleEntry("Mineable Spawners",
-                "Spawner blocks can be picked up with Silk Touch",
-                () -> cfg.mineableSpawners, v -> cfg.mineableSpawners = v));
-        entries.add(new ToggleEntry("Spawn Egg Drops",
-                "Mobs have a small chance to drop their spawn egg on death",
-                () -> cfg.spawnEggDrops, v -> cfg.spawnEggDrops = v));
-        entries.add(new ToggleEntry("Delimited Anvils",
-                "Removes the anvil level 40 cost limit",
-                () -> cfg.delimitedAnvils, v -> cfg.delimitedAnvils = v));
         entries.add(new ToggleEntry("Give Me Recipes",
                 "Automatically unlocks all crafting recipes when joining a world",
                 () -> cfg.giveMeRecipes, v -> cfg.giveMeRecipes = v));
-        entries.add(new ToggleEntry("CurseStone",
-                "Allows the grindstone to remove curse enchantments from items",
-                () -> cfg.curseStone, v -> cfg.curseStone = v));
-        entries.add(new ToggleEntry("Compostable Flesh",
-                "Makes rotten flesh compostable in the composter",
-                () -> cfg.compostableFlesh, v -> cfg.compostableFlesh = v));
+        entries.add(new ToggleEntry("Mineable Bedrock",
+                "Makes bedrock breakable with a very high hardness value",
+                () -> cfg.mineableBedrock, v -> cfg.mineableBedrock = v));
         entries.add(new ToggleEntry("Mineable Reinforced Deepslate",
                 "Reinforced deepslate can be harvested with a diamond silk touch pickaxe",
                 () -> cfg.mineableReinforcedDeepslate, v -> cfg.mineableReinforcedDeepslate = v));
+        entries.add(new ToggleEntry("Mineable Spawners",
+                "Spawner blocks can be picked up with Silk Touch",
+                () -> cfg.mineableSpawners, v -> cfg.mineableSpawners = v));
+        entries.add(new ToggleEntry("Mineable Trials",
+                "Makes vault and trial spawner blocks mineable with the correct tool",
+                () -> cfg.mineableTrials, v -> cfg.mineableTrials = v));
+        entries.add(new ToggleEntry("Spawn Egg Drops",
+                "Mobs have a small chance to drop their spawn egg on death",
+                () -> cfg.spawnEggDrops, v -> cfg.spawnEggDrops = v));
+        entries.add(new ToggleEntry("Tick Warp Sleep",
+                "Accelerates the game tick rate while players are sleeping for faster nights",
+                () -> cfg.tickWarpSleep, v -> cfg.tickWarpSleep = v));
+        entries.add(new ToggleEntry("Undead Variant Buff",
+                "Adds useful drops and changes spawn mechanics of undead variant mobs",
+                () -> cfg.undeadVariantBuff, v -> cfg.undeadVariantBuff = v));
 
         int cols = 2;
         int btnW = 150;

@@ -4,6 +4,7 @@ import com.drtdrc.crdtrdsmod.cocktails.Cocktails;
 import com.drtdrc.crdtrdsmod.compostableflesh.CompostableFlesh;
 import com.drtdrc.crdtrdsmod.goafk.GoAFK;
 import com.drtdrc.crdtrdsmod.spawneggdrops.SpawnEggDrops;
+import com.drtdrc.crdtrdsmod.undeadvariantbuff.UndeadVariantBuff;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
@@ -36,6 +37,17 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
 
         // Register builtin resource packs and initialize code for enabled modules
 
+        // CompostableFlesh
+        if (cfg.compostableFlesh) {
+            CompostableFlesh.init();
+        }
+
+        // Cocktails
+        if (cfg.cocktails) {
+            Cocktails.init();
+            ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "cocktails_enabled"), container, PackActivationType.ALWAYS_ENABLED);
+        }
+
         // EnchantingEncore
         if ("casual".equalsIgnoreCase(cfg.enchantingEncore)) {
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "enchantingencore_casualmode_enabled"), container, PackActivationType.ALWAYS_ENABLED);
@@ -46,6 +58,11 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
         // Flexible Portals
         if (cfg.flexiblePortals) {
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "flexible_portals_enabled"), container, PackActivationType.ALWAYS_ENABLED);
+        }
+
+        // GoAFK
+        if (cfg.goAfk && FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+            GoAFK.init();
         }
 
         // MineableBedrock
@@ -68,25 +85,14 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "mineable_trials_enabled"), container, PackActivationType.ALWAYS_ENABLED);
         }
 
-        // Cocktails
-        if (cfg.cocktails) {
-            Cocktails.init();
-            ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "cocktails_enabled"), container, PackActivationType.ALWAYS_ENABLED);
-        }
-
-        // CompostableFlesh
-        if (cfg.compostableFlesh) {
-            CompostableFlesh.init();
-        }
-
         // SpawnEggDrops
         if (cfg.spawnEggDrops) {
             SpawnEggDrops.register();
         }
 
-        // GoAFK
-        if (cfg.goAfk && FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
-            GoAFK.init();
+        // UndeadVariantBuff
+        if(cfg.undeadVariantBuff) {
+            UndeadVariantBuff.init();
         }
     }
 
@@ -114,6 +120,7 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
         if (mixinClassName.contains(prefix + "mineabletrials") && modConfig.mineableTrials) return true;
         if (mixinClassName.contains(prefix + "spawneggdrops") && modConfig.spawnEggDrops) return true;
         if (mixinClassName.contains(prefix + "tickwarpsleep") && modConfig.tickWarpSleep) return true;
+        if (mixinClassName.contains(prefix + "undeadvariantbuff") && modConfig.undeadVariantBuff) return true;
 
         return false;
     }

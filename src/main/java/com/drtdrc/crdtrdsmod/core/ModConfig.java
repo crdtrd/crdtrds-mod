@@ -21,21 +21,22 @@ public class ModConfig {
             "enchantingEncore", "Two args: casual, pro. Anything else will disable.",
             "goAfk", "GoAFK is server only. It will not function in singleplayer."
     ));
+    public boolean cheaperAnvils = true;
+    public boolean cocktails = true;
+    public boolean compostableFlesh = true;
+    public boolean curseStone = true;
+    public boolean delimitedAnvils = true;
     public String enchantingEncore = "casual";
     public boolean flexiblePortals = true;
-    public boolean goAfk = true;
-    public boolean tickWarpSleep = true;
-    public boolean mineableTrials = true;
-    public boolean mineableBedrock = true;
-    public boolean cocktails = true;
-    public boolean cheaperAnvils = true;
-    public boolean mineableSpawners = true;
-    public boolean spawnEggDrops = true;
-    public boolean delimitedAnvils = true;
     public boolean giveMeRecipes = true;
-    public boolean curseStone = true;
-    public boolean compostableFlesh = true;
+    public boolean goAfk = true;
+    public boolean mineableBedrock = true;
     public boolean mineableReinforcedDeepslate = true;
+    public boolean mineableSpawners = true;
+    public boolean mineableTrials = true;
+    public boolean spawnEggDrops = true;
+    public boolean tickWarpSleep = true;
+    public boolean undeadVariantBuff = true;
 
     public static ModConfig get() {
         if (!loaded) {
