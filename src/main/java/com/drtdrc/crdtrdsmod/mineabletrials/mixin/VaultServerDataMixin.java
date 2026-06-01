@@ -27,6 +27,7 @@ public abstract class VaultServerDataMixin implements VaultServerDataAccessor {
     @Unique private static final String CODEC_PLAYER = "player";
     @Unique private static final String CODEC_TICKS = "ticks";
 
+    @Final
     @Shadow @Mutable static Codec<VaultServerData> CODEC;
 
     @Shadow abstract boolean hasRewardedPlayer(Player player);

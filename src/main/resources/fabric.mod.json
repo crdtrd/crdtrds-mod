@@ -3,7 +3,7 @@
     "id": "crdtrdsmod",
     "version": "${version}",
     "name": "crdtrd's mod",
-    "description": "A consolidated mod combining EnchantingEncore, FlexiblePortals, GoAFK, TickWarpSleep, MineableTrials, MineableBedrock, Cocktails, CheaperAnvils, MineableSpawners, SpawnEggDrops, DelimitedAnvils, GiveMeRecipes, CurseStone, CompostableFlesh, and MineableReinforcedDeepslate into one configurable mod.",
+    "description": "Basically just changes crdtrd wanted to make to Minecraft, organized by modules in one mod. All modules function server-side and work with vanilla clients.",
     "authors": [
         "crdtrd"
     ],

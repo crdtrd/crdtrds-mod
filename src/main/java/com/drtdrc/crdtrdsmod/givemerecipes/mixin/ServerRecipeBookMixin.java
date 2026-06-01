@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.ServerRecipeBook;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Mixin(ServerRecipeBook.class)
 public abstract class ServerRecipeBookMixin {
 
+    @Final
     @Shadow
     protected Set<ResourceKey<Recipe<?>>> known;
 

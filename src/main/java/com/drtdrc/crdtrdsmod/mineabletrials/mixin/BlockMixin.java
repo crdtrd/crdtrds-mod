@@ -19,9 +19,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class BlockMixin {
 
     @Inject(method = "setPlacedBy", at = @At(value = "TAIL"))
-    void crdtrdsmod$onPlacedVault(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack, CallbackInfo ci) {
+    void crdtrdsmod$onPlacedVault(Level level, BlockPos pos, BlockState state, LivingEntity by, ItemStack itemStack, CallbackInfo ci) {
         if (level.isClientSide()) return;
-        if (!(placer instanceof Player)) return;
+        if (!(by instanceof Player)) return;
         if (!(state.getBlock() instanceof VaultBlock)) return;
 
         var be = level.getBlockEntity(pos);

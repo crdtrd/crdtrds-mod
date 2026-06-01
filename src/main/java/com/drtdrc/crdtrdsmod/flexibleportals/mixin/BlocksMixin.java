@@ -25,7 +25,7 @@ public class BlocksMixin {
             at = @At("HEAD"),
             cancellable = true
     )
-    private static void crdtrdsmod$onRegisterPortalBlocks(ResourceKey<Block> key, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings, CallbackInfoReturnable<Block> cir) {
+    private static void crdtrdsmod$onRegisterPortalBlocks(ResourceKey<Block> key, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties, CallbackInfoReturnable<Block> cir) {
 
         String id = key.identifier().toString();
 
