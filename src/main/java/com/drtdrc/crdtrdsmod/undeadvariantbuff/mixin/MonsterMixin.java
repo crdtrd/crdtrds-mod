@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -24,7 +25,7 @@ public class MonsterMixin {
     )
     private static void crdtrdsmod$checkSurfaceMonstersSpawnRules(EntityType<? extends Mob> type, ServerLevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random, CallbackInfoReturnable<Boolean> cir) {
 
-        if (type == EntityType.HUSK ||  type == EntityType.PARCHED) {
+        if (type == EntityTypes.HUSK ||  type == EntityTypes.PARCHED) {
 
             cir.setReturnValue(checkMonsterSpawnRules(type, level, spawnReason, pos, random) || EntitySpawnReason.isSpawner(spawnReason));
         }

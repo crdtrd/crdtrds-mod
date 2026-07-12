@@ -7,6 +7,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,11 +133,11 @@ public class ConfigScreen extends Screen {
     @Override
     public void onClose() {
         ModConfig.save();
-        this.minecraft.setScreen(this.parent);
+        this.minecraft.setScreenAndShow(this.parent);
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         super.extractRenderState(graphics, mouseX, mouseY, delta);
         graphics.centeredText(this.font, this.title, this.width / 2, 10, 0xFFFFFF);
         graphics.centeredText(this.font, Component.literal("Changes require a game restart to take effect"), this.width / 2, 25, 0xAAAAAA);

@@ -2,11 +2,11 @@
   "pack": {
     "description": "Undead Variant Buff",
     "min_format": [
-      101,
+      107,
       0
     ],
     "max_format": [
-      101,
+      107,
       1
     ]
   }

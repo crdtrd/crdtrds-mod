@@ -5,7 +5,6 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import io.netty.channel.embedded.EmbeddedChannel;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.PacketFlow;
@@ -21,9 +20,11 @@ import net.minecraft.world.entity.player.ChatVisiblity;
 import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Team;
+import net.minecraft.world.scores.TeamColor;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -103,7 +104,7 @@ public final class DummyPlayerManager {
         }
         team.setPlayerPrefix(Component.literal("(AFK) ")
                 .withStyle(s -> s.withColor(0x888888).withItalic(true)));
-        team.setColor(ChatFormatting.GRAY);
+        team.setColor(Optional.of(TeamColor.GRAY));
         team.setNameTagVisibility(Team.Visibility.ALWAYS);
     }
 

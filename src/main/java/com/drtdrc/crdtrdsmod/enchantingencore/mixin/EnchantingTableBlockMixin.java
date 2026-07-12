@@ -9,10 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EnchantingTableBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
+import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.*;
@@ -74,7 +71,7 @@ public abstract class EnchantingTableBlockMixin extends BaseEntityBlock {
     @Inject(method = "getTicker", at = @At("RETURN"), cancellable = true)
     private <T extends BlockEntity> void crdtrdsmod$onGetTicker(Level level, BlockState state, BlockEntityType<T> type, CallbackInfoReturnable<BlockEntityTicker<T>> cir) {
         if (level.isClientSide()) return;
-        if (type != BlockEntityType.ENCHANTING_TABLE) return;
+        if (type != BlockEntityTypes.ENCHANTING_TABLE) return;
 
         BlockEntityTicker<T> existing = cir.getReturnValue();
 

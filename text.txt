@@ -1,0 +1,45 @@
+| Enchantment           | Min Available Level (Casual) | Min Available Level (Pro) |
+| --------------------- | ------------------ | --------------- |
+| Aqua Affinity         | II                 | III             |
+| Bane of Arthropods    | VII                | X               |
+| Blast Protection      | VII                | VIII            |
+| Breach                | VI                 | VIII            |
+| Channeling            | Unchanged          | Unchanged       |
+| Curse of Binding      | Unchanged          | Unchanged       |
+| Curse of Vanishing    | Unchanged          | Unchanged       |
+| Density               | VII                | X               |
+| Depth Strider         | V                  | VI              |
+| Efficiency            | VII                | X               |
+| Feather Falling       | VII                | VIII            |
+| Fire Aspect           | III                | IV              |
+| Fire Protection       | VII                | VIII            |
+| Flame                 | Unchanged          | Unchanged       |
+| Fortune               | V                  | VI              |
+| Frost Walker          | V                  | IV              |
+| Impaling              | VII                | X               |
+| Infinity              | Unchanged          | Unchanged       |
+| Knockback             | V                  | IV              |
+| Looting               | V                  | VI              |
+| Loyalty               | V                  | VI              |
+| Luck of the Sea       | V                  | VI              |
+| Lunge                 | V                  | VI              |
+| Lure                  | V                  | VI              |
+| Mending               | Unchanged          | Unchanged       |
+| Multishot             | III                | III             |
+| Piercing              | VII                | VIII            |
+| Power                 | VII                | X               |
+| Projectile Protection | VII                | VIII            |
+| Protection            | VII                | VIII            |
+| Punch                 | V                  | IV              |
+| Quick Charge          | V                  | VI              |
+| Respiration           | V                  | VI              |
+| Riptide               | V                  | VI              |
+| Sharpness             | VII                | X               |
+| Silk Touch            | Unchanged          | Unchanged       |
+| Smite                 | VII                | X               |
+| Soul Speed            | V                  | VI              |
+| Sweeping Edge         | V                  | VI              |
+| Swift Sneak           | V                  | VI              |
+| Thorns                | V                  | VI              |
+| Unbreaking            | V                  | VI              |
+| Wind Burst            | V                  | VI              |
