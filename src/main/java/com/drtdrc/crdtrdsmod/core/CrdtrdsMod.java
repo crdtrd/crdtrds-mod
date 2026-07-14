@@ -2,6 +2,7 @@ package com.drtdrc.crdtrdsmod.core;
 
 import com.drtdrc.crdtrdsmod.cocktails.Cocktails;
 import com.drtdrc.crdtrdsmod.compostableflesh.CompostableFlesh;
+import com.drtdrc.crdtrdsmod.compostablepp.CompostablePP;
 import com.drtdrc.crdtrdsmod.goafk.GoAFK;
 import com.drtdrc.crdtrdsmod.spawneggdrops.SpawnEggDrops;
 import net.fabricmc.api.EnvType;
@@ -34,15 +35,20 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
 
         // Register builtin resource packs and initialize code for enabled modules
 
+        // Cocktails
+        if (cfg.cocktails) {
+            Cocktails.init();
+            ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "cocktails_enabled"), container, PackActivationType.ALWAYS_ENABLED);
+        }
+
         // CompostableFlesh
         if (cfg.compostableFlesh) {
             CompostableFlesh.init();
         }
 
-        // Cocktails
-        if (cfg.cocktails) {
-            Cocktails.init();
-            ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "cocktails_enabled"), container, PackActivationType.ALWAYS_ENABLED);
+        //CompostablePP (Poisonous Potato)
+        if (cfg.compostablePP) {
+            CompostablePP.init();
         }
 
         // EnchantingEncore

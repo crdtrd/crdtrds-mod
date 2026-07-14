@@ -23,6 +23,7 @@ public class ModConfig {
     ));
     public boolean cheaperAnvils = true;
     public boolean cocktails = true;
+    public boolean compostablePP = true;
     public boolean compostableFlesh = true;
     public boolean curseStone = true;
     public boolean delimitedAnvils = true;
