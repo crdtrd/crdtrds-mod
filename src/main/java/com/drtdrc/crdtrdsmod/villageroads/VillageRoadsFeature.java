@@ -5,23 +5,30 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.BuiltinStructureSets;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,6 +58,15 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
      * way into lakes rather than crossing them, while narrow streams still bridge fully.
      */
     private static final int MAX_LAKE_PENETRATION = 3;
+    /**
+     * Each road segment is pulled back this many blocks from both village centres so the road begins
+     * and ends at the fringe of a village rather than cutting through its buildings.
+     */
+    private static final int VILLAGE_EDGE_CLEARANCE = 48;
+    /** Height (in blocks) above the path to clear tree trunks/canopy and other foliage. */
+    private static final int MAX_TREE_CLEAR = 24;
+    /** Radius (in chunks) around the current chunk to gather structure bounding boxes to avoid. */
+    private static final int STRUCTURE_SCAN_RADIUS = 8;
 
     public VillageRoadsFeature(final Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -88,6 +104,9 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
 
         VillageLocator locator = new VillageLocator(spread, seed, spacing);
         int seaLevel = generator.getSeaLevel();
+        // Structure footprints (villages, outposts, etc.) placed before this feature runs; road
+        // columns falling inside any of them are skipped so roads never carve through structures.
+        List<BoundingBox> structureBoxes = collectStructureBoxes(level, chunkX, chunkZ);
         boolean placedAny = false;
 
         for (int gx = cellX - SOURCE_CELL_RADIUS; gx <= cellX + SOURCE_CELL_RADIUS; gx++) {
@@ -103,21 +122,68 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
                 int bx = b.getMinBlockX() + 8;
                 int bz = b.getMinBlockZ() + 8;
 
-                if (!segmentIntersectsChunk(ax, az, bx, bz, minBlockX, minBlockZ, maxBlockX, maxBlockZ)) {
+                // Pull the segment back from both village centres so it stops at the village edge.
+                double dx = bx - ax;
+                double dz = bz - az;
+                double len = Math.sqrt(dx * dx + dz * dz);
+                if (len <= 2.0 * VILLAGE_EDGE_CLEARANCE) {
+                    continue;
+                }
+                double ux = dx / len;
+                double uz = dz / len;
+                int sax = ax + (int) Math.round(ux * VILLAGE_EDGE_CLEARANCE);
+                int saz = az + (int) Math.round(uz * VILLAGE_EDGE_CLEARANCE);
+                int sbx = bx - (int) Math.round(ux * VILLAGE_EDGE_CLEARANCE);
+                int sbz = bz - (int) Math.round(uz * VILLAGE_EDGE_CLEARANCE);
+
+                if (!segmentIntersectsChunk(sax, saz, sbx, sbz, minBlockX, minBlockZ, maxBlockX, maxBlockZ)) {
                     continue;
                 }
 
-                placedAny |= stampSegment(level, seaLevel, ax, az, bx, bz, minBlockX, minBlockZ, maxBlockX, maxBlockZ);
+                placedAny |= stampSegment(level, seaLevel, sax, saz, sbx, sbz,
+                        minBlockX, minBlockZ, maxBlockX, maxBlockZ, structureBoxes);
             }
         }
 
         return placedAny;
     }
 
+    private static List<BoundingBox> collectStructureBoxes(final WorldGenLevel level,
+                                                           final int chunkX, final int chunkZ) {
+        List<BoundingBox> boxes = new ArrayList<>();
+        for (int cx = chunkX - STRUCTURE_SCAN_RADIUS; cx <= chunkX + STRUCTURE_SCAN_RADIUS; cx++) {
+            for (int cz = chunkZ - STRUCTURE_SCAN_RADIUS; cz <= chunkZ + STRUCTURE_SCAN_RADIUS; cz++) {
+                if (!level.hasChunk(cx, cz)) {
+                    continue;
+                }
+                ChunkAccess chunk = level.getChunk(cx, cz);
+                for (StructureStart start : chunk.getAllStarts().values()) {
+                    if (start == null || !start.isValid()) {
+                        continue;
+                    }
+                    for (StructurePiece piece : start.getPieces()) {
+                        boxes.add(piece.getBoundingBox());
+                    }
+                }
+            }
+        }
+        return boxes;
+    }
+
+    private static boolean insideStructure(final List<BoundingBox> boxes, final int wx, final int wz) {
+        for (BoundingBox box : boxes) {
+            if (box.intersects(wx, wz, wx, wz)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean stampSegment(final WorldGenLevel level, final int seaLevel,
                                  final int ax, final int az, final int bx, final int bz,
                                  final int minBlockX, final int minBlockZ,
-                                 final int maxBlockX, final int maxBlockZ) {
+                                 final int maxBlockX, final int maxBlockZ,
+                                 final List<BoundingBox> structureBoxes) {
         double dx = bx - ax;
         double dz = bz - az;
         double len = Math.sqrt(dx * dx + dz * dz);
@@ -128,7 +194,7 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
         for (int wx = minBlockX; wx <= maxBlockX; wx++) {
             for (int wz = minBlockZ; wz <= maxBlockZ; wz++) {
                 double dist = distanceToSegment(wx + 0.5, wz + 0.5, ax, az, bx, bz);
-                if (dist <= ROAD_HALF_WIDTH) {
+                if (dist <= ROAD_HALF_WIDTH && !insideStructure(structureBoxes, wx, wz)) {
                     placedAny |= placeRoadColumn(level, seaLevel, wx, wz, ux, uz);
                 }
             }
@@ -212,11 +278,22 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
                 || state.is(Blocks.BLUE_ICE) || state.is(Blocks.FROSTED_ICE);
     }
 
+    /**
+     * Clears the column above the road: removes tree trunks/canopy ({@link BlockTags#LOGS},
+     * {@link BlockTags#LEAVES}) and any non-solid foliage (grass, flowers, snow layers, vines).
+     * Stops at the first solid non-tree block so it never tunnels through terrain or structures.
+     */
     private static void clearAbove(final WorldGenLevel level, final int wx, final int y, final int wz) {
-        for (int oy = 1; oy <= 2; oy++) {
+        for (int oy = 1; oy <= MAX_TREE_CLEAR; oy++) {
             BlockPos pos = new BlockPos(wx, y + oy, wz);
-            if (!level.getBlockState(pos).isAir()) {
+            BlockState state = level.getBlockState(pos);
+            if (state.isAir()) {
+                continue;
+            }
+            if (state.is(BlockTags.LOGS) || state.is(BlockTags.LEAVES) || !state.blocksMotion()) {
                 level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+            } else {
+                break;
             }
         }
     }
