@@ -5,6 +5,7 @@ import com.drtdrc.crdtrdsmod.compostableflesh.CompostableFlesh;
 import com.drtdrc.crdtrdsmod.compostablepp.CompostablePP;
 import com.drtdrc.crdtrdsmod.goafk.GoAFK;
 import com.drtdrc.crdtrdsmod.spawneggdrops.SpawnEggDrops;
+import com.drtdrc.crdtrdsmod.villageroads.VillageRoads;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
@@ -96,6 +97,12 @@ public class CrdtrdsMod implements ModInitializer, IMixinConfigPlugin {
         // UndeadVariantBuff
         if(cfg.undeadVariantBuff) {
             ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "undead_variant_buff_enabled"), container, PackActivationType.ALWAYS_ENABLED);
+        }
+
+        // VillageRoads
+        if (cfg.villageRoads) {
+            VillageRoads.init();
+            ResourceLoader.registerBuiltinPack(Identifier.fromNamespaceAndPath(MOD_ID, "village_roads_enabled"), container, PackActivationType.ALWAYS_ENABLED);
         }
     }
 

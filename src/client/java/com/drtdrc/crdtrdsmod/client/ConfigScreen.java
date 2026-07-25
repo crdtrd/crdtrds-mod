@@ -82,6 +82,9 @@ public class ConfigScreen extends Screen {
         entries.add(new ToggleEntry("Undead Variant Buff",
                 "Adds useful drops and changes spawn mechanics to make more common and no longer require sky access for undead variant mobs.",
                 () -> cfg.undeadVariantBuff, v -> cfg.undeadVariantBuff = v));
+        entries.add(new ToggleEntry("Village Roads",
+                "Generates dirt-path roads connecting each village to its nearest neighbour during world generation.",
+                () -> cfg.villageRoads, v -> cfg.villageRoads = v));
 
         int cols = 2;
         int btnW = 150;
