@@ -38,6 +38,7 @@ public class ModConfig {
     public boolean spawnEggDrops = true;
     public boolean tickWarpSleep = true;
     public boolean undeadVariantBuff = true;
+    public boolean villageRoads = true;
 
     public static ModConfig get() {
         if (!loaded) {

@@ -1,0 +1,13 @@
+{
+  "pack": {
+    "description": "Village Roads",
+    "min_format": [
+      107,
+      0
+    ],
+    "max_format": [
+      107,
+      1
+    ]
+  }
+}
