@@ -2,9 +2,13 @@ package com.drtdrc.crdtrdsmod.villageroads;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -41,6 +45,12 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
     private static final double ROAD_HALF_WIDTH = 1.6;
     /** Water spans deeper than this (in blocks) are not bridged; the road stops at the shore. */
     private static final int MAX_BRIDGE_DEPTH = 4;
+    /**
+     * How far (in blocks, measured along the road) a bridge may reach from dry land. Lake and ice
+     * columns further than this from the nearest shore are left open, so the road only dips a little
+     * way into lakes rather than crossing them, while narrow streams still bridge fully.
+     */
+    private static final int MAX_LAKE_PENETRATION = 3;
 
     public VillageRoadsFeature(final Codec<NoneFeatureConfiguration> codec) {
         super(codec);
@@ -108,19 +118,26 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
                                  final int ax, final int az, final int bx, final int bz,
                                  final int minBlockX, final int minBlockZ,
                                  final int maxBlockX, final int maxBlockZ) {
+        double dx = bx - ax;
+        double dz = bz - az;
+        double len = Math.sqrt(dx * dx + dz * dz);
+        double ux = len == 0.0 ? 0.0 : dx / len;
+        double uz = len == 0.0 ? 0.0 : dz / len;
+
         boolean placedAny = false;
         for (int wx = minBlockX; wx <= maxBlockX; wx++) {
             for (int wz = minBlockZ; wz <= maxBlockZ; wz++) {
                 double dist = distanceToSegment(wx + 0.5, wz + 0.5, ax, az, bx, bz);
                 if (dist <= ROAD_HALF_WIDTH) {
-                    placedAny |= placeRoadColumn(level, seaLevel, wx, wz);
+                    placedAny |= placeRoadColumn(level, seaLevel, wx, wz, ux, uz);
                 }
             }
         }
         return placedAny;
     }
 
-    private boolean placeRoadColumn(final WorldGenLevel level, final int seaLevel, final int wx, final int wz) {
+    private boolean placeRoadColumn(final WorldGenLevel level, final int seaLevel,
+                                    final int wx, final int wz, final double ux, final double uz) {
         int surfaceY = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, wx, wz);
         int topY = surfaceY - 1;
         if (topY <= level.getMinY() || surfaceY >= level.getMaxY()) {
@@ -129,15 +146,24 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
 
         BlockPos topPos = new BlockPos(wx, topY, wz);
         BlockState topState = level.getBlockState(topPos);
+        boolean water = !topState.getFluidState().isEmpty();
+        boolean ice = isIce(topState);
 
-        if (!topState.getFluidState().isEmpty()) {
-            int floorY = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, wx, wz);
-            int depth = topY - floorY + 1;
-            if (depth > MAX_BRIDGE_DEPTH) {
+        if (water || ice) {
+            // Open water depth can be measured; ice hides its depth, so rely on the shore check for it.
+            if (water) {
+                int floorY = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, wx, wz);
+                int depth = topY - floorY + 1;
+                if (depth > MAX_BRIDGE_DEPTH) {
+                    return false;
+                }
+            }
+            if (!nearShore(level, wx, wz, ux, uz)) {
                 return false;
             }
             int bridgeY = Math.max(topY, seaLevel - 1);
-            level.setBlock(new BlockPos(wx, bridgeY, wz), Blocks.OAK_PLANKS.defaultBlockState(), 2);
+            Holder<Biome> biome = level.getBiome(topPos);
+            level.setBlock(new BlockPos(wx, bridgeY, wz), bridgeBlock(biome).defaultBlockState(), 2);
             clearAbove(level, wx, bridgeY, wz);
             return true;
         }
@@ -148,9 +174,42 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
             level.setBlock(belowPos, Blocks.DIRT.defaultBlockState(), 2);
         }
 
-        level.setBlock(topPos, surfaceBlock(wx, wz), 2);
+        Holder<Biome> biome = level.getBiome(topPos);
+        level.setBlock(topPos, surfaceBlock(biome, wx, wz), 2);
         clearAbove(level, wx, topY, wz);
         return true;
+    }
+
+    /**
+     * True if dry land lies within {@link #MAX_LAKE_PENETRATION} blocks of this column measured along
+     * the road direction (in either direction). Keeps bridges to the fringes of lakes.
+     */
+    private static boolean nearShore(final WorldGenLevel level, final int wx, final int wz,
+                                     final double ux, final double uz) {
+        if (ux == 0.0 && uz == 0.0) {
+            return true;
+        }
+        for (int k = 1; k <= MAX_LAKE_PENETRATION; k++) {
+            int fx = wx + (int) Math.round(ux * k);
+            int fz = wz + (int) Math.round(uz * k);
+            int bx = wx - (int) Math.round(ux * k);
+            int bz = wz - (int) Math.round(uz * k);
+            if (isLandColumn(level, fx, fz) || isLandColumn(level, bx, bz)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isLandColumn(final WorldGenLevel level, final int x, final int z) {
+        int y = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z) - 1;
+        BlockState state = level.getBlockState(new BlockPos(x, y, z));
+        return state.getFluidState().isEmpty() && !isIce(state);
+    }
+
+    private static boolean isIce(final BlockState state) {
+        return state.is(Blocks.ICE) || state.is(Blocks.PACKED_ICE)
+                || state.is(Blocks.BLUE_ICE) || state.is(Blocks.FROSTED_ICE);
     }
 
     private static void clearAbove(final WorldGenLevel level, final int wx, final int y, final int wz) {
@@ -162,15 +221,38 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
         }
     }
 
-    private static BlockState surfaceBlock(final int wx, final int wz) {
+    private static BlockState surfaceBlock(final Holder<Biome> biome, final int wx, final int wz) {
         int r = deterministic(wx, wz) % 100;
-        if (r < 70) {
-            return Blocks.DIRT_PATH.defaultBlockState();
-        } else if (r < 90) {
-            return Blocks.GRAVEL.defaultBlockState();
-        } else {
-            return Blocks.COBBLESTONE.defaultBlockState();
+        if (biome.is(BiomeTags.HAS_VILLAGE_DESERT) || biome.is(BiomeTags.IS_BADLANDS)) {
+            return (r < 60 ? Blocks.SMOOTH_SANDSTONE : r < 85 ? Blocks.CUT_SANDSTONE : Blocks.SANDSTONE)
+                    .defaultBlockState();
         }
+        if (biome.is(BiomeTags.HAS_VILLAGE_SNOWY)) {
+            return (r < 55 ? Blocks.SNOW_BLOCK : r < 85 ? Blocks.DIRT_PATH : Blocks.COBBLESTONE)
+                    .defaultBlockState();
+        }
+        if (biome.is(BiomeTags.HAS_VILLAGE_TAIGA) || biome.is(BiomeTags.IS_TAIGA)) {
+            return (r < 45 ? Blocks.DIRT_PATH : r < 75 ? Blocks.PODZOL
+                    : r < 90 ? Blocks.COBBLESTONE : Blocks.MOSSY_COBBLESTONE).defaultBlockState();
+        }
+        if (biome.is(BiomeTags.HAS_VILLAGE_SAVANNA) || biome.is(BiomeTags.IS_SAVANNA)) {
+            return (r < 60 ? Blocks.DIRT_PATH : r < 85 ? Blocks.COARSE_DIRT : Blocks.GRAVEL)
+                    .defaultBlockState();
+        }
+        // Plains and everything else.
+        return (r < 70 ? Blocks.DIRT_PATH : r < 90 ? Blocks.GRAVEL : Blocks.COBBLESTONE)
+                .defaultBlockState();
+    }
+
+    private static Block bridgeBlock(final Holder<Biome> biome) {
+        if (biome.is(BiomeTags.HAS_VILLAGE_SNOWY) || biome.is(BiomeTags.HAS_VILLAGE_TAIGA)
+                || biome.is(BiomeTags.IS_TAIGA)) {
+            return Blocks.SPRUCE_PLANKS;
+        }
+        if (biome.is(BiomeTags.HAS_VILLAGE_SAVANNA) || biome.is(BiomeTags.IS_SAVANNA)) {
+            return Blocks.ACACIA_PLANKS;
+        }
+        return Blocks.OAK_PLANKS;
     }
 
     private static int deterministic(final int x, final int z) {
