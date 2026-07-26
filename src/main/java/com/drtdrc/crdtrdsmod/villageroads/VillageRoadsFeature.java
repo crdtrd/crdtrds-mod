@@ -57,14 +57,14 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
      * columns further than this from the nearest shore are left open, so the road only dips a little
      * way into lakes rather than crossing them, while narrow streams still bridge fully.
      */
-    private static final int MAX_LAKE_PENETRATION = 3;
+    private static final int MAX_LAKE_PENETRATION = 5;
     /**
      * Each road segment is pulled back this many blocks from both village centres so the road begins
      * and ends at the fringe of a village rather than cutting through its buildings.
      */
     private static final int VILLAGE_EDGE_CLEARANCE = 48;
     /** Height (in blocks) above the path to clear tree trunks/canopy and other foliage. */
-    private static final int MAX_TREE_CLEAR = 5;
+    private static final int MAX_TREE_CLEAR = 3;
     /** Radius (in chunks) around the current chunk to gather structure bounding boxes to avoid. */
     private static final int STRUCTURE_SCAN_RADIUS = 8;
 

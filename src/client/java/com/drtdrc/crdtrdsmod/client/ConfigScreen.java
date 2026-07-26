@@ -33,7 +33,7 @@ public class ConfigScreen extends Screen {
         ModConfig cfg = ModConfig.get();
 
         entries.add(new ToggleEntry("Cheaper Anvils",
-                "Reduces anvil repair cost scaling from +4 to +2 per level.",
+                "Reduces anvil repair cost scaling from exponential to just +2 per level.",
                 () -> cfg.cheaperAnvils, v -> cfg.cheaperAnvils = v));
         entries.add(new ToggleEntry("Cocktails",
                 "Blend multiple potions together in a crafting table to combine their effects.",
@@ -80,7 +80,7 @@ public class ConfigScreen extends Screen {
                 "Accelerates the game tick rate while players are sleeping for faster simulated nights.",
                 () -> cfg.tickWarpSleep, v -> cfg.tickWarpSleep = v));
         entries.add(new ToggleEntry("Undead Variant Buff",
-                "Adds useful drops and changes spawn mechanics to make more common and no longer require sky access for undead variant mobs.",
+                "Adds useful drops and changes spawn mechanics to no longer require sky access for and to make more common undead variant mobs.",
                 () -> cfg.undeadVariantBuff, v -> cfg.undeadVariantBuff = v));
         entries.add(new ToggleEntry("Village Roads",
                 "Generates dirt-path roads connecting each village to its nearest neighbour during world generation.",
