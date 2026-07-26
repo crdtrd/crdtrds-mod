@@ -46,8 +46,10 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
 
     /** How far (in grid cells) around the current chunk to look for road-segment endpoints. */
     private static final int SOURCE_CELL_RADIUS = 5;
-    /** How far (in grid cells) around a village to search for its nearest neighbour. */
+    /** How far (in grid cells) around a village to search for its nearest neighbours. */
     private static final int NEIGHBOUR_CELL_RADIUS = 3;
+    /** Number of nearest villages each village links to, so every village has multiple roads. */
+    private static final int CONNECTIONS_PER_VILLAGE = 2;
     /** Half of the road width; distance-to-segment threshold in blocks. */
     private static final double ROAD_HALF_WIDTH = 1.6;
     /** Water spans deeper than this (in blocks) are not bridged; the road stops at the shore. */
@@ -111,37 +113,40 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
 
         for (int gx = cellX - SOURCE_CELL_RADIUS; gx <= cellX + SOURCE_CELL_RADIUS; gx++) {
             for (int gz = cellZ - SOURCE_CELL_RADIUS; gz <= cellZ + SOURCE_CELL_RADIUS; gz++) {
-                ChunkPos a = locator.village(gx, gz);
-                ChunkPos b = locator.nearestNeighbour(gx, gz);
-                if (b == null) {
+                if (!locator.hasVillage(gx, gz)) {
                     continue;
                 }
-
+                ChunkPos a = locator.village(gx, gz);
                 int ax = a.getMinBlockX() + 8;
                 int az = a.getMinBlockZ() + 8;
-                int bx = b.getMinBlockX() + 8;
-                int bz = b.getMinBlockZ() + 8;
 
-                // Pull the segment back from both village centres so it stops at the village edge.
-                double dx = bx - ax;
-                double dz = bz - az;
-                double len = Math.sqrt(dx * dx + dz * dz);
-                if (len <= 2.0 * VILLAGE_EDGE_CLEARANCE) {
-                    continue;
+                // Connect each village to its several nearest villages to weave a road network in
+                // which every village is linked by at least two roads.
+                for (ChunkPos b : locator.nearestNeighbours(gx, gz)) {
+                    int bx = b.getMinBlockX() + 8;
+                    int bz = b.getMinBlockZ() + 8;
+
+                    // Pull the segment back from both village centres so it stops at the village edge.
+                    double dx = bx - ax;
+                    double dz = bz - az;
+                    double len = Math.sqrt(dx * dx + dz * dz);
+                    if (len <= 2.0 * VILLAGE_EDGE_CLEARANCE) {
+                        continue;
+                    }
+                    double ux = dx / len;
+                    double uz = dz / len;
+                    int sax = ax + (int) Math.round(ux * VILLAGE_EDGE_CLEARANCE);
+                    int saz = az + (int) Math.round(uz * VILLAGE_EDGE_CLEARANCE);
+                    int sbx = bx - (int) Math.round(ux * VILLAGE_EDGE_CLEARANCE);
+                    int sbz = bz - (int) Math.round(uz * VILLAGE_EDGE_CLEARANCE);
+
+                    if (!segmentIntersectsChunk(sax, saz, sbx, sbz, minBlockX, minBlockZ, maxBlockX, maxBlockZ)) {
+                        continue;
+                    }
+
+                    placedAny |= stampSegment(level, seaLevel, sax, saz, sbx, sbz,
+                            minBlockX, minBlockZ, maxBlockX, maxBlockZ, structureBoxes);
                 }
-                double ux = dx / len;
-                double uz = dz / len;
-                int sax = ax + (int) Math.round(ux * VILLAGE_EDGE_CLEARANCE);
-                int saz = az + (int) Math.round(uz * VILLAGE_EDGE_CLEARANCE);
-                int sbx = bx - (int) Math.round(ux * VILLAGE_EDGE_CLEARANCE);
-                int sbz = bz - (int) Math.round(uz * VILLAGE_EDGE_CLEARANCE);
-
-                if (!segmentIntersectsChunk(sax, saz, sbx, sbz, minBlockX, minBlockZ, maxBlockX, maxBlockZ)) {
-                    continue;
-                }
-
-                placedAny |= stampSegment(level, seaLevel, sax, saz, sbx, sbz,
-                        minBlockX, minBlockZ, maxBlockX, maxBlockZ, structureBoxes);
             }
         }
 
@@ -387,6 +392,7 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
         // statically across chunks. The caches are cleared whenever the observed seed changes.
         private static final Map<Long, ChunkPos> POS_CACHE = new ConcurrentHashMap<>();
         private static final Map<Long, Boolean> VILLAGE_CACHE = new ConcurrentHashMap<>();
+        private static final Map<Long, List<ChunkPos>> NEIGHBOURS_CACHE = new ConcurrentHashMap<>();
         private static long cachedSeed;
         private static boolean seedLoaded;
 
@@ -408,6 +414,7 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
             if (!seedLoaded || cachedSeed != seed) {
                 POS_CACHE.clear();
                 VILLAGE_CACHE.clear();
+                NEIGHBOURS_CACHE.clear();
                 cachedSeed = seed;
                 seedLoaded = true;
             }
@@ -440,39 +447,48 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
             });
         }
 
-        private ChunkPos nearestNeighbour(final int cellX, final int cellZ) {
+        /**
+         * The {@link #CONNECTIONS_PER_VILLAGE} nearest villages to a given village cell, ordered by
+         * distance (ties broken by block X then Z). Combined with the reciprocal edges other villages
+         * contribute, this weaves the villages into an interconnected road network in which each
+         * village is served by at least two roads. Returns empty for non-village cells.
+         */
+        private List<ChunkPos> nearestNeighbours(final int cellX, final int cellZ) {
             if (!hasVillage(cellX, cellZ)) {
-                return null;
+                return List.of();
             }
+            return NEIGHBOURS_CACHE.computeIfAbsent(cellKey(cellX, cellZ), k -> computeNeighbours(cellX, cellZ));
+        }
+
+        private List<ChunkPos> computeNeighbours(final int cellX, final int cellZ) {
             ChunkPos self = village(cellX, cellZ);
-            ChunkPos best = null;
-            long bestDist = Long.MAX_VALUE;
+            List<ChunkPos> candidates = new ArrayList<>();
             for (int gx = cellX - NEIGHBOUR_CELL_RADIUS; gx <= cellX + NEIGHBOUR_CELL_RADIUS; gx++) {
                 for (int gz = cellZ - NEIGHBOUR_CELL_RADIUS; gz <= cellZ + NEIGHBOUR_CELL_RADIUS; gz++) {
                     if ((gx == cellX && gz == cellZ) || !hasVillage(gx, gz)) {
                         continue;
                     }
-                    ChunkPos other = village(gx, gz);
-                    long dx = (long) other.getMinBlockX() - self.getMinBlockX();
-                    long dz = (long) other.getMinBlockZ() - self.getMinBlockZ();
-                    long distSq = dx * dx + dz * dz;
-                    if (distSq < bestDist || (distSq == bestDist && isBefore(other, best))) {
-                        bestDist = distSq;
-                        best = other;
-                    }
+                    candidates.add(village(gx, gz));
                 }
             }
-            return best;
+            candidates.sort((p, q) -> {
+                int cmp = Long.compare(distSq(self, p), distSq(self, q));
+                if (cmp != 0) {
+                    return cmp;
+                }
+                if (p.getMinBlockX() != q.getMinBlockX()) {
+                    return Integer.compare(p.getMinBlockX(), q.getMinBlockX());
+                }
+                return Integer.compare(p.getMinBlockZ(), q.getMinBlockZ());
+            });
+            int count = Math.min(CONNECTIONS_PER_VILLAGE, candidates.size());
+            return List.copyOf(candidates.subList(0, count));
         }
 
-        private static boolean isBefore(final ChunkPos candidate, final ChunkPos current) {
-            if (current == null) {
-                return true;
-            }
-            if (candidate.getMinBlockX() != current.getMinBlockX()) {
-                return candidate.getMinBlockX() < current.getMinBlockX();
-            }
-            return candidate.getMinBlockZ() < current.getMinBlockZ();
+        private static long distSq(final ChunkPos a, final ChunkPos b) {
+            long dx = (long) b.getMinBlockX() - a.getMinBlockX();
+            long dz = (long) b.getMinBlockZ() - a.getMinBlockZ();
+            return dx * dx + dz * dz;
         }
     }
 }
