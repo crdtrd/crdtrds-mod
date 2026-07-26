@@ -27,9 +27,9 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStruct
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Generates roads connecting neighbouring villages using the village street palette.
@@ -45,9 +45,9 @@ import java.util.Map;
 public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
 
     /** How far (in grid cells) around the current chunk to look for road-segment endpoints. */
-    private static final int SOURCE_CELL_RADIUS = 4;
+    private static final int SOURCE_CELL_RADIUS = 5;
     /** How far (in grid cells) around a village to search for its nearest neighbour. */
-    private static final int NEIGHBOUR_CELL_RADIUS = 2;
+    private static final int NEIGHBOUR_CELL_RADIUS = 3;
     /** Half of the road width; distance-to-segment threshold in blocks. */
     private static final double ROAD_HALF_WIDTH = 1.6;
     /** Water spans deeper than this (in blocks) are not bridged; the road stops at the shore. */
@@ -64,7 +64,7 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
      */
     private static final int VILLAGE_EDGE_CLEARANCE = 48;
     /** Height (in blocks) above the path to clear tree trunks/canopy and other foliage. */
-    private static final int MAX_TREE_CLEAR = 24;
+    private static final int MAX_TREE_CLEAR = 5;
     /** Radius (in chunks) around the current chunk to gather structure bounding boxes to avoid. */
     private static final int STRUCTURE_SCAN_RADIUS = 8;
 
@@ -102,7 +102,7 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
         int cellX = Math.floorDiv(chunkX, spacing);
         int cellZ = Math.floorDiv(chunkZ, spacing);
 
-        VillageLocator locator = new VillageLocator(spread, seed, spacing);
+        VillageLocator locator = new VillageLocator(spread, seed, spacing, level);
         int seaLevel = generator.getSeaLevel();
         // Structure footprints (villages, outposts, etc.) placed before this feature runs; road
         // columns falling inside any of them are skipped so roads never carve through structures.
@@ -300,9 +300,13 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
 
     private static BlockState surfaceBlock(final Holder<Biome> biome, final int wx, final int wz) {
         int r = deterministic(wx, wz) % 100;
-        if (biome.is(BiomeTags.HAS_VILLAGE_DESERT) || biome.is(BiomeTags.IS_BADLANDS)) {
-            return (r < 60 ? Blocks.SMOOTH_SANDSTONE : r < 85 ? Blocks.CUT_SANDSTONE : Blocks.SANDSTONE)
-                    .defaultBlockState();
+        if (biome.is(BiomeTags.IS_BADLANDS)) {
+            return (r < 55 ? Blocks.RED_SANDSTONE : r < 80 ? Blocks.SMOOTH_RED_SANDSTONE
+                    : r < 92 ? Blocks.CUT_RED_SANDSTONE : Blocks.TERRACOTTA).defaultBlockState();
+        }
+        if (biome.is(BiomeTags.HAS_VILLAGE_DESERT)) {
+            return (r < 45 ? Blocks.SMOOTH_SANDSTONE : r < 65 ? Blocks.CUT_SANDSTONE
+                    : r < 80 ? Blocks.SANDSTONE : Blocks.TERRACOTTA).defaultBlockState();
         }
         if (biome.is(BiomeTags.HAS_VILLAGE_SNOWY)) {
             return (r < 55 ? Blocks.SNOW_BLOCK : r < 85 ? Blocks.DIRT_PATH : Blocks.COBBLESTONE)
@@ -376,30 +380,76 @@ public class VillageRoadsFeature extends Feature<NoneFeatureConfiguration> {
      * that considers a given edge derives the identical result.
      */
     private static final class VillageLocator {
+        /** Y (in biome-quart coordinates, y=64) at which to sample the biome for village viability. */
+        private static final int BIOME_SAMPLE_QUART_Y = 16;
+
+        // Village positions and viability are pure functions of the world seed, so they are cached
+        // statically across chunks. The caches are cleared whenever the observed seed changes.
+        private static final Map<Long, ChunkPos> POS_CACHE = new ConcurrentHashMap<>();
+        private static final Map<Long, Boolean> VILLAGE_CACHE = new ConcurrentHashMap<>();
+        private static long cachedSeed;
+        private static boolean seedLoaded;
+
         private final RandomSpreadStructurePlacement spread;
         private final long seed;
         private final int spacing;
-        private final Map<Long, ChunkPos> cache = new HashMap<>();
+        private final WorldGenLevel level;
 
-        private VillageLocator(final RandomSpreadStructurePlacement spread, final long seed, final int spacing) {
+        private VillageLocator(final RandomSpreadStructurePlacement spread, final long seed,
+                              final int spacing, final WorldGenLevel level) {
             this.spread = spread;
             this.seed = seed;
             this.spacing = spacing;
+            this.level = level;
+            ensureSeed(seed);
+        }
+
+        private static synchronized void ensureSeed(final long seed) {
+            if (!seedLoaded || cachedSeed != seed) {
+                POS_CACHE.clear();
+                VILLAGE_CACHE.clear();
+                cachedSeed = seed;
+                seedLoaded = true;
+            }
+        }
+
+        private static long cellKey(final int cellX, final int cellZ) {
+            return (((long) cellX) << 32) ^ (cellZ & 0xFFFFFFFFL);
         }
 
         private ChunkPos village(final int cellX, final int cellZ) {
-            long key = (((long) cellX) << 32) ^ (cellZ & 0xFFFFFFFFL);
-            return cache.computeIfAbsent(key,
+            return POS_CACHE.computeIfAbsent(cellKey(cellX, cellZ),
                     k -> spread.getPotentialStructureChunk(seed, cellX * spacing, cellZ * spacing));
         }
 
+        /**
+         * Whether a grid cell's candidate chunk lies in a biome that actually spawns villages. Cells
+         * over ocean, forest, jungle, etc. return false, so roads never run to an empty candidate
+         * spot and every real village still anchors a road.
+         */
+        private boolean hasVillage(final int cellX, final int cellZ) {
+            return VILLAGE_CACHE.computeIfAbsent(cellKey(cellX, cellZ), k -> {
+                ChunkPos pos = village(cellX, cellZ);
+                Holder<Biome> biome = level.getUncachedNoiseBiome(
+                        (pos.getMinBlockX() + 8) >> 2, BIOME_SAMPLE_QUART_Y, (pos.getMinBlockZ() + 8) >> 2);
+                return biome.is(BiomeTags.HAS_VILLAGE_PLAINS)
+                        || biome.is(BiomeTags.HAS_VILLAGE_DESERT)
+                        || biome.is(BiomeTags.HAS_VILLAGE_SAVANNA)
+                        || biome.is(BiomeTags.HAS_VILLAGE_SNOWY)
+                        || biome.is(BiomeTags.HAS_VILLAGE_TAIGA);
+            });
+        }
+
         private ChunkPos nearestNeighbour(final int cellX, final int cellZ) {
+            if (!hasVillage(cellX, cellZ)) {
+                return null;
+            }
             ChunkPos self = village(cellX, cellZ);
             ChunkPos best = null;
             long bestDist = Long.MAX_VALUE;
             for (int gx = cellX - NEIGHBOUR_CELL_RADIUS; gx <= cellX + NEIGHBOUR_CELL_RADIUS; gx++) {
                 for (int gz = cellZ - NEIGHBOUR_CELL_RADIUS; gz <= cellZ + NEIGHBOUR_CELL_RADIUS; gz++) {
-                    if (gx == cellX && gz == cellZ) {
+                    if ((gx == cellX && gz == cellZ) || !hasVillage(gx, gz)) {
                         continue;
                     }
                     ChunkPos other = village(gx, gz);
