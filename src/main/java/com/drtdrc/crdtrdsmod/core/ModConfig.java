@@ -35,6 +35,7 @@ public class ModConfig {
     public boolean mineableReinforcedDeepslate = true;
     public boolean mineableSpawners = true;
     public boolean mineableTrials = true;
+    public boolean phantomNerf = true;
     public boolean spawnEggDrops = true;
     public boolean tickWarpSleep = true;
     public boolean undeadVariantBuff = true;

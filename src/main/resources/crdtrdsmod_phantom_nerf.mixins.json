@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "refmap": "crdtrdsmod.refmap.json",
+  "package": "com.drtdrc.crdtrdsmod.phantomnerf.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "PhantomSpawnerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "plugin": "com.drtdrc.crdtrdsmod.core.CrdtrdsMod"
+}

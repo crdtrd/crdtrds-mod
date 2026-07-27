@@ -37,6 +37,7 @@
         "crdtrdsmod_mineable_reinforced_deepslate.mixins.json",
         "crdtrdsmod_mineable_spawners.mixins.json",
         "crdtrdsmod_mineable_trials.mixins.json",
+        "crdtrdsmod_phantom_nerf.mixins.json",
         "crdtrdsmod_tick_warp_sleep.mixins.json",
         "crdtrdsmod_undead_variant_buff.mixins.json",
         {
