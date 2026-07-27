@@ -73,6 +73,9 @@ public class ConfigScreen extends Screen {
         entries.add(new ToggleEntry("Mineable Trials",
                 "Allows breaking and placing of trial vaults and spawners with iron level silk touch pickaxes and allows vaults to be reused after one hour. Use spawn eggs to repopulate the trial spawners.",
                 () -> cfg.mineableTrials, v -> cfg.mineableTrials = v));
+        entries.add(new ToggleEntry("Phantom Nerf",
+                "Caps phantom pack size at 2 on all difficulties and limits each player to one phantom spawn per night, only after midnight.",
+                () -> cfg.phantomNerf, v -> cfg.phantomNerf = v));
         entries.add(new ToggleEntry("Spawn Egg Drops",
                 "Mobs have a small chance to drop their spawn egg on death.",
                 () -> cfg.spawnEggDrops, v -> cfg.spawnEggDrops = v));
